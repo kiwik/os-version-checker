@@ -2,3 +2,6 @@ This is repository for os-version-checker.
 
 Os-Version-Checker will check and compare versions
 from upstream against debian.
+
+python VersionsStatus.py
+
