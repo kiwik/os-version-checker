@@ -9,15 +9,17 @@ from packaging import version
 import operator
 
 class VersionStatus:
-    def __init__(self, url_releases):
-        self.url_releases = url_releases
 
     def pair_in_debian(self, upstream_packages, debian_packages, upstream_package_name):
-        prefixes = ["", "python-"]
-        for prefix in prefixes:
-            tmp_upstream_package_name = prefix + upstream_package_name
-            if tmp_upstream_package_name in debian_packages:
-                return tmp_upstream_package_name
+        new_upstream_package_name = upstream_package_name.replace("_", "-")
+        if new_upstream_package_name in debian_packages:
+            return new_upstream_package_name
+        if ("python-" + new_upstream_package_name) in debian_packages:
+            return "python-" + new_upstream_package_name
+        if (re.match('^puppet-', new_upstream_package_name)):
+            if new_upstream_package_name.replace("puppet-", "puppet-module-") in debian_packages:
+                return new_upstream_package_name.replace("puppet-", "puppet-module-")
+
         return 0
 
     def compare_versions(self, upstream_packages, debian_packages):
@@ -75,7 +77,7 @@ class VersionStatus:
 
 if __name__ == '__main__':
 
-    version_status = VersionStatus("ahoj")
+    version_status = VersionStatus()
     parser_html = ParserHTML("https://releases.openstack.org/", "http://buster-{}.debian.net/debian/dists/buster-{}-backports/main/source/Sources")
     generator_html = GeneratorHTMLVersionStatus()
 
