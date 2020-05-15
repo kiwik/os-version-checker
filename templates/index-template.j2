@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>Openstack self</title>
-<link rel="stylesheet" type="text/css" href="datatables/datatables.css">
+<link rel="stylesheet" type="text/css" href="templates/datatables/datatables.css">
 <style>
 .missing_in_debian {background-color: #F1948A;}
 .out_of_date {background-color: #F0B27A;}
@@ -22,7 +22,7 @@
 }
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" charset="utf8" src="datatables/datatables.js"></script>
+<script type="text/javascript" charset="utf8" src="templates/datatables/datatables.js"></script>
 <script>
 $(document).ready( function () {
   {% for release in packages_versions_data %}
@@ -98,13 +98,13 @@ ussuriButton.onclick = function () {
             <td>{{ release_packages_versions_data[package]['upstream_package_version'] }}</td>
             <td>{{ release_packages_versions_data[package]['debian_package_version'] }}</td>
 
-            {% if "1" in release_packages_versions_data[package]['status'] %}
+            {% if "1" in release_packages_versions_data[package]['Status'] %}
             <td class="out_of_date">out of date</td>
             {% endif %}
-            {% if "2" in release_packages_versions_data[package]['status'] %}
-            <td class="up_to_date">up_to_date</td>
+            {% if "2" in release_packages_versions_data[package]['Status'] %}
+            <td class="up_to_date">up to date</td>
             {% endif %}
-            {% if "3" in release_packages_versions_data[package]['status'] %}
+            {% if "3" in release_packages_versions_data[package]['Status'] %}
             <td class="missing_in_debian">missing in debian</td>
             {% endif %}
         </tr>

@@ -1,7 +1,11 @@
 This is repository for os-version-checker.
 
-Os-Version-Checker will check and compare versions
+Os-Version-Checker will check and compare self
 from upstream against debian.
 
-python VersionsStatus.py
+Using templates/datatables 
+
+    pip install -r requirements.txt
+
+    python VersionsStatus.py
 
