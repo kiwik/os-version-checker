@@ -1,0 +1,117 @@
+<html>
+<head>
+<title>Openstack self</title>
+<link rel="stylesheet" type="text/css" href="datatables/datatables.css">
+<style>
+.missing_in_debian {background-color: #F1948A;}
+.out_of_date {background-color: #F0B27A;}
+.up_to_date {background-color: #7DCEA0;}
+.missing_in_upstream {background-color: #C39BD3;}
+.invisible tr  {
+    border: none !important;
+    border-size: 0;
+}
+.btn_release {
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" charset="utf8" src="datatables/datatables.js"></script>
+<script>
+$(document).ready( function () {
+  {% for release in packages_versions_data %}
+    $('#table-{{ release }}').DataTable();
+  {% endfor %}
+} );
+</script>
+<script>
+window.onload = function(){
+var steinDiv = document.getElementById("div-stein");
+var trainDiv = document.getElementById("div-train");
+var ussuriDiv = document.getElementById("div-ussuri");
+
+var steinButton = document.getElementById("steinButton");
+var trainButton = document.getElementById("trainButton");
+var ussuriButton = document.getElementById("ussuriButton");
+
+steinDiv.style.display = "block";
+trainDiv.style.display = "none";
+ussuriDiv.style.display = "none";
+
+steinButton.onclick = function () {
+    steinDiv.style.display = "block";
+    trainDiv.style.display = "none";
+    ussuriDiv.style.display = "none";
+}
+trainButton.onclick = function () {
+    steinDiv.style.display = "none";
+    trainDiv.style.display = "block";
+    ussuriDiv.style.display = "none";
+}
+ussuriButton.onclick = function () {
+    steinDiv.style.display = "none";
+    trainDiv.style.display = "none";
+    ussuriDiv.style.display = "block";
+}
+}
+</script>
+</head>
+
+<body>
+
+<table id="table-switcher" class="switcher">
+    <tr>
+        <td class="invisible" colspan="5">
+            <input type="button" id="steinButton" value="stein" class="btn_release">
+            <input type="button" id="trainButton" value="train" class="btn_release">
+            <input type="button" id="ussuriButton" value="ussuri" class="btn_release">
+        </td>
+    </tr>
+</table>
+
+<br><br>
+
+{% for release in packages_versions_data %}
+{% set release_packages_versions_data = packages_versions_data[release] %}
+<div id="div-{{ release }}">
+<table id="table-{{ release }}" class="display">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Upstream Source<br>Debian Source</th>
+            <th>Upstream<br>Version</th>
+            <th>Debian<br>Version</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for package in release_packages_versions_data %}
+        <tr>
+            <td>{{ loop.index }}.</td>
+            <td>{{ package }}</td>
+            <td>{{ release_packages_versions_data[package]['upstream_package_version'] }}</td>
+            <td>{{ release_packages_versions_data[package]['debian_package_version'] }}</td>
+
+            {% if "1" in release_packages_versions_data[package]['status'] %}
+            <td class="out_of_date">out of date</td>
+            {% endif %}
+            {% if "2" in release_packages_versions_data[package]['status'] %}
+            <td class="up_to_date">up_to_date</td>
+            {% endif %}
+            {% if "3" in release_packages_versions_data[package]['status'] %}
+            <td class="missing_in_debian">missing in debian</td>
+            {% endif %}
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+</div>
+{% endfor %}
+
+</body>
