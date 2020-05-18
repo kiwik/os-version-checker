@@ -1,7 +1,9 @@
 <html>
 <head>
-<title>Openstack self</title>
-<link rel="stylesheet" type="text/css" href="templates/datatables/datatables.css">
+<title>Openstack versions info</title>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 <style>
 .missing_in_debian {background-color: #F1948A;}
 .out_of_date {background-color: #F0B27A;}
@@ -21,8 +23,7 @@
   cursor: pointer;
 }
 </style>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" charset="utf8" src="templates/datatables/datatables.js"></script>
+
 <script>
 $(document).ready( function () {
   {% for release in packages_versions_data %}
@@ -80,7 +81,7 @@ ussuriButton.onclick = function () {
 {% for release in packages_versions_data %}
 {% set release_packages_versions_data = packages_versions_data[release] %}
 <div id="div-{{ release }}">
-<table id="table-{{ release }}" class="display">
+<table id="table-{{ release }}" class="display" data-page-length='{{ release_packages_versions_data|length }}'>
     <thead>
         <tr>
             <th>#</th>
@@ -97,7 +98,6 @@ ussuriButton.onclick = function () {
             <td>{{ package }}</td>
             <td>{{ release_packages_versions_data[package]['upstream_package_version'] }}</td>
             <td>{{ release_packages_versions_data[package]['debian_package_version'] }}</td>
-
             {% if "1" in release_packages_versions_data[package]['status'] %}
             <td class="out_of_date">out of date</td>
             {% endif %}
