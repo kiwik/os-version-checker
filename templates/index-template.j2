@@ -91,20 +91,20 @@ ussuriButton.onclick = function () {
         </tr>
     </thead>
     <tbody>
-      {% for package in release_packages_versions_data %}
+        {% for package in release_packages_versions_data %}
         <tr>
             <td>{{ loop.index }}.</td>
             <td>{{ package }}</td>
             <td>{{ release_packages_versions_data[package]['upstream_package_version'] }}</td>
             <td>{{ release_packages_versions_data[package]['debian_package_version'] }}</td>
 
-            {% if "1" in release_packages_versions_data[package]['Status'] %}
+            {% if "1" in release_packages_versions_data[package]['status'] %}
             <td class="out_of_date">out of date</td>
             {% endif %}
-            {% if "2" in release_packages_versions_data[package]['Status'] %}
+            {% if "2" in release_packages_versions_data[package]['status'] %}
             <td class="up_to_date">up to date</td>
             {% endif %}
-            {% if "3" in release_packages_versions_data[package]['Status'] %}
+            {% if "3" in release_packages_versions_data[package]['status'] %}
             <td class="missing_in_debian">missing in debian</td>
             {% endif %}
         </tr>
