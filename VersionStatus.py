@@ -5,7 +5,7 @@ import requests
 import jinja2
 import re
 import operator
-import argparse
+import click
 
 OS_VER_URI = "https://releases.openstack.org/{}"
 DEB_VER_URI = "http://buster-{}.debian.net/debian/dists/" \
@@ -16,37 +16,27 @@ STATUS_UP_TO_DATE = "2"
 STATUS_MISSING = "3"
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description='Os-Version-Checker will '
-                                                 'check and compare self '
-                                                 'from upstream against '
-                                                 'debian.')
-    parser.add_argument('-f',
-                        nargs='?',
-                        help='file name for render (default: index.html)',
-                        metavar='file_name',
-                        type=str,
-                        default="index.html",
-                        dest="file_name")
-    parser.add_argument('-o',
-                        nargs='?',
-                        help='option for render (default: page)',
-                        metavar='"page"/"text"',
-                        type=str,
-                        default="page",
-                        dest="option")
-    return parser.parse_args()
-
-
 class Renderer:
-    def __init__(self, data, file_name):
+    def __init__(self, data, file_format, file_name):
         self.data = data
-        self.file_name = file_name
+        self.file_name = "{}.{}".format(file_name, file_format)
+        self.file_format = file_format
 
-    def render(self, option):
-        if "text" in option:
-            output = yaml.dump(self.data)
-        if "page" in option:
+    def render(self):
+        if "txt" in self.file_format:
+            output=""
+            for release, pkg_vers_data in self.data.items():
+                output += "Release: {}\n\n".format(release)
+                output += "PACKAGE_NAME|OS_VERSION|DEB_VERSION|STATUS\n\n"
+                for pkg_name, pkg_info in pkg_vers_data.items():
+                    output += \
+                        "{}|{}|{}|{}\n".format(
+                            pkg_name,
+                            pkg_info.get('upstream_package_version'),
+                            pkg_info.get('debian_package_version'),
+                            pkg_info.get('status'))
+                output += "\n"
+        if "html" in self.file_format:
             output = jinja2.Environment(
                 loader=jinja2.FileSystemLoader('./templates/')) \
                 .get_template("index-template.j2") \
@@ -171,14 +161,34 @@ class VersionsData:
         return self.versions_data
 
 
-if __name__ == '__main__':
-
-    args = parse_args()
+@click.command()
+@click.option('--s', default=False, is_flag=True,
+              help='Separate status page per one release')
+@click.option('--file-format', default='html',
+              help='Output file format [html|txt]')
+@click.option('--file-name', required=False, default='index',
+              help='Output file name')
+def run(s, file_format, file_name):
+    print(s)
+    print(file_format)
+    print(file_name)
 
     ver_data = dict()
     for release in RELEASES:
-        release_ver_dat = VersionsData(release)
-        ver_data[release] = release_ver_dat.get_versions_data()
+        release_ver_data = VersionsData(release)
+        ver_data[release] = release_ver_data.get_versions_data()
 
-    renderer = Renderer(ver_data, args.file_name)
-    renderer.render(args.option)
+    if s:
+        for release in ver_data:
+            release_data = dict()
+            release_data[release] = ver_data.get(release)
+            renderer = Renderer(release_data, file_format,
+                                "{}-{}".format(file_name, release))
+            renderer.render()
+    else:
+        renderer = Renderer(ver_data, file_format, file_name)
+        renderer.render()
+
+
+if __name__ == '__main__':
+    run()
