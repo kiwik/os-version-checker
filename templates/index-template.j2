@@ -69,9 +69,9 @@ ussuriButton.onclick = function () {
 <table id="table-switcher" class="switcher">
     <tr>
         <td class="invisible" colspan="5">
-            <input type="button" id="steinButton" value="stein" class="btn_release">
-            <input type="button" id="trainButton" value="train" class="btn_release">
-            <input type="button" id="ussuriButton" value="ussuri" class="btn_release">
+          {% for release in packages_versions_data %}
+            <input type="button" id="{{ release }}Button" value="{{ release }}" class="btn_release">
+          {%endfor%}
         </td>
     </tr>
 </table>

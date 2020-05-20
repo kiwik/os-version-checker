@@ -19,30 +19,39 @@ STATUS_MISSING = "3"
 class Renderer:
     def __init__(self, data, file_format, file_name):
         self.data = data
-        self.file_name = "{}.{}".format(file_name, file_format)
         self.file_format = file_format
+        if file_format is not None:
+            self.file_name = "{}.{}".format(file_name, file_format)
+        else:
+            self.file_name = None
 
     def render(self):
-        if "txt" in self.file_format:
-            output=""
+        output = ""
+        if "txt" == self.file_format or None == self.file_format:
             for release, pkg_vers_data in self.data.items():
                 output += "Release: {}\n\n".format(release)
-                output += "PACKAGE_NAME|OS_VERSION|DEB_VERSION|STATUS\n\n"
+                output += "{:<30} {:<15} {:<15} {:<15}\n\n" \
+                    .format('Package name', 'OS version', 'DEB version',
+                            'Status')
                 for pkg_name, pkg_info in pkg_vers_data.items():
-                    output += \
-                        "{}|{}|{}|{}\n".format(
-                            pkg_name,
-                            pkg_info.get('upstream_package_version'),
-                            pkg_info.get('debian_package_version'),
-                            pkg_info.get('status'))
+                    output += "{:<30} {:<15} {:<15} {:<15}\n".format(
+                        pkg_name,
+                        pkg_info.get('upstream_package_version'),
+                        str(pkg_info.get('debian_package_version')),
+                        pkg_info.get('status'))
                 output += "\n"
-        if "html" in self.file_format:
+        if "html" == self.file_format:
             output = jinja2.Environment(
                 loader=jinja2.FileSystemLoader('./templates/')) \
                 .get_template("index-template.j2") \
                 .render(packages_versions_data=self.data)
-        with open(self.file_name, 'w') as f:
-            f.write(output)
+        # if file name is not set,
+        # then file format is None and output print to stdout
+        if self.file_format is None:
+            print(output)
+        else:
+            with open(self.file_name, 'w') as f:
+                f.write(output)
 
 
 class VersionsData:
@@ -161,31 +170,36 @@ class VersionsData:
         return self.versions_data
 
 
-@click.command()
-@click.option('--s', default=False, is_flag=True,
-              help='Separate status page per one release')
-@click.option('--file-format', default='html',
-              help='Output file format [html|txt]')
-@click.option('--file-name', required=False, default='index',
-              help='Output file name')
-def run(s, file_format, file_name):
-    print(s)
-    print(file_format)
-    print(file_name)
-
+@click.command(no_args_is_help=True,
+               context_settings=dict(help_option_names=['-h', '--help']))
+@click.option('-r', '--releases', is_flag=False, default=','.join(RELEASES),
+              show_default=True, metavar='<columns>', type=click.STRING,
+              help='Separate status page per one release, which chosen.')
+@click.option('-ff', '--file-format', default='html',
+              show_default=True, help='Output file format.',
+              type=click.Choice(['txt', 'html']))
+@click.option('-fn', '--file-name', required=False, default=None,
+              show_default=True, help='Output file name')
+@click.option('-s', '--separated', required=False, default=False, is_flag=True,
+              help='If chosen, then output is in separated files.')
+def run(releases, file_format, file_name, separated):
+    releases = [r.strip() for r in releases.split(',')]
+    if file_name is None:
+        file_name = 'None'
+        file_format = None
     ver_data = dict()
-    for release in RELEASES:
-        release_ver_data = VersionsData(release)
-        ver_data[release] = release_ver_data.get_versions_data()
 
-    if s:
-        for release in ver_data:
+    for release in releases:
+        release_ver_data = VersionsData(release)
+        if separated:
             release_data = dict()
-            release_data[release] = ver_data.get(release)
+            release_data[release] = release_ver_data.get_versions_data()
             renderer = Renderer(release_data, file_format,
-                                "{}-{}".format(file_name, release))
+                                "{}_{}".format(file_name, release))
             renderer.render()
-    else:
+        else:
+            ver_data[release] = release_ver_data.get_versions_data()
+    if not separated:
         renderer = Renderer(ver_data, file_format, file_name)
         renderer.render()
 
