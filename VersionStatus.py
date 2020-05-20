@@ -11,23 +11,20 @@ OS_VER_URI = "https://releases.openstack.org/{}"
 DEB_VER_URI = "http://buster-{}.debian.net/debian/dists/" \
               "buster-{}-backports/main/source/Sources"
 RELEASES = ["stein", "train", "ussuri"]
-STATUS_OUT_OF_DATE = "1"
-STATUS_UP_TO_DATE = "2"
-STATUS_MISSING = "3"
+STATUS_OUTDATED = ["1", "OUTDATED"]
+STATUS_OK = ["2", "OK"]
+STATUS_MISSING = ["3", "MISSING"]
 
 
 class Renderer:
     def __init__(self, data, file_format, file_name):
         self.data = data
         self.file_format = file_format
-        if file_format is not None:
-            self.file_name = "{}.{}".format(file_name, file_format)
-        else:
-            self.file_name = None
+        self.file_name = file_name
 
     def render(self):
         output = ""
-        if "txt" == self.file_format or None == self.file_format:
+        if "txt" == self.file_format:
             for release, pkg_vers_data in self.data.items():
                 output += "Release: {}\n\n".format(release)
                 output += "{:<30} {:<15} {:<15} {:<15}\n\n" \
@@ -43,11 +40,11 @@ class Renderer:
         if "html" == self.file_format:
             output = jinja2.Environment(
                 loader=jinja2.FileSystemLoader('./templates/')) \
-                .get_template("index-template.j2") \
+                .get_template("template.j2") \
                 .render(packages_versions_data=self.data)
         # if file name is not set,
         # then file format is None and output print to stdout
-        if self.file_format is None:
+        if self.file_name is None:
             print(output)
         else:
             with open(self.file_name, 'w') as f:
@@ -134,9 +131,9 @@ class VersionsData:
             if "~" in deb_ver:
                 deb_ver = deb_ver.split('~')[0]
             if version.parse(os_ver) == version.parse(deb_ver):
-                return STATUS_UP_TO_DATE
+                return STATUS_OK
             else:
-                return STATUS_OUT_OF_DATE
+                return STATUS_OUTDATED
 
         result = dict()
         paired = 0
@@ -151,20 +148,23 @@ class VersionsData:
                                  =deb_pkg_ver,
                                  upstream_package_version
                                  =os_pkg_ver,
-                                 status=set_status(os_pkg_ver, deb_pkg_ver))
+                                 status=set_status(os_pkg_ver, deb_pkg_ver)[1],
+                                 status_id=
+                                 set_status(os_pkg_ver, deb_pkg_ver)[0])
                 paired += 1
                 del self.deb_data[deb_pkg_name]
             else:
                 pkg_infos = dict(debian_package_version=None,
                                  upstream_package_version=
                                  os_pkg_ver,
-                                 status=STATUS_MISSING)
+                                 status=STATUS_MISSING[1],
+                                 status_id=STATUS_MISSING[0])
             result[os_pkg_name] = pkg_infos
 
         print("UPSTREAM_PACKAGES: {}    DEBIAN_PACKAGES: {} PAIRED: {}"
               .format(len(self.os_data), len(self.deb_data) + paired, paired))
         return OrderedDict(sorted(
-            result.items(), key=lambda x: operator.getitem(x[1], 'status')))
+            result.items(), key=lambda x: operator.getitem(x[1], 'status_id')))
 
     def get_versions_data(self):
         return self.versions_data
@@ -178,24 +178,24 @@ class VersionsData:
 @click.option('-ff', '--file-format', default='html',
               show_default=True, help='Output file format.',
               type=click.Choice(['txt', 'html']))
-@click.option('-fn', '--file-name', required=False, default=None,
+@click.option('-fn', '--file-name', required=False,
               show_default=True, help='Output file name')
 @click.option('-s', '--separated', required=False, default=False, is_flag=True,
               help='If chosen, then output is in separated files.')
 def run(releases, file_format, file_name, separated):
     releases = [r.strip() for r in releases.split(',')]
-    if file_name is None:
-        file_name = 'None'
-        file_format = None
-    ver_data = dict()
 
+    ver_data = dict()
     for release in releases:
         release_ver_data = VersionsData(release)
         if separated:
             release_data = dict()
             release_data[release] = release_ver_data.get_versions_data()
-            renderer = Renderer(release_data, file_format,
-                                "{}_{}".format(file_name, release))
+            if file_name is None:
+                renderer = Renderer(release_data, file_format, file_name)
+            else:
+                renderer = Renderer(release_data, file_format,
+                                    "{}_{}".format(release, file_name))
             renderer.render()
         else:
             ver_data[release] = release_ver_data.get_versions_data()
