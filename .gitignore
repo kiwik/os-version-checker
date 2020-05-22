@@ -12,5 +12,7 @@ __pycache__/
 
 out
 venv
+virtualenv
 *.html
+*.txt
 

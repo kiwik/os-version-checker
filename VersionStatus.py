@@ -5,54 +5,50 @@ import requests
 import jinja2
 import re
 import operator
-import argparse
+import click
 
 OS_VER_URI = "https://releases.openstack.org/{}"
 DEB_VER_URI = "http://buster-{}.debian.net/debian/dists/" \
               "buster-{}-backports/main/source/Sources"
 RELEASES = ["stein", "train", "ussuri"]
-STATUS_OUT_OF_DATE = "1"
-STATUS_UP_TO_DATE = "2"
-STATUS_MISSING = "3"
-
-
-def parse_args():
-    parser = argparse.ArgumentParser(description='Os-Version-Checker will '
-                                                 'check and compare self '
-                                                 'from upstream against '
-                                                 'debian.')
-    parser.add_argument('-f',
-                        nargs='?',
-                        help='file name for render (default: index.html)',
-                        metavar='file_name',
-                        type=str,
-                        default="index.html",
-                        dest="file_name")
-    parser.add_argument('-o',
-                        nargs='?',
-                        help='option for render (default: page)',
-                        metavar='"page"/"text"',
-                        type=str,
-                        default="page",
-                        dest="option")
-    return parser.parse_args()
+STATUS_OUTDATED = ["1", "OUTDATED"]
+STATUS_OK = ["2", "OK"]
+STATUS_MISSING = ["3", "MISSING"]
 
 
 class Renderer:
-    def __init__(self, data, file_name):
+    def __init__(self, data, file_format, file_name):
         self.data = data
+        self.file_format = file_format
         self.file_name = file_name
 
-    def render(self, option):
-        if "text" in option:
-            output = yaml.dump(self.data)
-        if "page" in option:
+    def render(self):
+        output = ""
+        if "txt" == self.file_format:
+            for release, pkg_vers_data in self.data.items():
+                output += "Release: {}\n\n".format(release)
+                output += "{:<30} {:<15} {:<15} {:<15}\n\n" \
+                    .format('Package name', 'OS version', 'DEB version',
+                            'Status')
+                for pkg_name, pkg_info in pkg_vers_data.items():
+                    output += "{:<30} {:<15} {:<15} {:<15}\n".format(
+                        pkg_name,
+                        pkg_info.get('upstream_package_version'),
+                        str(pkg_info.get('debian_package_version')),
+                        pkg_info.get('status'))
+                output += "\n"
+        if "html" == self.file_format:
             output = jinja2.Environment(
                 loader=jinja2.FileSystemLoader('./templates/')) \
-                .get_template("index-template.j2") \
+                .get_template("template.j2") \
                 .render(packages_versions_data=self.data)
-        with open(self.file_name, 'w') as f:
-            f.write(output)
+        # if file name is not set,
+        # then file format is None and output print to stdout
+        if self.file_name is None:
+            print(output)
+        else:
+            with open(self.file_name, 'w') as f:
+                f.write(output)
 
 
 class VersionsData:
@@ -135,9 +131,9 @@ class VersionsData:
             if "~" in deb_ver:
                 deb_ver = deb_ver.split('~')[0]
             if version.parse(os_ver) == version.parse(deb_ver):
-                return STATUS_UP_TO_DATE
+                return STATUS_OK
             else:
-                return STATUS_OUT_OF_DATE
+                return STATUS_OUTDATED
 
         result = dict()
         paired = 0
@@ -152,33 +148,61 @@ class VersionsData:
                                  =deb_pkg_ver,
                                  upstream_package_version
                                  =os_pkg_ver,
-                                 status=set_status(os_pkg_ver, deb_pkg_ver))
+                                 status=set_status(os_pkg_ver, deb_pkg_ver)[1],
+                                 status_id=
+                                 set_status(os_pkg_ver, deb_pkg_ver)[0])
                 paired += 1
                 del self.deb_data[deb_pkg_name]
             else:
                 pkg_infos = dict(debian_package_version=None,
                                  upstream_package_version=
                                  os_pkg_ver,
-                                 status=STATUS_MISSING)
+                                 status=STATUS_MISSING[1],
+                                 status_id=STATUS_MISSING[0])
             result[os_pkg_name] = pkg_infos
 
         print("UPSTREAM_PACKAGES: {}    DEBIAN_PACKAGES: {} PAIRED: {}"
               .format(len(self.os_data), len(self.deb_data) + paired, paired))
         return OrderedDict(sorted(
-            result.items(), key=lambda x: operator.getitem(x[1], 'status')))
+            result.items(), key=lambda x: operator.getitem(x[1], 'status_id')))
 
     def get_versions_data(self):
         return self.versions_data
 
 
-if __name__ == '__main__':
-
-    args = parse_args()
+@click.command(no_args_is_help=True,
+               context_settings=dict(help_option_names=['-h', '--help']))
+@click.option('-r', '--releases', is_flag=False, default=','.join(RELEASES),
+              show_default=True, metavar='<columns>', type=click.STRING,
+              help='Separate status page per one release, which chosen.')
+@click.option('-ff', '--file-format', default='html',
+              show_default=True, help='Output file format.',
+              type=click.Choice(['txt', 'html']))
+@click.option('-fn', '--file-name', required=False,
+              show_default=True, help='Output file name')
+@click.option('-s', '--separated', required=False, default=False, is_flag=True,
+              help='If chosen, then output is in separated files.')
+def run(releases, file_format, file_name, separated):
+    releases = [r.strip() for r in releases.split(',')]
 
     ver_data = dict()
-    for release in RELEASES:
-        release_ver_dat = VersionsData(release)
-        ver_data[release] = release_ver_dat.get_versions_data()
+    for release in releases:
+        release_ver_data = VersionsData(release)
+        if separated:
+            release_data = dict()
+            release_data[release] = release_ver_data.get_versions_data()
+            if file_name is None:
+                renderer = Renderer(release_data, file_format, file_name)
+            else:
+                renderer = Renderer(release_data, file_format,
+                                    "{}_{}".format(release, file_name))
+            renderer.render()
+        else:
+            ver_data[release] = release_ver_data.get_versions_data()
+    if not separated:
+        renderer = Renderer(ver_data, file_format, file_name)
+        renderer.render()
 
-    renderer = Renderer(ver_data, args.file_name)
-    renderer.render(args.option)
+
+if __name__ == '__main__':
+    run()
