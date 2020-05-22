@@ -161,8 +161,8 @@ class VersionsData:
                                  status_id=STATUS_MISSING[0])
             result[os_pkg_name] = pkg_infos
 
-        print("UPSTREAM_PACKAGES: {}    DEBIAN_PACKAGES: {} PAIRED: {}"
-              .format(len(self.os_data), len(self.deb_data) + paired, paired))
+        # print("UPSTREAM_PACKAGES: {}    DEBIAN_PACKAGES: {} PAIRED: {}"
+        #      .format(len(self.os_data), len(self.deb_data) + paired, paired))
         return OrderedDict(sorted(
             result.items(), key=lambda x: operator.getitem(x[1], 'status_id')))
 
@@ -175,14 +175,14 @@ class VersionsData:
 @click.option('-r', '--releases', is_flag=False, default=','.join(RELEASES),
               show_default=True, metavar='<columns>', type=click.STRING,
               help='Separate status page per one release, which chosen.')
-@click.option('-ff', '--file-format', default='html',
+@click.option('-t', '--type', default='html',
               show_default=True, help='Output file format.',
               type=click.Choice(['txt', 'html']))
-@click.option('-fn', '--file-name', required=False,
+@click.option('-f', '--file', required=False,
               show_default=True, help='Output file name')
 @click.option('-s', '--separated', required=False, default=False, is_flag=True,
               help='If chosen, then output is in separated files.')
-def run(releases, file_format, file_name, separated):
+def run(releases, type, file, separated):
     releases = [r.strip() for r in releases.split(',')]
 
     ver_data = dict()
@@ -191,16 +191,16 @@ def run(releases, file_format, file_name, separated):
         if separated:
             release_data = dict()
             release_data[release] = release_ver_data.get_versions_data()
-            if file_name is None:
-                renderer = Renderer(release_data, file_format, file_name)
+            if file is None:
+                renderer = Renderer(release_data, type, file)
             else:
-                renderer = Renderer(release_data, file_format,
-                                    "{}_{}".format(release, file_name))
+                renderer = Renderer(release_data, type,
+                                    "{}_{}".format(release, file))
             renderer.render()
         else:
             ver_data[release] = release_ver_data.get_versions_data()
     if not separated:
-        renderer = Renderer(ver_data, file_format, file_name)
+        renderer = Renderer(ver_data, type, file)
         renderer.render()
 
 
