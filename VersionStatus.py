@@ -1,4 +1,3 @@
-import time
 from collections import OrderedDict
 from packaging import version
 import yaml
@@ -203,8 +202,6 @@ def run(releases, type, file, separated):
     if not separated:
         renderer = Renderer(ver_data, type, file)
         renderer.render()
-
-    time.sleep(500)
 
 
 if __name__ == '__main__':

@@ -30,21 +30,15 @@ spec:
     stage('Generate artifact') {
       steps {
         container("${OS_VERSION_CHECKER}") {
-            sh "cd /opt/app"
-            sh "ls -la"
-            sh "pwd"
-            sh "cd /home/jenkins/agent"
-            sh "ls -la"
+            sh 'cd /opt/app; echo "Som v $(pwd)"; echo "Pustam skript"; python3 VersionStatus.py -t html -r train -f index.html; echo "Aktualne v dir toto $(ls -la )"'
         }
       }
     }
     stage('Configure proxy') {
       steps {
         container("proxy") {
-          withCredentials([certificate(aliasVariable: '', credentialsId: 'e256026f-b227-4f8e-92b0-220d3ccb7079', keystoreVariable: 'KEYSTORE', passwordVariable: 'KEYSTORE_PASS')]) {
-            sh "start_proxy.sh $KEYSTORE $KEYSTORE_PASS"
-            sh "ls -la"
-            sh "pwd"
+            withCredentials([certificate(aliasVariable: '', credentialsId: 'e256026f-b227-4f8e-92b0-220d3ccb7079', keystoreVariable: 'KEYSTORE', passwordVariable: 'KEYSTORE_PASS')]) {
+                sh "start_proxy.sh $KEYSTORE $KEYSTORE_PASS"
           }
         }
       }
