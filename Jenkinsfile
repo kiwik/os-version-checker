@@ -27,7 +27,7 @@ spec:
     stage('Generate artifact') {
       steps {
         container("${OS_VERSION_CHECKER}") {
-            sh 'cd /opt/app; python3 VersionStatus.py -t html -r train,stein,ussuri -f index.html'
+            sh 'cd /opt/app; python3 VersionStatus.py -t html -r train,stein,ussuri -f versions.html'
         }
       }
     }
@@ -44,7 +44,7 @@ spec:
       steps {
         container("${OS_VERSION_CHECKER}") {
             withCredentials([usernameColonPassword(credentialsId: '59c660c7-216d-4eaf-9294-0b11abba096d', variable: 'NEXUS_USER')]) {
-              sh 'cd /opt/app; curl -X POST "http://localhost:8080/nexus/service/rest/v1/components?repository=public-repo" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "raw.directory=/" -u "${NEXUS_USER}" -F "raw.asset1=@index.html;type=text/html" -F "raw.asset1.filename=index.html"'
+              sh 'cd /opt/app; curl -X POST "http://localhost:8080/nexus/service/rest/v1/components?repository=public-repo" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "raw.directory=/" -u "${NEXUS_USER}" -F "raw.asset1=@versions.html;type=text/html" -F "raw.asset1.filename=versions.html"'
             }
         }
       }
