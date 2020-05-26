@@ -6,9 +6,6 @@ pipeline {
       yaml """
 apiVersion: v1
 kind: Pod
-metadata:
-  labels:
-    some-label: some-label-value
 spec:
   containers:
   - name: ${OS_VERSION_CHECKER}
@@ -30,7 +27,7 @@ spec:
     stage('Generate artifact') {
       steps {
         container("${OS_VERSION_CHECKER}") {
-            sh 'cd /opt/app; echo "Som v $(pwd)"; echo "Pustam skript"; python3 VersionStatus.py -t html -r train -f index.html; echo "Aktualne v dir toto $(ls -la )"'
+            sh 'cd /opt/app; python3 VersionStatus.py -t html -r train,stein,ussuri -f index.html'
         }
       }
     }
@@ -46,7 +43,9 @@ spec:
     stage('Upload index artifact') {
       steps {
         container("${OS_VERSION_CHECKER}") {
-              sh 'cd /opt/app; curl -i -X POST "http://localhost" -F "data=@/opt/app/index.html"'
+            withCredentials([usernameColonPassword(credentialsId: '59c660c7-216d-4eaf-9294-0b11abba096d', variable: 'NEXUS_USER')]) {
+              sh 'cd /opt/app; curl -X POST "http://localhost:8080/nexus/service/rest/v1/components?repository=public-repo" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "raw.directory=/" -u "${NEXUS_USER}" -F "raw.asset1=@index.html;type=text/html" -F "raw.asset1.filename=index.html"'
+            }
         }
       }
     }
