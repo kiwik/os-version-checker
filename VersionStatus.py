@@ -1,3 +1,4 @@
+import sys
 from collections import OrderedDict
 from packaging import version
 import yaml
@@ -170,10 +171,9 @@ class VersionsData:
         return self.versions_data
 
 
-@click.command(no_args_is_help=True,
-               context_settings=dict(help_option_names=['-h', '--help']))
+@click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option('-r', '--releases', is_flag=False, default=','.join(RELEASES),
-              show_default=True, metavar='<columns>', type=click.STRING,
+              show_default=True, metavar='<releases>', type=click.STRING,
               help='Separate status page per one release, which chosen.')
 @click.option('-t', '--type', default='html',
               show_default=True, help='Output file format.',
@@ -205,4 +205,7 @@ def run(releases, type, file, separated):
 
 
 if __name__ == '__main__':
-    run()
+    if len(sys.argv) == 1:
+        run.main(['--help'])
+    else:
+        run()
