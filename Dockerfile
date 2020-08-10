@@ -5,5 +5,9 @@ WORKDIR /opt/app
 COPY ./ ./
 
 RUN pip install --no-cache-dir -r requirements.txt
+RUN chmod 777 /opt && \
+    mkdir /opt/app/images_versions && \
+    chmod 777 /opt/app/images_versions
+
 ENTRYPOINT [ "python3", "./VersionStatus.py"]
-CMD [ "-t", "html", "-r", "rocky,stein,train,ussuri", "-f", "index.html" ]
+CMD [ "-t", "html", "-r", "stein,train,ussuri", "-f", "index.html" ]

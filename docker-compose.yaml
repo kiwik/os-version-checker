@@ -1,0 +1,35 @@
+version: '3'
+services:
+  os-version-checker-build:
+    build: .
+    image: os-version-checker
+    volumes:
+      - "os-version-checker-storage:/opt"
+  os-version-checker:
+    image: os-version-checker
+    volumes:
+      - "os-version-checker-storage:/opt"
+    entrypoint: /bin/sh -c
+    command: ["sleep 1h"]
+    depends_on:
+      - os-version-checker-build
+  debian-binary-base:
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-base:kevko-ussuri
+    working_dir: /opt/app
+    entrypoint: /bin/bash -c
+    command: ["./get_image_versions.sh debian-binary-base"]
+    volumes:
+      - "os-version-checker-storage:/opt"
+    depends_on:
+      - os-version-checker
+  debian-binary-redis-base:
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-redis-base:kevko-ussuri
+    working_dir: /opt/app
+    entrypoint: /bin/bash -c
+    command: ["./get_image_versions.sh debian-binary-redis-base"]
+    volumes:
+      - "os-version-checker-storage:/opt"
+    depends_on:
+      - os-version-checker
+volumes:
+  os-version-checker-storage:
