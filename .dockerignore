@@ -5,7 +5,7 @@
 !/clients
 !/threads
 !/utils
-!DockerImageVersionInfo.py
+!DockerImageVersions.py
 !get_image_versions.sh
 !nexusconfig.py
 

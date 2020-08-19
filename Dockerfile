@@ -5,8 +5,8 @@ WORKDIR /opt/app
 COPY ./ ./
 
 RUN pip install --no-cache-dir -r requirements.txt
-RUN chmod 777 /opt && \
-    mkdir /opt/app/images_versions && \
+RUN mkdir /opt/app/images_versions && \
+    chmod 777 /opt && \
     chmod 777 /opt/app/images_versions
 
 ENTRYPOINT [ "python3", "./VersionStatus.py"]

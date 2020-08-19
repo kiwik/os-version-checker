@@ -1,3 +1,5 @@
+import datetime
+import os
 import sys
 from collections import OrderedDict
 from packaging import version
@@ -9,12 +11,12 @@ import operator
 import click
 
 from DockerImageVersions import DockerImageVersions
-from nexusconfig import NexusConfig
 
 OS_VER_URI = "https://releases.openstack.org/{}"
 DEB_VER_URI = "http://buster-{}.debian.net/debian/dists/" \
               "buster-{}-backports/main/source/Sources"
 RELEASES = ["stein", "train", "ussuri"]
+STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_OK = ["2", "OK"]
 STATUS_MISSING = ["3", "MISSING"]
@@ -45,7 +47,7 @@ class Renderer:
             output = jinja2.Environment(
                 loader=jinja2.FileSystemLoader('./templates/')) \
                 .get_template("template.j2") \
-                .render(packages_versions_data=self.data)
+                .render(data=self.data, time=datetime.datetime.utcnow())
         # if file name is not set,
         # then file format is None and output print to stdout
         if self.file_name is None:
@@ -110,15 +112,15 @@ class UpstreamVersions:
         return results
 
 
-class VersionsData:
-    def __init__(self, os_data, deb_data):
-        self._os_data = os_data
-        self._deb_data = deb_data
-        self._versions_data = self.compare_versions()
+class VersionsComparator:
+    def __init__(self, base_data, to_comparison_data, show_other_versions):
+        self._base_data = base_data
+        self._comp_data = to_comparison_data
+        self._show_other_versions = show_other_versions
 
-    def get_deb_pair(self, os_pkg_name):
-        def sanitize_os_pkg_name(_os_pkg_name, str_to_replace):
-            default_replace = os_pkg_name.replace("_", "-")
+    def get_pair(self, base_pkg_name, from_data):
+        def sanitize_base_pkg_name(_base_pkg_name, str_to_replace):
+            default_replace = _base_pkg_name.replace("_", "-")
             cases = {
                 "-": default_replace,
                 "python-": "python-{}".format(default_replace),
@@ -127,61 +129,75 @@ class VersionsData:
             }
             return cases.get(str_to_replace)
 
-        def is_in_deb_data(_os_pkg_name, _replacement):
-            if sanitize_os_pkg_name(os_pkg_name, replacement) in self.deb_data:
-                return sanitize_os_pkg_name(os_pkg_name, replacement)
+        def is_in_comp_data(_base_pkg_name, _replacement):
+            if sanitize_base_pkg_name(_base_pkg_name, replacement) \
+                    in from_data:
+                return sanitize_base_pkg_name(_base_pkg_name, replacement)
             return False
 
-        # try find modified debian package name in debian packages
+        # try find modified to comparison package name in to comp. packages
         replacements = ["-", "python-", "puppet-", "openstack-"]
         for replacement in replacements:
-            if is_in_deb_data(os_pkg_name, replacement):
-                return sanitize_os_pkg_name(os_pkg_name, replacement)
+            if is_in_comp_data(base_pkg_name, replacement):
+                return sanitize_base_pkg_name(base_pkg_name, replacement)
 
-    def compare_versions(self):
-        def set_status(os_ver, deb_ver):
-            if "+" in deb_ver:
-                deb_ver = deb_ver.split('+')[0]
-            if "~" in deb_ver:
-                deb_ver = deb_ver.split('~')[0]
-            if version.parse(os_ver) == version.parse(deb_ver):
+    @property
+    def compared_data(self):
+        def set_status(base_ver, comp_ver):
+            if "+" in comp_ver:
+                comp_ver = comp_ver.split('+')[0]
+            if "~" in comp_ver:
+                comp_ver = comp_ver.split('~')[0]
+            if version.parse(base_ver) == version.parse(comp_ver):
                 return STATUS_OK
             else:
                 return STATUS_OUTDATED
 
-        result = dict()
+        result_data = dict()
         paired = 0
-        for os_pkg_name, os_pkg_info in self.os_data.items():
-            deb_pkg_name = self.get_deb_pair(os_pkg_name)
-            os_pkg_ver = os_pkg_info.get('version')
-            # if debian and openstack package have pair
-            if deb_pkg_name is not None:
-                deb_pkg_info = self.deb_data.get(deb_pkg_name)
-                deb_pkg_ver = deb_pkg_info.get('version')
-                pkg_infos = dict(debian_package_version
-                                 =deb_pkg_ver,
-                                 upstream_package_version
-                                 =os_pkg_ver,
-                                 status=set_status(os_pkg_ver, deb_pkg_ver)[1],
-                                 status_id=
-                                 set_status(os_pkg_ver, deb_pkg_ver)[0])
+        overall_status = STATUS_NONE
+        for base_pkg_name, base_pkg_info in self._base_data.items():
+            comp_pkg_name = self.get_pair(base_pkg_name, self._comp_data)
+            base_pkg_ver = base_pkg_info.get('version')
+            # if to comparison package and base package have pair
+            if comp_pkg_name is not None:
+                comp_pkg_info = self._comp_data.get(comp_pkg_name)
+                comp_pkg_ver = comp_pkg_info.get('version')
+                status = set_status(base_pkg_ver, comp_pkg_ver)
+                pkg_infos = dict(comparison_package_version=comp_pkg_ver,
+                                 base_package_version=base_pkg_ver,
+                                 status=status[1], status_id=status[0])
+                if status == STATUS_OUTDATED:
+                    overall_status = STATUS_OUTDATED
                 paired += 1
-                del self.deb_data[deb_pkg_name]
+                del self._comp_data[comp_pkg_name]
             else:
-                pkg_infos = dict(debian_package_version=None,
-                                 upstream_package_version=
-                                 os_pkg_ver,
+                pkg_infos = dict(comparison_package_version=None,
+                                 base_package_version=base_pkg_ver,
                                  status=STATUS_MISSING[1],
                                  status_id=STATUS_MISSING[0])
-            result[os_pkg_name] = pkg_infos
+            result_data[base_pkg_name] = pkg_infos
 
-        # print("UPSTREAM_PACKAGES: {}    DEBIAN_PACKAGES: {} PAIRED: {}"
-        #      .format(len(self.os_data), len(self.deb_data) + paired, paired))
-        return OrderedDict(sorted(
-            result.items(), key=lambda x: operator.getitem(x[1], 'status_id')))
+        if self._show_other_versions:
+            for comp_pkg_name, comp_pkg_info in self._comp_data.items():
+                base_pkg_name = self.get_pair(comp_pkg_name, self._base_data)
+                comp_pkg_ver = comp_pkg_info.get('version')
+                if base_pkg_name is None:
+                    pkg_infos = dict(comparison_package_version=comp_pkg_ver,
+                                     base_package_version=None,
+                                     status=STATUS_NONE[1],
+                                     status_id=STATUS_NONE[0])
+                result_data[comp_pkg_name] = pkg_infos
 
-    def get_all_versions_data(self):
-        return self.versions_data
+        # print("BASE_PACKAGES: {}    TO_COMPARISON_PACKAGES: {} PAIRED: {}"
+        #      .format(len(self.base_data), len(self.comp_data) + paired, paired))
+        result_data = OrderedDict(sorted(result_data.items(),
+                                         key=lambda x:
+                                         operator.getitem(x[1], 'status_id')))
+        return dict(overall_status=overall_status[1],
+                    overall_status_id=overall_status[0],
+                    paired=paired,
+                    data=result_data)
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
@@ -216,7 +232,10 @@ def run(releases, type, file, separated, nexus_config, images_repository, tags,
         if nexus_config and images_repository and dockerhub_url and mappings \
                 and tags:
             nexus_config = [r.strip() for r in nexus_config.split(',')]
-            mappings = [r.strip() for r in mappings.split(',')]
+            tmp_mappings = [r.strip() for r in mappings.split(',')]
+            mappings = dict()
+            for m in tmp_mappings:
+                mappings[m.split(':')[0]] = m.split(':')[1]
             tags = [r.strip() for r in tags.split(',')]
             if len(nexus_config) != 3 or len(tags) < 1 or len(mappings) < 1:
                 raise Exception(f"Too few values given (--nexus config: 3, "
@@ -231,33 +250,76 @@ def run(releases, type, file, separated, nexus_config, images_repository, tags,
                             f"{nexus_config}, {images_repository}, "
                             f"{dockerhub_url}, {mappings}, {tags}")
 
-    image_versions = DockerImageVersions(nexus_config, images_repository,
-                                         tags[0], dockerhub_url,
-                                         "images_versions")
-    template = image_versions.kube_template
-    with open('manifest.yaml', 'w') as f:
-        f.write(template)
-    aaaa = image_versions.images_data
+    if os.path.exists("tmp_manifest.yaml"):
+        os.remove("tmp_manifest.yaml")
+    images_versions = dict()
+    for tag in tags:
+        image_versions = DockerImageVersions(nexus_config, images_repository,
+                                             tag, dockerhub_url,
+                                             "images_versions")
+        _ = image_versions.kube_template
+        images_versions[tag.replace('^', '').replace('$', '')] = image_versions
+
+    if os.path.exists("manifest.yaml"):
+        os.remove("manifest.yaml")
+    if os.path.exists("tmp_manifest.yaml"):
+        os.rename('tmp_manifest.yaml',
+                  'manifest.yaml')
+
+    if os.path.exists("docker-compose.yaml"):
+        os.remove("docker-compose.yaml")
+    if os.path.exists("tmp_docker-compose.yaml"):
+        os.rename('tmp_docker-compose.yaml',
+                  'docker-compose.yaml')
 
     ver_data = dict()
     for release in releases:
+        release_data = dict()
         os_data = UpstreamVersions(release).upstream_versions
         deb_data = DebianVersions(release).debian_versions
-        release_ver_data = VersionsData(os_data, deb_data)
-        if separated:
-            release_data = dict()
-            release_data[release] = release_ver_data.get_all_versions_data()
-            if file is None:
-                renderer = Renderer(release_data, type, file)
-            else:
-                renderer = Renderer(release_data, type,
-                                    "{}_{}".format(release, file))
-            renderer.render()
-        else:
-            ver_data[release] = release_ver_data.get_all_versions_data()
-    if not separated:
-        renderer = Renderer(ver_data, type, file)
-        renderer.render()
+        os_deb_data = VersionsComparator(os_data, deb_data, False).compared_data
+        release_data["upstream-debian"] = os_deb_data
+        if mappings.get(release):
+            images_data = images_versions\
+                .get(mappings.get(release)).images_data
+            for image, image_data in images_data.items():
+                deb_image_data = VersionsComparator(deb_data, image_data, True)\
+                    .compared_data
+                release_data["debian-" + image] = deb_image_data
+        ver_data[release] = release_data
+
+    # import json
+    # with open('result.json', 'w') as fp:
+    #     json.dump(ver_data, fp)
+    #
+    # import json
+    # with open('result.json', 'r') as fp:
+    #     ver_data = json.load(fp)
+
+
+    Renderer(ver_data, "html", "index.html").render()
+
+
+
+    # ver_data = dict()
+    # for release in releases:
+    #     os_data = UpstreamVersions(release).upstream_versions
+    #     deb_data = DebianVersions(release).debian_versions
+    #     os_deb_data = VersionsData(os_data, deb_data)
+    #     if separated:
+    #         release_data = dict()
+    #         release_data[release] = os_deb_data.get_all_versions_data()
+    #         if file is None:
+    #             renderer = Renderer(release_data, type, file)
+    #         else:
+    #             renderer = Renderer(release_data, type,
+    #                                 "{}_{}".format(release, file))
+    #         renderer.render()
+    #     else:
+    #         ver_data[release] = os_deb_data.get_all_versions_data()
+    # if not separated:
+    #     renderer = Renderer(ver_data, type, file)
+    #     renderer.render()
 
 
 if __name__ == '__main__':
