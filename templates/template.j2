@@ -91,9 +91,8 @@ function selectComparasion(release,selectId) {
       Generated: {{ time }}
     </td>
   </tr>
-  <tr></tr>
   <tr>
-    <td class="invisible" colspan="5">
+    <td class="invisible">
       {%- for release in data %}
       <input type="button" name="button-release" id="button-{{ release }}" value="{{ release }}" class="btn_release">
       {%- endfor %}
@@ -108,7 +107,7 @@ function selectComparasion(release,selectId) {
     <label for="comparasion">Comparasion: </label>
     <select name="select-comparasion" id="select-{{ release }}">
       {%- for comparasion in comparasions %}
-      <option value="{{ comparasion }}">{{- comparasion }}</option>
+      <option value="{{ comparasion }}" class="{{ comparasions[comparasion]['overall_status'] }}">{{- comparasion }}</option>
       {%- endfor %}
     </select>
     <input type="submit" id="submit-{{ release }}" value="Select">
