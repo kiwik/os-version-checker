@@ -297,6 +297,9 @@ def run(releases, type, file, separated, nexus_config, images_repository, tags,
         mappings[m.split(':')[0]] = m.split(':')[1]
     filters = [f.strip() for f in filters.split(',')]
 
+    with open('manifest.yaml', 'w') as f:
+        f.write(manifest)
+
 
     # if nexus_config or images_repository or dockerhub_url or mappings or tags:
     #     if nexus_config and images_repository and dockerhub_url and mappings \
@@ -372,6 +375,8 @@ def run(releases, type, file, separated, nexus_config, images_repository, tags,
     # with open('result.json', 'r') as fp:
     #     ver_data = json.load(fp)
 
+    with open('debug.txt','a') as f:
+        f.write("TU SOOOOOM")
 
     Renderer(ver_data, "html", "index.html").render()
 
