@@ -291,29 +291,36 @@ class VersionsComparator:
 def run(releases, type, file, separated, nexus_config, images_repository, tags,
         mappings, dockerhub_url, manifest, filters):
     releases = [r.strip() for r in releases.split(',')]
-    if nexus_config or images_repository or dockerhub_url or mappings or tags:
-        if nexus_config and images_repository and dockerhub_url and mappings \
-                and tags:
-            nexus_config = [r.strip() for r in nexus_config.split(',')]
-            tmp_mappings = [r.strip() for r in mappings.split(',')]
-            mappings = dict()
-            for m in tmp_mappings:
-                mappings[m.split(':')[0]] = m.split(':')[1]
-            tags = [r.strip() for r in tags.split(',')]
-            if len(nexus_config) != 3 or len(tags) < 1 or len(mappings) < 1:
-                raise Exception(f"Too few values given (--nexus config: 3, "
-                                f"--tags: 1, --mappings: 1, \n\tgiven: "
-                                f"{len(nexus_config)}, {len(tags)}, "
-                                f"{len(mappings)}")
-        else:
-            raise Exception(f"All arguments must be filled (--nexus-config, "
-                            f"--images-repository, --dockerhub-url --mappings,"
-                            f" --tags),\n\tgiven: "
-                            f"{nexus_config}, {images_repository}, "
-                            f"{dockerhub_url}, {mappings}, {tags}")
+    tmp_mappings = [m.strip() for m in mappings.split(',')]
+    mappings = dict()
+    for m in tmp_mappings:
+        mappings[m.split(':')[0]] = m.split(':')[1]
+    filters = [f.strip() for f in filters.split(',')]
 
-    if os.path.exists("tmp_manifest.yaml"):
-        os.remove("tmp_manifest.yaml")
+
+    # if nexus_config or images_repository or dockerhub_url or mappings or tags:
+    #     if nexus_config and images_repository and dockerhub_url and mappings \
+    #             and tags:
+    #         nexus_config = [r.strip() for r in nexus_config.split(',')]
+    #         tmp_mappings = [r.strip() for r in mappings.split(',')]
+    #         mappings = dict()
+    #         for m in tmp_mappings:
+    #             mappings[m.split(':')[0]] = m.split(':')[1]
+    #         tags = [r.strip() for r in tags.split(',')]
+    #         if len(nexus_config) != 3 or len(tags) < 1 or len(mappings) < 1:
+    #             raise Exception(f"Too few values given (--nexus config: 3, "
+    #                             f"--tags: 1, --mappings: 1, \n\tgiven: "
+    #                             f"{len(nexus_config)}, {len(tags)}, "
+    #                             f"{len(mappings)}")
+    #     else:
+    #         raise Exception(f"All arguments must be filled (--nexus-config, "
+    #                         f"--images-repository, --dockerhub-url --mappings,"
+    #                         f" --tags),\n\tgiven: "
+    #                         f"{nexus_config}, {images_repository}, "
+    #                         f"{dockerhub_url}, {mappings}, {tags}")
+    #
+    # if os.path.exists("tmp_manifest.yaml"):
+    #     os.remove("tmp_manifest.yaml")
     images_versions = dict()
     # for tag in tags:
     #     image_versions = DockerImageVersions(nexus_config, images_repository,
@@ -322,8 +329,10 @@ def run(releases, type, file, separated, nexus_config, images_repository, tags,
     #     _ = image_versions.kube_template
     #     images_versions[tag.replace('^', '').replace('$', '')] = image_versions
 
-    for tag in tags:
-        tag = tag.replace('^', '').replace('$', '')
+    for filter in filters:
+        dockerhub_url = filter.split(':')[0]
+        images_repository = filter.split(':')[1]
+        tag = filter.split(':')[2].replace('^', '').replace('$', '')
         images_versions[tag] = ImagesVersions(manifest, dockerhub_url, images_repository, tag)
         _ = images_versions[tag].images
 
