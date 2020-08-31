@@ -1,7 +1,10 @@
 import datetime
 import os
 import sys
+import time
 from collections import OrderedDict
+from dataclasses import dataclass
+
 from packaging import version
 import yaml
 import requests
@@ -10,7 +13,6 @@ import re
 import operator
 import click
 
-from DockerImageVersions import DockerImageVersions
 
 OS_VER_URI = "https://releases.openstack.org/{}"
 DEB_VER_URI = "http://buster-{}.debian.net/debian/dists/" \
@@ -110,6 +112,61 @@ class UpstreamVersions:
                         < version.parse(pkg_ver):
                     results.get(pkg_name2).update(version=pkg_ver)
         return results
+
+
+@dataclass
+class Image:
+    name: str
+    repository: str
+    tag: str
+
+
+class ImagesVersions:
+    def __init__(self, manifest, nexus_url, repository, tag):
+        if os.path.exists("manifest.yaml"):
+            with open('manifest.yaml', 'r') as f:
+                self._manifest = "".join(f.readlines())
+        else:
+            self._manifest = manifest
+        self._nexus_url = nexus_url
+        self._repository = repository
+        self._tag = tag
+        self._results_dir = 'images_versions'
+
+    @property
+    def images(self):
+        return re.findall(r'image: ' + self._nexus_url + '/' +
+                          self._repository + '/' + '(.*?)' + ':' +
+                          self._tag + '\n', self._manifest)
+
+    @property
+    def images_data(self):
+        files_counter = 0
+        attempts_counter = 0
+        images_count = len(self.images)
+        while files_counter != images_count:
+            if attempts_counter > 6:
+                print("Count of attempts is bigger than 6 (25 s), "
+                      "can not read all results")
+                sys.exit(1)
+            files_counter = 0
+            for file in os.listdir(self._results_dir + "/" + self._tag):
+                if file.endswith(".txt"):
+                    files_counter += 1
+            if files_counter != images_count:
+                time.sleep(5)
+                attempts_counter += 1
+
+        images_data = dict()
+        for file in os.listdir(self._results_dir + "/" + self._tag):
+            image_data = dict()
+            with open(os.path.join(self._results_dir + "/" + self._tag,
+                                   file)) as f:
+                for line in f:
+                    (package, version) = line.split()
+                    image_data[package] = dict(version=version)
+            images_data[file.replace('.txt', '')] = image_data
+        return images_data
 
 
 class VersionsComparator:
@@ -225,8 +282,14 @@ class VersionsComparator:
               help='Comma separated mappings for release and tag')
 @click.option('-d', '--dockerhub-url', type=click.STRING, help='Dockerhub url',
               metavar='<dockerhub-url>')
+@click.option('-y', '--manifest', type=click.STRING, help='Jenkins kubernetes template',
+              metavar='<manifest>')
+@click.option('-l', '--filters', type=click.STRING, help='Comma separated filters for images',
+              metavar='<release:repository:tag>')
+
+
 def run(releases, type, file, separated, nexus_config, images_repository, tags,
-        mappings, dockerhub_url):
+        mappings, dockerhub_url, manifest, filters):
     releases = [r.strip() for r in releases.split(',')]
     if nexus_config or images_repository or dockerhub_url or mappings or tags:
         if nexus_config and images_repository and dockerhub_url and mappings \
@@ -242,7 +305,6 @@ def run(releases, type, file, separated, nexus_config, images_repository, tags,
                                 f"--tags: 1, --mappings: 1, \n\tgiven: "
                                 f"{len(nexus_config)}, {len(tags)}, "
                                 f"{len(mappings)}")
-            print(nexus_config, images_repository, dockerhub_url, mappings)
         else:
             raise Exception(f"All arguments must be filled (--nexus-config, "
                             f"--images-repository, --dockerhub-url --mappings,"
@@ -253,24 +315,29 @@ def run(releases, type, file, separated, nexus_config, images_repository, tags,
     if os.path.exists("tmp_manifest.yaml"):
         os.remove("tmp_manifest.yaml")
     images_versions = dict()
+    # for tag in tags:
+    #     image_versions = DockerImageVersions(nexus_config, images_repository,
+    #                                          tag, dockerhub_url,
+    #                                          "images_versions")
+    #     _ = image_versions.kube_template
+    #     images_versions[tag.replace('^', '').replace('$', '')] = image_versions
+
     for tag in tags:
-        image_versions = DockerImageVersions(nexus_config, images_repository,
-                                             tag, dockerhub_url,
-                                             "images_versions")
-        _ = image_versions.kube_template
-        images_versions[tag.replace('^', '').replace('$', '')] = image_versions
+        tag = tag.replace('^', '').replace('$', '')
+        images_versions[tag] = ImagesVersions(manifest, dockerhub_url, images_repository, tag)
+        _ = images_versions[tag].images
 
-    if os.path.exists("manifest.yaml"):
-        os.remove("manifest.yaml")
-    if os.path.exists("tmp_manifest.yaml"):
-        os.rename('tmp_manifest.yaml',
-                  'manifest.yaml')
-
-    if os.path.exists("docker-compose.yaml"):
-        os.remove("docker-compose.yaml")
-    if os.path.exists("tmp_docker-compose.yaml"):
-        os.rename('tmp_docker-compose.yaml',
-                  'docker-compose.yaml')
+    # if os.path.exists("manifest.yaml"):
+    #     os.remove("manifest.yaml")
+    # if os.path.exists("tmp_manifest.yaml"):
+    #     os.rename('tmp_manifest.yaml',
+    #               'manifest.yaml')
+    #
+    # if os.path.exists("docker-compose.yaml"):
+    #     os.remove("docker-compose.yaml")
+    # if os.path.exists("tmp_docker-compose.yaml"):
+    #     os.rename('tmp_docker-compose.yaml',
+    #               'docker-compose.yaml')
 
     ver_data = dict()
     for release in releases:
