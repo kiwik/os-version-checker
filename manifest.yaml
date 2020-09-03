@@ -1,0 +1,141 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nested-pod
+spec:
+  volumes:
+  - name: os-version-checker-storage
+    emptyDir: {}
+  initContainers:
+  - name: os-version-checker-init
+    image: dockerhub.ultimum.io/ultimum-internal/os-version-checker:latest
+    volumeMounts:
+      - name: os-version-checker-storage
+        mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cp -a /opt/app/* /tmp"]
+  containers:
+  - name: os-version-checker
+    image: dockerhub.ultimum.io/ultimum-internal/os-version-checker:latest
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cat"]
+    tty: true
+  - name: debian-binary-base
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-base:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-base jajo-test-ussuri; cat"]
+    tty: true
+  - name: debian-binary-openvswitch-vswitchd
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-openvswitch-vswitchd:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-openvswitch-vswitchd jajo-test-ussuri; cat"]
+    tty: true
+  - name: debian-binary-openstack-base
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-openstack-base:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-openstack-base jajo-test-ussuri; cat"]
+    tty: true
+  - name: debian-binary-nova-libvirt
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-nova-libvirt:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-nova-libvirt jajo-test-ussuri; cat"]
+    tty: true
+  - name: debian-binary-aodh-base
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-aodh-base:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-aodh-base jajo-test-ussuri; cat"]
+    tty: true
+  - name: debian-binary-aodh-expirer
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-aodh-expirer:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-aodh-expirer jajo-test-ussuri; cat"]
+    tty: true
+  - name: debian-binary-aodh-notifier
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-aodh-notifier:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-aodh-notifier jajo-test-ussuri; cat"]
+    tty: true
+  - name: debian-binary-octavia-base
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-octavia-base:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-octavia-base jajo-test-ussuri; cat"]
+    tty: true
+  - name: debian-binary-aodh-api
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-aodh-api:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-aodh-api jajo-test-ussuri; cat"]
+    tty: true
+  - name: debian-binary-neutron-base
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-neutron-base:jajo-test-ussuri
+    volumeMounts:
+    - name: os-version-checker-storage
+      mountPath: /tmp
+    imagePullPolicy: Always
+    securityContext:
+      runAsUser: 0
+    command: ["/bin/sh"]
+    args: ["-c", "cd /tmp; ./get_image_versions.sh debian-binary-neutron-base jajo-test-ussuri; cat"]
+    tty: true
