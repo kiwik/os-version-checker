@@ -1,22 +1,22 @@
 import datetime
+import gzip
 import os
 import sys
 import time
-from collections import OrderedDict
-from dataclasses import dataclass
-
-from packaging import version
 import yaml
 import requests
 import jinja2
 import re
 import operator
 import click
-
+from collections import OrderedDict
+from os import path
+from packaging import version
+import htmlmin
 
 OS_VER_URI = "https://releases.openstack.org/{}"
-DEB_VER_URI = "http://buster-{}.debian.net/debian/dists/" \
-              "buster-{}-backports/main/source/Sources"
+DEB_OS_VER_URI = "http://buster-{}.debian.net/debian/dists/buster-{}-backports/main/source/Sources"
+DEB_ALL_VER_URI = "https://packages.debian.org/stable/allpackages?format=txt.gz"
 RELEASES = ["stein", "train", "ussuri"]
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
@@ -56,13 +56,15 @@ class Renderer:
             print(output)
         else:
             with open(self.file_name, 'w') as f:
-                f.write(output)
+                minified = htmlmin.minify(output, remove_empty_space=True)
+                f.write(minified)
 
 
 class DebianVersions:
     def __init__(self, release):
         self.url_deb_content = requests \
-            .get(DEB_VER_URI.format(release, release)).content.decode()
+            .get(DEB_OS_VER_URI.format(release, release)).content.decode()
+        self.url_deb_all_content = gzip.decompress(requests.get(DEB_ALL_VER_URI).content).decode()
 
     @property
     def debian_versions(self):
@@ -80,6 +82,12 @@ class DebianVersions:
             pkg_link = pkg_info.get('Vcs-Browser')
             pkg_info = dict(version=pkg_ver, href=pkg_link)
             results[pkg_name] = pkg_info
+        # for line in self.url_deb_all_content.splitlines():
+        #     if re.match('^.*\([^\(\)]*\)',line):
+        #         pkg_name = line.split(' ')[0]
+        #         pkg_ver = line.split(' ')[1].replace('(', '').replace(')', '')
+        #         pkg_info = dict(version=pkg_ver)
+        #         results[pkg_name] = pkg_info
         return results
 
 
@@ -99,8 +107,8 @@ class UpstreamVersions:
             pkg_name = tmp[3]
             pkg_full_name = tmp[4]
             pkg_name2 = pkg_full_name[0:pkg_full_name.rfind('-')]
-            pkg_ver = pkg_full_name[pkg_full_name.rfind('-') + 1
-                                    :pkg_full_name.rfind('.tar')]
+            pkg_ver = pkg_full_name[
+                      pkg_full_name.rfind('-') + 1:pkg_full_name.rfind('.tar')]
             # check if package with version are in results,
             # and check for higher version
             if pkg_name2 not in results:
@@ -114,20 +122,10 @@ class UpstreamVersions:
         return results
 
 
-@dataclass
-class Image:
-    name: str
-    repository: str
-    tag: str
-
-
 class ImagesVersions:
     def __init__(self, manifest, nexus_url, repository, tag):
-        if os.path.exists("manifest.yaml"):
-            with open('manifest.yaml', 'r') as f:
-                self._manifest = "".join(f.readlines())
-        else:
-            self._manifest = manifest
+        with open(manifest, 'r') as f:
+            self._manifest = "".join(f.readlines())
         self._nexus_url = nexus_url
         self._repository = repository
         self._tag = tag
@@ -138,7 +136,7 @@ class ImagesVersions:
         return re.findall(r'image: ' + self._nexus_url + '/' +
                           self._repository + '/' + '(.*?)' + ':' +
                           self._tag + '\n', self._manifest)
-
+    #get all images data with tag and with compared versions
     @property
     def images_data(self):
         files_counter = 0
@@ -160,12 +158,31 @@ class ImagesVersions:
         images_data = dict()
         for file in os.listdir(self._results_dir + "/" + self._tag):
             image_data = dict()
+            overall_status = STATUS_OK
             with open(os.path.join(self._results_dir + "/" + self._tag,
                                    file)) as f:
                 for line in f:
-                    (package, version) = line.split()
-                    image_data[package] = dict(version=version)
-            images_data[file.replace('.txt', '')] = image_data
+                    package, *versions = line.split()
+                    if len(versions) == 2:
+                        image_data[package] = dict(
+                            comparison_package_version=versions[0],
+                            base_package_version=versions[1],
+                            status=STATUS_OUTDATED[1],
+                            status_id=STATUS_OUTDATED[0])
+                        overall_status = STATUS_OUTDATED
+                    elif len(versions) == 1:
+                        if not image_data.get(package):
+                            image_data[package] = dict(
+                                comparison_package_version=versions[0],
+                                base_package_version=versions[0],
+                                status=STATUS_OK[1], status_id=STATUS_OK[0])
+                    else:
+                        print("Too few values to unpack.")
+                        sys.exit(1)
+            images_data[file.replace('.txt', '')] = dict(
+                overall_status=overall_status[1],
+                overall_status_id=overall_status[0], paired=len(image_data),
+                data=image_data)
         return images_data
 
 
@@ -175,7 +192,8 @@ class VersionsComparator:
         self._comp_data = to_comparison_data
         self._show_other_versions = show_other_versions
 
-    def get_pair(self, base_pkg_name, from_data):
+    @staticmethod
+    def get_pair(base_pkg_name, from_data):
         def sanitize_base_pkg_name(_base_pkg_name, str_to_replace):
             default_replace = _base_pkg_name.replace("_", "-")
             cases = {
@@ -244,10 +262,10 @@ class VersionsComparator:
                                      base_package_version=None,
                                      status=STATUS_NONE[1],
                                      status_id=STATUS_NONE[0])
-                result_data[comp_pkg_name] = pkg_infos
+                    result_data[comp_pkg_name] = pkg_infos
 
         # print("BASE_PACKAGES: {}    TO_COMPARISON_PACKAGES: {} PAIRED: {}"
-        #      .format(len(self.base_data), len(self.comp_data) + paired, paired))
+        #      .format(len(self.base_data), len(self.comp_data)+paired,paired))
         result_data = OrderedDict(sorted(result_data.items(),
                                          key=lambda x:
                                          operator.getitem(x[1], 'status_id')))
@@ -261,138 +279,61 @@ class VersionsComparator:
 @click.option('-r', '--releases', is_flag=False, default=','.join(RELEASES),
               show_default=True, metavar='<releases>', type=click.STRING,
               help='Releases to check.')
-@click.option('-t', '--type', default='html',
+@click.option('-t', '--file-type', default='html',
               show_default=True, help='Output file format.',
               type=click.Choice(['txt', 'html']))
-@click.option('-f', '--file', required=False,
+@click.option('-n', '--file-name', required=False,
               show_default=True, help='Output file name')
-@click.option('-s', '--separated', required=False, default=False, is_flag=True,
-              help='If chosen, then output is in separated files.')
-@click.option('-n', '--nexus-config', is_flag=False,
-              metavar='<nexus-url,nexus-user,nexus-pass>', type=click.STRING,
-              help='Configuration of nexus')
-@click.option('-i', '--images-repository', is_flag=False,
-              metavar='<repository>', type=click.STRING,
-              help='Images repository')
-@click.option('-t', '--tags', is_flag=False,
-              metavar='<tags>', type=click.STRING,
-              help='Comma separated images tags')
+@click.option('-f', '--filters', type=click.STRING,
+              help='Comma separated filters for images',
+              metavar='<release:repository:tag>')
 @click.option('-m', '--mappings', is_flag=False,
               metavar='<release:tag>', type=click.STRING,
               help='Comma separated mappings for release and tag')
-@click.option('-d', '--dockerhub-url', type=click.STRING, help='Dockerhub url',
-              metavar='<dockerhub-url>')
-@click.option('-y', '--manifest', type=click.STRING, help='Jenkins kubernetes template',
+@click.option('-y', '--manifest', type=click.STRING,
+              help='Jenkins kubernetes template',
               metavar='<manifest>')
-@click.option('-l', '--filters', type=click.STRING, help='Comma separated filters for images',
-              metavar='<release:repository:tag>')
+def run(releases, file_type, file_name, filters, mappings, manifest):
+    if filters or mappings or manifest:
+        if filters and mappings and manifest:
+            if not path.exists(manifest):
+                print("Path to manifest does not exist")
+                sys.exit(1)
+            releases = [r.strip() for r in releases.split(',')]
+            filters = [f.strip() for f in filters.split(',')]
+            tmp_mappings = [m.strip() for m in mappings.split(',')]
+            mappings = dict()
+            for m in tmp_mappings:
+                mappings[m.split(':')[0]] = m.split(':')[1]
+        else:
+            print("If one of values (filters, mappings, manifest-path) "
+                  "is specified, than all must be entered.")
+            sys.exit(1)
 
-
-def run(releases, type, file, separated, nexus_config, images_repository, tags,
-        mappings, dockerhub_url, manifest, filters):
-    releases = [r.strip() for r in releases.split(',')]
-    tmp_mappings = [m.strip() for m in mappings.split(',')]
-    mappings = dict()
-    for m in tmp_mappings:
-        mappings[m.split(':')[0]] = m.split(':')[1]
-    filters = [f.strip() for f in filters.split(',')]
-
-    # if nexus_config or images_repository or dockerhub_url or mappings or tags:
-    #     if nexus_config and images_repository and dockerhub_url and mappings \
-    #             and tags:
-    #         nexus_config = [r.strip() for r in nexus_config.split(',')]
-    #         tmp_mappings = [r.strip() for r in mappings.split(',')]
-    #         mappings = dict()
-    #         for m in tmp_mappings:
-    #             mappings[m.split(':')[0]] = m.split(':')[1]
-    #         tags = [r.strip() for r in tags.split(',')]
-    #         if len(nexus_config) != 3 or len(tags) < 1 or len(mappings) < 1:
-    #             raise Exception(f"Too few values given (--nexus config: 3, "
-    #                             f"--tags: 1, --mappings: 1, \n\tgiven: "
-    #                             f"{len(nexus_config)}, {len(tags)}, "
-    #                             f"{len(mappings)}")
-    #     else:
-    #         raise Exception(f"All arguments must be filled (--nexus-config, "
-    #                         f"--images-repository, --dockerhub-url --mappings,"
-    #                         f" --tags),\n\tgiven: "
-    #                         f"{nexus_config}, {images_repository}, "
-    #                         f"{dockerhub_url}, {mappings}, {tags}")
-    #
-    # if os.path.exists("tmp_manifest.yaml"):
-    #     os.remove("tmp_manifest.yaml")
     images_versions = dict()
-    # for tag in tags:
-    #     image_versions = DockerImageVersions(nexus_config, images_repository,
-    #                                          tag, dockerhub_url,
-    #                                          "images_versions")
-    #     _ = image_versions.kube_template
-    #     images_versions[tag.replace('^', '').replace('$', '')] = image_versions
-
-    for filter in filters:
-        dockerhub_url = filter.split(':')[0]
-        images_repository = filter.split(':')[1]
-        tag = filter.split(':')[2].replace('^', '').replace('$', '')
-        images_versions[tag] = ImagesVersions(manifest, dockerhub_url, images_repository, tag)
+    for f in filters:
+        dockerhub_url = f.split(':')[0]
+        images_repository = f.split(':')[1]
+        tag = f.split(':')[2].replace('^', '').replace('$', '')
+        images_versions[tag] = ImagesVersions(manifest, dockerhub_url,
+                                              images_repository, tag)
         _ = images_versions[tag].images
-
-    # if os.path.exists("manifest.yaml"):
-    #     os.remove("manifest.yaml")
-    # if os.path.exists("tmp_manifest.yaml"):
-    #     os.rename('tmp_manifest.yaml',
-    #               'manifest.yaml')
-    #
-    # if os.path.exists("docker-compose.yaml"):
-    #     os.remove("docker-compose.yaml")
-    # if os.path.exists("tmp_docker-compose.yaml"):
-    #     os.rename('tmp_docker-compose.yaml',
-    #               'docker-compose.yaml')
 
     ver_data = dict()
     for release in releases:
         release_data = dict()
         os_data = UpstreamVersions(release).upstream_versions
         deb_data = DebianVersions(release).debian_versions
-        os_deb_data = VersionsComparator(os_data, deb_data, False).compared_data
+        os_deb_data = VersionsComparator(os_data, deb_data,
+                                         False).compared_data
         release_data["upstream-debian"] = os_deb_data
         if mappings.get(release):
-            images_data = images_versions\
-                .get(mappings.get(release)).images_data
-            for image, image_data in images_data.items():
-                deb_image_data = VersionsComparator(deb_data, image_data, True)\
-                    .compared_data
+            images_data = images_versions.get(
+                mappings.get(release)).images_data
+            for image, deb_image_data in images_data.items():
                 release_data["debian-" + image] = deb_image_data
         ver_data[release] = release_data
-
-    # import json
-    # with open('result.json', 'w') as fp:
-    #     json.dump(ver_data, fp)
-    #
-    # import json
-    # with open('result.json', 'r') as fp:
-    #     ver_data = json.load(fp)
-
-    Renderer(ver_data, "html", "index.html").render()
-
-
-    # ver_data = dict()
-    # for release in releases:
-    #     os_data = UpstreamVersions(release).upstream_versions
-    #     deb_data = DebianVersions(release).debian_versions
-    #     os_deb_data = VersionsData(os_data, deb_data)
-    #     if separated:
-    #         release_data = dict()
-    #         release_data[release] = os_deb_data.get_all_versions_data()
-    #         if file is None:
-    #             renderer = Renderer(release_data, type, file)
-    #         else:
-    #             renderer = Renderer(release_data, type,
-    #                                 "{}_{}".format(release, file))
-    #         renderer.render()
-    #     else:
-    #         ver_data[release] = os_deb_data.get_all_versions_data()
-    # if not separated:
-    #     renderer = Renderer(ver_data, type, file)
-    #     renderer.render()
+    Renderer(ver_data, file_type, file_name).render()
 
 
 if __name__ == '__main__':
