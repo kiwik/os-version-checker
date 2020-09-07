@@ -19,7 +19,7 @@ services:
     command: ["sleep 1h"]
     depends_on:
       - os-version-checker-build
-  debian-binary-base:
+  debian-binary-base_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-base:jajo-test-ussuri
     user: root
     working_dir: /tmp
@@ -29,7 +29,7 @@ services:
       - "os-version-checker-storage:/tmp"
     depends_on:
       - os-version-checker
-  debian-binary-openvswitch-vswitchd:
+  debian-binary-openvswitch-vswitchd_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-openvswitch-vswitchd:jajo-test-ussuri
     user: root
     working_dir: /tmp
@@ -39,7 +39,7 @@ services:
       - "os-version-checker-storage:/tmp"
     depends_on:
       - os-version-checker
-  debian-binary-openstack-base:
+  debian-binary-openstack-base_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-openstack-base:jajo-test-ussuri
     user: root
     working_dir: /tmp
@@ -49,7 +49,7 @@ services:
       - "os-version-checker-storage:/tmp"
     depends_on:
       - os-version-checker
-  debian-binary-nova-libvirt:
+  debian-binary-nova-libvirt_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-nova-libvirt:jajo-test-ussuri
     user: root
     working_dir: /tmp
@@ -59,7 +59,7 @@ services:
       - "os-version-checker-storage:/tmp"
     depends_on:
       - os-version-checker
-  debian-binary-aodh-base:
+  debian-binary-aodh-base_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-aodh-base:jajo-test-ussuri
     user: root
     working_dir: /tmp
@@ -69,7 +69,7 @@ services:
       - "os-version-checker-storage:/tmp"
     depends_on:
       - os-version-checker
-  debian-binary-aodh-expirer:
+  debian-binary-aodh-expirer_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-aodh-expirer:jajo-test-ussuri
     user: root
     working_dir: /tmp
@@ -79,7 +79,7 @@ services:
       - "os-version-checker-storage:/tmp"
     depends_on:
       - os-version-checker
-  debian-binary-aodh-notifier:
+  debian-binary-aodh-notifier_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-aodh-notifier:jajo-test-ussuri
     user: root
     working_dir: /tmp
@@ -89,7 +89,7 @@ services:
       - "os-version-checker-storage:/tmp"
     depends_on:
       - os-version-checker
-  debian-binary-octavia-base:
+  debian-binary-octavia-base_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-octavia-base:jajo-test-ussuri
     user: root
     working_dir: /tmp
@@ -99,7 +99,7 @@ services:
       - "os-version-checker-storage:/tmp"
     depends_on:
       - os-version-checker
-  debian-binary-aodh-api:
+  debian-binary-aodh-api_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-aodh-api:jajo-test-ussuri
     user: root
     working_dir: /tmp
@@ -109,12 +109,52 @@ services:
       - "os-version-checker-storage:/tmp"
     depends_on:
       - os-version-checker
-  debian-binary-neutron-base:
+  debian-binary-neutron-base_jajo-test-ussuri:
     image: dockerhub.ultimum.io/kolla-dev/debian-binary-neutron-base:jajo-test-ussuri
     user: root
     working_dir: /tmp
     entrypoint: /bin/bash
     command: ["-c", "./get_image_versions.sh debian-binary-neutron-base jajo-test-ussuri"]
+    volumes:
+      - "os-version-checker-storage:/tmp"
+    depends_on:
+      - os-version-checker
+  debian-binary-freezer-api_kevko-stein:
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-freezer-api:kevko-stein
+    user: root
+    working_dir: /tmp
+    entrypoint: /bin/bash
+    command: ["-c", "./get_image_versions.sh debian-binary-freezer-api kevko-stein"]
+    volumes:
+      - "os-version-checker-storage:/tmp"
+    depends_on:
+      - os-version-checker
+  debian-source-base_kevko-stein:
+    image: dockerhub.ultimum.io/kolla-dev/debian-source-base:kevko-stein
+    user: root
+    working_dir: /tmp
+    entrypoint: /bin/bash
+    command: ["-c", "./get_image_versions.sh debian-source-base kevko-stein"]
+    volumes:
+      - "os-version-checker-storage:/tmp"
+    depends_on:
+      - os-version-checker
+  debian-binary-base_kevko-ussuri:
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-base:kevko-ussuri
+    user: root
+    working_dir: /tmp
+    entrypoint: /bin/bash
+    command: ["-c", "./get_image_versions.sh debian-binary-base kevko-ussuri"]
+    volumes:
+      - "os-version-checker-storage:/tmp"
+    depends_on:
+      - os-version-checker
+  debian-binary-redis-base_kevko-ussuri:
+    image: dockerhub.ultimum.io/kolla-dev/debian-binary-redis-base:kevko-ussuri
+    user: root
+    working_dir: /tmp
+    entrypoint: /bin/bash
+    command: ["-c", "./get_image_versions.sh debian-binary-redis-base kevko-ussuri"]
     volumes:
       - "os-version-checker-storage:/tmp"
     depends_on:
