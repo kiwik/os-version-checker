@@ -42,7 +42,7 @@ spec:
     command: ["/bin/sh"]
     args: ["-c", "cat"]
     tty: true""")
-  def container = """  - name: %s
+  def container = """  - name: %s-%s
     image: %s
     volumeMounts:
     - name: os-version-checker-storage
@@ -57,7 +57,7 @@ spec:
     image_name = image.split('/')[2].split(':')[0]
     image_tag = image.split('/')[2].split(':')[1]
     manifest.append("\n")
-    manifest.append(String.format(container, image_name, image, image_name, image_tag))
+    manifest.append(String.format(container, image_name, image_tag, image, image_name, image_tag))
   }
   return manifest.toString()
 }
