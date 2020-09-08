@@ -280,7 +280,7 @@ class VersionsComparator:
               show_default=True, metavar='<releases>', type=click.STRING,
               help='Releases to check.')
 @click.option('-t', '--file-type', default='html',
-              show_default=True, help='Output file format.',
+              show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))
 @click.option('-n', '--file-name', required=False,
               show_default=True, help='Output file name')
@@ -291,7 +291,7 @@ class VersionsComparator:
               metavar='<release:tag>', type=click.STRING,
               help='Comma separated mappings for release and tag')
 @click.option('-y', '--manifest', type=click.STRING,
-              help='Jenkins kubernetes template',
+              help='Jenkins kubernetes template file path',
               metavar='<manifest>')
 def run(releases, file_type, file_name, filters, mappings, manifest):
     if filters or mappings or manifest:
@@ -326,12 +326,12 @@ def run(releases, file_type, file_name, filters, mappings, manifest):
         deb_data = DebianVersions(release).debian_versions
         os_deb_data = VersionsComparator(os_data, deb_data,
                                          False).compared_data
-        release_data["upstream-debian"] = os_deb_data
+        release_data["git:"+release+" - apt:debian"] = os_deb_data
         if mappings.get(release):
             images_data = images_versions.get(
                 mappings.get(release)).images_data
             for image, deb_image_data in images_data.items():
-                release_data["debian-" + image] = deb_image_data
+                release_data["apt-debian:"+"image-" + image] = deb_image_data
         ver_data[release] = release_data
     Renderer(ver_data, file_type, file_name).render()
 
