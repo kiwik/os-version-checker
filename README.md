@@ -13,7 +13,7 @@ Using templates/datatables
     
     Options:
       -r, --releases <releases>  Separate status page per one release, which
-                                 chosen.  [default: stein,train,ussuri]
+                                 chosen.  [default: stein,train,ussuri,victoria]
     
       -t, --type [txt|html]      Output file format.  [default: html]
       -f, --file TEXT            Output file name

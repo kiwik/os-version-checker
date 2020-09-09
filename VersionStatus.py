@@ -11,7 +11,7 @@ import click
 OS_VER_URI = "https://releases.openstack.org/{}"
 DEB_VER_URI = "http://buster-{}.debian.net/debian/dists/" \
               "buster-{}-backports/main/source/Sources"
-RELEASES = ["stein", "train", "ussuri"]
+RELEASES = ["stein", "train", "ussuri", "victoria"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_OK = ["2", "OK"]
 STATUS_MISSING = ["3", "MISSING"]

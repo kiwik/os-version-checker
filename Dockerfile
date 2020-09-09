@@ -6,4 +6,4 @@ COPY ./ ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 ENTRYPOINT [ "python3", "./VersionStatus.py"]
-CMD [ "-t", "html", "-r", "rocky,stein,train,ussuri", "-f", "index.html" ]
+CMD [ "-t", "html", "-r", "rocky,stein,train,ussuri,victoria", "-f", "index.html" ]
