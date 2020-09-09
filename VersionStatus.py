@@ -1,5 +1,4 @@
 import datetime
-import gzip
 import os
 import sys
 import time
@@ -16,7 +15,6 @@ import htmlmin
 
 OS_VER_URI = "https://releases.openstack.org/{}"
 DEB_OS_VER_URI = "http://buster-{}.debian.net/debian/dists/buster-{}-backports/main/source/Sources"
-DEB_ALL_VER_URI = "https://packages.debian.org/stable/allpackages?format=txt.gz"
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_OK = ["2", "OK"]
@@ -56,17 +54,15 @@ class Renderer:
             print(output)
         else:
             with open(self.file_name, 'w') as f:
-                # minified = htmlmin.minify(output, remove_empty_space=True)
-                # f.write(minified)
-                f.write(output)
+                minified = htmlmin.minify(output, remove_empty_space=True)
+                f.write(minified)
+                f.write(minified)
 
 
 class DebianVersions:
     def __init__(self, release):
         self.url_deb_content = requests \
             .get(DEB_OS_VER_URI.format(release, release)).content.decode()
-        # self.url_deb_all_content = gzip.decompress(
-        #     requests.get(DEB_ALL_VER_URI).content).decode()
 
     @property
     def debian_versions(self):
@@ -84,12 +80,6 @@ class DebianVersions:
             pkg_link = pkg_info.get('Vcs-Browser')
             pkg_info = dict(version=pkg_ver, href=pkg_link)
             results[pkg_name] = pkg_info
-        # for line in self.url_deb_all_content.splitlines():
-        #     if re.match('^.*\([^\(\)]*\)',line):
-        #         pkg_name = line.split(' ')[0]
-        #         pkg_ver = line.split(' ')[1].replace('(', '').replace(')', '')
-        #         pkg_info = dict(version=pkg_ver)
-        #         results[pkg_name] = pkg_info
         return results
 
 

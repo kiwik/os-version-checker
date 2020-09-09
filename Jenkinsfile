@@ -46,7 +46,7 @@ def apply_manifest(manifest){
           container('os-version-checker'){
             date = get_current_time()
             withCredentials([usernameColonPassword(credentialsId: '59c660c7-216d-4eaf-9294-0b11abba096d', variable: 'NEXUS_USER')]) {
-              sh "cd /tmp; curl -X POST 'http://localhost:8080/nexus/service/rest/v1/components?repository=public-repo' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'raw.directory=/' -u ${NEXUS_USER} -F 'raw.asset1=@os_index.html;type=text/html' -F 'raw.asset1.filename=os-check-${MAPPINGS}-${date}.html'"
+              sh "cd /tmp; curl -X POST 'http://localhost:8080/nexus/service/rest/v1/components?repository=public-repo' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'raw.directory=/' -u ${NEXUS_USER} -F 'raw.asset1=@os_index.html;type=text/html' -F 'raw.asset1.filename=os-checker-${date}.html'"
             }
           }
         }
@@ -54,7 +54,7 @@ def apply_manifest(manifest){
           container('os-version-checker'){
             date = get_current_time()
             withCredentials([usernameColonPassword(credentialsId: '59c660c7-216d-4eaf-9294-0b11abba096d', variable: 'NEXUS_USER')]) {
-              sh "cd /tmp; curl -X POST 'http://localhost:8080/nexus/service/rest/v1/components?repository=public-repo' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'raw.directory=/' -u ${NEXUS_USER} -F 'raw.asset1=@img_index.html;type=text/html' -F 'raw.asset1.filename=img-check-${MAPPINGS}-${date}.html'"
+              sh "cd /tmp; curl -X POST 'http://localhost:8080/nexus/service/rest/v1/components?repository=public-repo' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'raw.directory=/' -u ${NEXUS_USER} -F 'raw.asset1=@img_index.html;type=text/html' -F 'raw.asset1.filename=img-checker-${date}.html'"
             }
           }
         }
