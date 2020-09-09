@@ -17,7 +17,6 @@ import htmlmin
 OS_VER_URI = "https://releases.openstack.org/{}"
 DEB_OS_VER_URI = "http://buster-{}.debian.net/debian/dists/buster-{}-backports/main/source/Sources"
 DEB_ALL_VER_URI = "https://packages.debian.org/stable/allpackages?format=txt.gz"
-RELEASES = ["stein", "train", "ussuri"]
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_OK = ["2", "OK"]
@@ -25,10 +24,11 @@ STATUS_MISSING = ["3", "MISSING"]
 
 
 class Renderer:
-    def __init__(self, data, file_format, file_name):
+    def __init__(self, data, template, file_format, file_name):
         self.data = data
         self.file_format = file_format
         self.file_name = file_name
+        self.template = template
 
     def render(self):
         output = ""
@@ -48,7 +48,7 @@ class Renderer:
         if "html" == self.file_format:
             output = jinja2.Environment(
                 loader=jinja2.FileSystemLoader('./templates/')) \
-                .get_template("template.j2") \
+                .get_template(self.template) \
                 .render(data=self.data, time=datetime.datetime.utcnow())
         # if file name is not set,
         # then file format is None and output print to stdout
@@ -56,15 +56,17 @@ class Renderer:
             print(output)
         else:
             with open(self.file_name, 'w') as f:
-                minified = htmlmin.minify(output, remove_empty_space=True)
-                f.write(minified)
+                # minified = htmlmin.minify(output, remove_empty_space=True)
+                # f.write(minified)
+                f.write(output)
 
 
 class DebianVersions:
     def __init__(self, release):
         self.url_deb_content = requests \
             .get(DEB_OS_VER_URI.format(release, release)).content.decode()
-        self.url_deb_all_content = gzip.decompress(requests.get(DEB_ALL_VER_URI).content).decode()
+        # self.url_deb_all_content = gzip.decompress(
+        #     requests.get(DEB_ALL_VER_URI).content).decode()
 
     @property
     def debian_versions(self):
@@ -136,7 +138,8 @@ class ImagesVersions:
         return re.findall(r'image: ' + self._nexus_url + '/' +
                           self._repository + '/' + '(.*?)' + ':' +
                           self._tag + '\n', self._manifest)
-    #get all images data with tag and with compared versions
+
+    # get all images data with tag and with compared versions
     @property
     def images_data(self):
         files_counter = 0
@@ -187,10 +190,9 @@ class ImagesVersions:
 
 
 class VersionsComparator:
-    def __init__(self, base_data, to_comparison_data, show_other_versions):
+    def __init__(self, base_data, to_comparison_data):
         self._base_data = base_data
         self._comp_data = to_comparison_data
-        self._show_other_versions = show_other_versions
 
     @staticmethod
     def get_pair(base_pkg_name, from_data):
@@ -253,17 +255,6 @@ class VersionsComparator:
                                  status_id=STATUS_MISSING[0])
             result_data[base_pkg_name] = pkg_infos
 
-        if self._show_other_versions:
-            for comp_pkg_name, comp_pkg_info in self._comp_data.items():
-                base_pkg_name = self.get_pair(comp_pkg_name, self._base_data)
-                comp_pkg_ver = comp_pkg_info.get('version')
-                if base_pkg_name is None:
-                    pkg_infos = dict(comparison_package_version=comp_pkg_ver,
-                                     base_package_version=None,
-                                     status=STATUS_NONE[1],
-                                     status_id=STATUS_NONE[0])
-                    result_data[comp_pkg_name] = pkg_infos
-
         # print("BASE_PACKAGES: {}    TO_COMPARISON_PACKAGES: {} PAIRED: {}"
         #      .format(len(self.base_data), len(self.comp_data)+paired,paired))
         result_data = OrderedDict(sorted(result_data.items(),
@@ -276,64 +267,67 @@ class VersionsComparator:
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option('-r', '--releases', is_flag=False, default=','.join(RELEASES),
-              show_default=True, metavar='<releases>', type=click.STRING,
-              help='Releases to check.')
+@click.option('-r', '--releases', is_flag=False, metavar='<releases>',
+              type=click.STRING, help='Comma separated releases to check')
 @click.option('-t', '--file-type', default='html',
               show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))
-@click.option('-n', '--file-name', required=False,
-              show_default=True, help='Output file name')
+@click.option('-n', '--file-name-os', required=False, show_default=True,
+              help='Output file name of openstack version checker')
+@click.option('-i', '--file-name-img', required=False, show_default=True,
+              help='Output file name of images version checker')
 @click.option('-f', '--filters', type=click.STRING,
               help='Comma separated filters for images',
               metavar='<release:repository:tag>')
-@click.option('-m', '--mappings', is_flag=False,
-              metavar='<release:tag>', type=click.STRING,
-              help='Comma separated mappings for release and tag')
 @click.option('-y', '--manifest', type=click.STRING,
               help='Jenkins kubernetes template file path',
               metavar='<manifest>')
-def run(releases, file_type, file_name, filters, mappings, manifest):
-    if filters or mappings or manifest:
-        if filters and mappings and manifest:
+def run(releases, file_type, file_name_os, file_name_img, filters, manifest):
+    if not file_name_os:
+        file_name_os = "os_index.html"
+    if not file_name_img:
+        file_name_img = "img_index.html"
+    if filters or manifest:
+        if filters and manifest:
             if not path.exists(manifest):
                 print("Path to manifest does not exist")
                 sys.exit(1)
-            releases = [r.strip() for r in releases.split(',')]
             filters = [f.strip() for f in filters.split(',')]
-            tmp_mappings = [m.strip() for m in mappings.split(',')]
-            mappings = dict()
-            for m in tmp_mappings:
-                mappings[m.split(':')[0]] = m.split(':')[1]
+
+            images_versions = dict()
+            ver_data = dict()
+            for f in filters:
+                dockerhub_url = f.split(':')[0]
+                images_repository = f.split(':')[1]
+                tag = f.split(':')[2].replace('^', '').replace('$', '')
+                images_versions[tag] = ImagesVersions(manifest, dockerhub_url,
+                                                      images_repository, tag)
+                _ = images_versions[tag].images
+                images_data = images_versions.get(tag).images_data
+                release_data = dict()
+                for image, deb_image_data in images_data.items():
+                    release_data[image] = deb_image_data
+                ver_data[tag] = release_data
+
+            Renderer(ver_data, "template_image_checker.j2", file_type,
+                     file_name_img).render()
         else:
             print("If one of values (filters, mappings, manifest-path) "
                   "is specified, than all must be entered.")
             sys.exit(1)
 
-    images_versions = dict()
-    for f in filters:
-        dockerhub_url = f.split(':')[0]
-        images_repository = f.split(':')[1]
-        tag = f.split(':')[2].replace('^', '').replace('$', '')
-        images_versions[tag] = ImagesVersions(manifest, dockerhub_url,
-                                              images_repository, tag)
-        _ = images_versions[tag].images
-
-    ver_data = dict()
-    for release in releases:
-        release_data = dict()
-        os_data = UpstreamVersions(release).upstream_versions
-        deb_data = DebianVersions(release).debian_versions
-        os_deb_data = VersionsComparator(os_data, deb_data,
-                                         False).compared_data
-        release_data["git:"+release+" - apt:debian"] = os_deb_data
-        if mappings.get(release):
-            images_data = images_versions.get(
-                mappings.get(release)).images_data
-            for image, deb_image_data in images_data.items():
-                release_data["apt-debian:"+"image-" + image] = deb_image_data
-        ver_data[release] = release_data
-    Renderer(ver_data, file_type, file_name).render()
+    if releases:
+        releases = [r.strip() for r in releases.split(',')]
+        ver_data = dict()
+        for release in releases:
+            release_data = dict()
+            os_data = UpstreamVersions(release).upstream_versions
+            deb_data = DebianVersions(release).debian_versions
+            os_deb_data = VersionsComparator(os_data, deb_data).compared_data
+            release_data["git:" + release + " - apt:debian"] = os_deb_data
+            ver_data[release] = release_data
+        Renderer(ver_data, "template_os_checker.j2", file_type,
+                 file_name_os).render()
 
 
 if __name__ == '__main__':
