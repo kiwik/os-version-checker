@@ -147,7 +147,7 @@ class ImagesVersions:
                 time.sleep(5)
                 attempts_counter += 1
 
-        images_data = OrderedDict()
+        images_data = dict()
         for file in os.listdir(self._results_dir + "/" + self._tag):
             image_data = dict()
             overall_status = STATUS_OK
@@ -175,7 +175,7 @@ class ImagesVersions:
                 overall_status=overall_status[1],
                 overall_status_id=overall_status[0], paired=len(image_data),
                 data=image_data)
-        return images_data
+        return OrderedDict(sorted(images_data.items()))
 
 
 class VersionsComparator:
@@ -244,8 +244,6 @@ class VersionsComparator:
                                  status_id=STATUS_MISSING[0])
             result_data[base_pkg_name] = pkg_infos
 
-        # print("BASE_PACKAGES: {}    TO_COMPARISON_PACKAGES: {} PAIRED: {}"
-        #      .format(len(self.base_data), len(self.comp_data)+paired,paired))
         result_data = OrderedDict(sorted(result_data.items(),
                                          key=lambda x:
                                          operator.getitem(x[1], 'status_id')))
@@ -283,17 +281,14 @@ def run(releases, file_type, file_name_os, file_name_img, filters, manifest):
                 sys.exit(1)
             filters = [f.strip() for f in filters.split(',')]
 
-            images_versions = dict()
             ver_data = dict()
             for f in filters:
                 dockerhub_url = f.split(':')[0]
                 images_repository = f.split(':')[1]
                 tag = f.split(':')[2].replace('^', '').replace('$', '')
-                images_versions[tag] = ImagesVersions(manifest, dockerhub_url,
-                                                      images_repository, tag)
-                _ = images_versions[tag].images
-                images_data = images_versions.get(tag).images_data
-                ver_data[tag] = images_data
+                ver_data[tag] = ImagesVersions(manifest, dockerhub_url,
+                                               images_repository,
+                                               tag).images_data
 
             Renderer(ver_data, "template_image_checker.j2", file_type,
                      file_name_img).render()
