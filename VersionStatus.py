@@ -56,7 +56,6 @@ class Renderer:
             with open(self.file_name, 'w') as f:
                 minified = htmlmin.minify(output, remove_empty_space=True)
                 f.write(minified)
-                f.write(minified)
 
 
 class DebianVersions:
@@ -148,7 +147,7 @@ class ImagesVersions:
                 time.sleep(5)
                 attempts_counter += 1
 
-        images_data = dict()
+        images_data = OrderedDict()
         for file in os.listdir(self._results_dir + "/" + self._tag):
             image_data = dict()
             overall_status = STATUS_OK
@@ -294,10 +293,7 @@ def run(releases, file_type, file_name_os, file_name_img, filters, manifest):
                                                       images_repository, tag)
                 _ = images_versions[tag].images
                 images_data = images_versions.get(tag).images_data
-                release_data = dict()
-                for image, deb_image_data in images_data.items():
-                    release_data[image] = deb_image_data
-                ver_data[tag] = release_data
+                ver_data[tag] = images_data
 
             Renderer(ver_data, "template_image_checker.j2", file_type,
                      file_name_img).render()
