@@ -10,4 +10,4 @@ RUN mkdir /opt/app/images_versions && \
     chmod 777 /opt/app/images_versions
 
 ENTRYPOINT [ "python3", "./VersionStatus.py"]
-CMD [ "-t", "html", "-r", "stein,train,ussuri", "-f", "index.html" ]
+CMD [ "-t", "html", "-r", "stein,train,ussuri", "-n", "index.html" ]
