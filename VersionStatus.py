@@ -77,6 +77,9 @@ class VersionsData:
             # Replace .0rc by ~, to match the Debian scheme
             pkg_ver = pkg_ver.replace(".0rc", "~rc")
 
+            # Replace .0b by ~, to match the Debian scheme
+            pkg_ver = pkg_ver.replace(".0b", "~b")
+
             # check if package with version are in results,
             # and check for higher version
             if pkg_name2 not in results:
