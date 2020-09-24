@@ -74,6 +74,9 @@ class VersionsData:
             pkg_name2 = pkg_full_name[0:pkg_full_name.rfind('-')]
             pkg_ver = pkg_full_name[pkg_full_name.rfind('-') + 1
                                     :pkg_full_name.rfind('.tar')]
+            # Replace .0rc by ~, to match the Debian scheme
+            pkg_ver = pkg_ver.replace(".0rc", "~rc")
+
             # check if package with version are in results,
             # and check for higher version
             if pkg_name2 not in results:
@@ -129,8 +132,10 @@ class VersionsData:
         def set_status(os_ver, deb_ver):
             if "+" in deb_ver:
                 deb_ver = deb_ver.split('+')[0]
-            if "~" in deb_ver:
-                deb_ver = deb_ver.split('~')[0]
+            # Since we're raplacing .0rc by ~ in upstream
+            # release number, we don't need this anymore:
+            #if "~" in deb_ver:
+            #    deb_ver = deb_ver.split('~')[0]
             if version.parse(os_ver) == version.parse(deb_ver):
                 return STATUS_OK
             else:
