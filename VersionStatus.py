@@ -32,8 +32,8 @@ class ReleasesConfig:
                 if release == 'wallaby':
                     self.releases_config[release] = dict(
                         os_ver_uri=OS_URI.format(release),
-                        deb_os_ver_uri=DEB_OS_URI.format('bulseye', release,
-                                                         'bulseye', release))
+                        deb_os_ver_uri=DEB_OS_URI.format('bullseye', release,
+                                                         'bullseye', release))
                 else:
                     self.releases_config[release] = dict(
                         os_ver_uri=OS_URI.format(release),
@@ -68,9 +68,10 @@ class Renderer:
                 output += "\n"
         if "html" == self.file_format:
             output = jinja2.Environment(
-                loader=jinja2.FileSystemLoader('./templates/')) \
-                .get_template(self.template) \
-                .render(data=self.data, time=datetime.datetime.utcnow())
+                loader=jinja2.FileSystemLoader('./templates/')).get_template(
+                self.template).render(data=self.data,
+                                      time=datetime.datetime.utcnow()
+                                      .strftime("%d.%m.%Y %H:%M:%S"))
         # if file name is not set,
         # then file format is None and output print to stdout
         if self.file_name is None:
