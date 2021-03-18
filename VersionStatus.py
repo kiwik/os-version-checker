@@ -1,4 +1,5 @@
 import datetime
+import io
 import os
 import sys
 import time
@@ -13,12 +14,34 @@ from os import path
 from packaging import version
 import htmlmin
 
-OS_VER_URI = "https://releases.openstack.org/{}"
-DEB_OS_VER_URI = "http://buster-{}.debian.net/debian/dists/buster-{}-backports/main/source/Sources"
+OS_URI = "https://releases.openstack.org/{}"
+DEB_OS_URI = \
+    "http://{}-{}.debian.net/debian/dists/{}-{}-backports/main/source/Sources"
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_OK = ["2", "OK"]
 STATUS_MISSING = ["3", "MISSING"]
+
+
+class ReleasesConfig:
+    def __init__(self, content):
+        if isinstance(content, str):
+            self.releases_config = dict()
+            self.releases = [r.strip() for r in content.split(',')]
+            for release in self.releases:
+                if release == 'wallaby':
+                    self.releases_config[release] = dict(
+                        os_ver_uri=OS_URI.format(release),
+                        deb_os_ver_uri=DEB_OS_URI.format('bulseye', release,
+                                                         'bulseye', release))
+                else:
+                    self.releases_config[release] = dict(
+                        os_ver_uri=OS_URI.format(release),
+                        deb_os_ver_uri=DEB_OS_URI.format('buster', release,
+                                                         'buster', release))
+        if isinstance(content, io.IOBase):
+            self.releases_config = yaml.load(content, Loader=yaml.FullLoader)
+            self.releases = list(self.releases_config.keys())
 
 
 class Renderer:
@@ -59,9 +82,11 @@ class Renderer:
 
 
 class DebianVersions:
-    def __init__(self, release):
-        self.url_deb_content = requests \
-            .get(DEB_OS_VER_URI.format(release, release)).content.decode()
+    def __init__(self, release, config):
+        self.url_deb_content = requests.get(config.releases_config
+                                            .get(release)
+                                            .get('deb_os_ver_uri')
+                                            ).content.decode()
 
     @property
     def debian_versions(self):
@@ -83,9 +108,9 @@ class DebianVersions:
 
 
 class UpstreamVersions:
-    def __init__(self, release):
-        self.url_os_content = requests \
-            .get(OS_VER_URI.format(release)).content.decode()
+    def __init__(self, release, config):
+        self.url_os_content = requests.get(config.releases_config.get(release)
+                                           .get('os_ver_uri')).content.decode()
 
     @property
     def upstream_versions(self):
@@ -189,7 +214,8 @@ class VersionsComparator:
             default_replace = _base_pkg_name.replace("_", "-")
             cases = {
                 "-": default_replace,
-                "python-": "python-{}".format(default_replace),
+                "+python-": "python-{}".format(default_replace),
+                "-python-": default_replace.replace("python-", ""),
                 "openstack-": default_replace.replace("openstack-", ""),
                 "puppet-": default_replace.replace("puppet-", "puppet-module-")
             }
@@ -202,7 +228,7 @@ class VersionsComparator:
             return False
 
         # try find modified to comparison package name in to comp. packages
-        replacements = ["-", "python-", "puppet-", "openstack-"]
+        replacements = ["-", "+python-", "-python-", "puppet-", "openstack-"]
         for replacement in replacements:
             if is_in_comp_data(base_pkg_name, replacement):
                 return sanitize_base_pkg_name(base_pkg_name, replacement)
@@ -255,7 +281,8 @@ class VersionsComparator:
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option('-r', '--releases', is_flag=False, metavar='<releases>',
-              type=click.STRING, help='Comma separated releases to check')
+              type=click.STRING, help='Comma separated releases to check',
+              required=False)
 @click.option('-t', '--file-type', default='html',
               show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))
@@ -269,7 +296,11 @@ class VersionsComparator:
 @click.option('-y', '--manifest', type=click.STRING,
               help='Jenkins kubernetes template file path',
               metavar='<manifest>')
-def run(releases, file_type, file_name_os, file_name_img, filters, manifest):
+@click.option('-c', '--config-file', type=click.STRING,
+              help='Config file for openstack releases',
+              metavar='<configfile_path>')
+def run(releases, file_type, file_name_os, file_name_img, filters, manifest,
+        config_file):
     if not file_name_os:
         file_name_os = "os_index.html"
     if not file_name_img:
@@ -297,13 +328,20 @@ def run(releases, file_type, file_name_os, file_name_img, filters, manifest):
                   "is specified, than all must be entered.")
             sys.exit(1)
 
+    releases_config = None
+    if config_file:
+        with open(config_file, 'r') as f:
+            releases_config = ReleasesConfig(f)
     if releases:
-        releases = [r.strip() for r in releases.split(',')]
+        releases_config = ReleasesConfig(releases)
+
+    if releases_config:
         ver_data = dict()
-        for release in releases:
+        for release in releases_config.releases:
             release_data = dict()
-            os_data = UpstreamVersions(release).upstream_versions
-            deb_data = DebianVersions(release).debian_versions
+            os_data = UpstreamVersions(release,
+                                       releases_config).upstream_versions
+            deb_data = DebianVersions(release, releases_config).debian_versions
             os_deb_data = VersionsComparator(os_data, deb_data).compared_data
             release_data["git:" + release + " - apt:debian"] = os_deb_data
             ver_data[release] = release_data

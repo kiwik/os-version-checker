@@ -1,0 +1,9 @@
+stein:
+  os_ver_uri: "https://releases.openstack.org/stein"
+  deb_os_ver_uri: "http://buster-stein.debian.net/debian/dists/buster-stein-backports/main/source/Sources"
+train:
+  os_ver_uri: "https://releases.openstack.org/train"
+  deb_os_ver_uri: "http://buster-train.debian.net/debian/dists/buster-train-backports/main/source/Sources"
+wallaby:
+  os_ver_uri: "https://releases.openstack.org/wallaby"
+  deb_os_ver_uri: "http://bullseye-wallaby.debian.net/debian/dists/bullseye-wallaby-backports/main/source/Sources"
