@@ -42,6 +42,9 @@ class ReleasesConfig:
         if isinstance(content, io.IOBase):
             self.releases_config = yaml.load(content, Loader=yaml.FullLoader)
             self.releases = list(self.releases_config.keys())
+            for release in self.releases:
+                if 'apt' not in self.releases_config[release]:
+                    self.releases_config[release]['apt'] = list()
 
 
 class Renderer:
@@ -78,8 +81,8 @@ class Renderer:
             print(output)
         else:
             with open(self.file_name, 'w') as f:
-                minified = htmlmin.minify(output, remove_empty_space=True)
-                f.write(minified)
+                # f.write(htmlmin.minify(output, remove_empty_space=True))
+                f.write(output)
 
 
 class DebianVersions:
@@ -132,7 +135,7 @@ class UpstreamVersions:
                 pkg_info = dict(version=pkg_ver, href=pkg_link)
                 results[pkg_name2] = pkg_info
             else:
-                # if current versions < new version, than update it
+                # if current versions < new version, then update it
                 if version.parse(results.get(pkg_name2).get('version')) \
                         < version.parse(pkg_ver):
                     results.get(pkg_name2).update(version=pkg_ver)
@@ -344,6 +347,8 @@ def run(releases, file_type, file_name_os, file_name_img, filters, manifest,
                                        releases_config).upstream_versions
             deb_data = DebianVersions(release, releases_config).debian_versions
             os_deb_data = VersionsComparator(os_data, deb_data).compared_data
+            os_deb_data['apt'] = releases_config.releases_config.get(
+                release).get('apt')
             release_data["git:" + release + " - apt:debian"] = os_deb_data
             ver_data[release] = release_data
         Renderer(ver_data, "template_os_checker.j2", file_type,

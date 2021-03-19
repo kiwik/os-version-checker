@@ -1,9 +1,18 @@
 stein:
   os_ver_uri: "https://releases.openstack.org/stein"
   deb_os_ver_uri: "http://buster-stein.debian.net/debian/dists/buster-stein-backports/main/source/Sources"
+  apt:
+    - "deb http://buster-stein.debian.net/debian buster-stein-backports main"
+    - "deb http://buster-stein.debian.net/debian buster-stein-backports-nochange main"
 train:
   os_ver_uri: "https://releases.openstack.org/train"
   deb_os_ver_uri: "http://buster-train.debian.net/debian/dists/buster-train-backports/main/source/Sources"
+victoria:
+  os_ver_uri: "https://releases.openstack.org/victoria"
+  deb_os_ver_uri: "http://buster-victoria.debian.net/debian/dists/buster-victoria-backports/main/source/Sources"
+  apt:
+    - "deb http://buster-victoria.debian.net/debian buster-victoria-backports main"
+    - "deb http://buster-victoria.debian.net/debian buster-victoria-backports-nochange main"
 wallaby:
   os_ver_uri: "https://releases.openstack.org/wallaby"
   deb_os_ver_uri: "http://bullseye-wallaby.debian.net/debian/dists/bullseye-wallaby-backports/main/source/Sources"

@@ -36,6 +36,15 @@
   font-weight: bold;
   background: #B2BABB;
 }
+.tab1 {
+  tab-size: 2;
+}
+.tab2 {
+  tab-size: 4;
+}
+.tab3 {
+  tab-size: 8;
+}
 </style>
 <script>
 $(document).ready( function () {
@@ -81,14 +90,28 @@ function displayTable(release,comparasion){
     </td>
   </tr>
 </table>
-<br>
-<b>Generated:   </b>{{ time }}
-<br><br>
+<pre class="tab1"><b>Generated:</b> {{ time }}</pre>
 {%- for release in data %}
   {%- set comparasions = data[release] %}
   {%- for comparasion in comparasions %}
     {%- set packages = comparasions[comparasion]['data'] %}
+    {%- set apts = comparasions[comparasion]['apt'] %}
 <div name="div-table" id="div-{{- release }}-{{- comparasion | replace(":", "-") | replace(" ", "") }}" style="display: none;">
+    {%- if apts|length == 1 %}
+  <pre class="tab1">
+<b>APT:</b> {{ apts[0] }}
+  </pre>
+    {%- endif %}
+    {%- if apts|length > 1 %}
+  <pre class="tab1">
+<b>APT:</b> {{ apts[0] }}
+      {%- for apt in apts %}
+        {%- if loop.index > 1 %}
+     {{ apts[loop.index - 1] }}
+        {%- endif %}
+      {%- endfor %}
+  </pre>
+    {%- endif %}
   <table id="table-{{- release }}-{{- comparasion | replace(":", "-") | replace(" ", "") }}" class="display" data-page-length='{{ packages|length }}'>
     <thead>
       <tr>
