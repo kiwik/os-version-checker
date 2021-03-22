@@ -1,4 +1,5 @@
 import datetime
+import gzip
 import io
 import os
 import sys
@@ -43,8 +44,14 @@ class ReleasesConfig:
             self.releases_config = yaml.load(content, Loader=yaml.FullLoader)
             self.releases = list(self.releases_config.keys())
             for release in self.releases:
-                if 'apt' not in self.releases_config[release]:
-                    self.releases_config[release]['apt'] = list()
+                if 'deb_os_ver_uri' not in self.releases_config[release]:
+                    self.releases_config[release]['deb_os_ver_uri'] = list()
+                    for apt in self.releases_config[release]['apt']:
+                        apt = apt.split(' ')
+                        self.releases_config[release][
+                            'deb_os_ver_uri'].append(
+                            "{}/dists/{}/{}/source/Sources.gz".format(
+                                apt[1], apt[2], apt[3]))
 
 
 class Renderer:
@@ -81,21 +88,27 @@ class Renderer:
             print(output)
         else:
             with open(self.file_name, 'w') as f:
-                # f.write(htmlmin.minify(output, remove_empty_space=True))
-                f.write(output)
+                f.write(htmlmin.minify(output, remove_empty_space=True))
 
 
 class DebianVersions:
     def __init__(self, release, config):
-        self.url_deb_content = requests.get(config.releases_config
-                                            .get(release)
-                                            .get('deb_os_ver_uri')
-                                            ).content.decode()
+        self.url_deb_content = ""
+        for deb_os_ver_uri in config.releases_config.get(
+                release).get('deb_os_ver_uri'):
+            self.url_deb_content += gzip.decompress(requests
+                                                    .get(deb_os_ver_uri,
+                                                         allow_redirects=True)
+                                                    .content).decode()
 
     @property
     def debian_versions(self):
         # get all yaml package info from debian HTML
-        pkg_info_yamls = [x.replace(": @", ": ")
+        pkg_info_yamls = [re.sub('Python.*-Version: .*', '',
+                                 x.replace(": @", ": ")
+                                 .replace('"', '')
+                                 .replace('Maintainer: Maintainer:',
+                                          'Maintainer: '))
                           for x in
                           self.url_deb_content.split('\n\n')
                           if x != '']
@@ -119,7 +132,7 @@ class UpstreamVersions:
     @property
     def upstream_versions(self):
         # get all links, which ends .tar.gz from HTML
-        links = re.findall("https://.*.tar.gz", self.url_os_content)
+        links = re.findall(r'https://.*\.tar\.gz', self.url_os_content)
         results = dict()
         for pkg_link in links:
             # get name and package informations from link
@@ -204,7 +217,7 @@ class ImagesVersions:
                 overall_status=overall_status[1],
                 overall_status_id=overall_status[0], paired=len(image_data),
                 data=image_data)
-        return OrderedDict(sorted(images_data.items()))
+        return OrderedDict(images_data)
 
 
 class VersionsComparator:

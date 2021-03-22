@@ -83,9 +83,18 @@ function displayTable(release,comparasion){
 <body>
 <table id="table-switcher" class="switcher">
   <tr>
+    <td class="invisible" width="85%">
+      {%- for release in data %}
+        {%- if ((release != "stable") and (release != "unstable")) %}
+      <input type="button" name="button-release" id="button-{{ release }}" value="{{ release }}" class="btn_release">
+        {%- endif %}
+      {%- endfor %}
+    </td>
     <td class="invisible">
       {%- for release in data %}
+        {%- if ((release == "stable") or (release == "unstable")) %}
       <input type="button" name="button-release" id="button-{{ release }}" value="{{ release }}" class="btn_release">
+        {%- endif %}
       {%- endfor %}
     </td>
   </tr>
