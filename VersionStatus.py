@@ -16,8 +16,9 @@ from packaging import version
 import htmlmin
 
 OS_URI = "https://releases.openstack.org/{}"
-DEB_OS_URI = \
-    "http://{}-{}.debian.net/debian/dists/{}-{}-backports/main/source/Sources"
+DEB_OS_URI = "{}/dists/{}/{}/source/Sources.gz"
+APT = ["deb http://{0}.debian.net/debian {0}-backports-nochange main",
+       "deb http://{0}.debian.net/debian {0}-backports main"]
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_OK = ["2", "OK"]
@@ -30,28 +31,24 @@ class ReleasesConfig:
             self.releases_config = dict()
             self.releases = [r.strip() for r in content.split(',')]
             for release in self.releases:
-                if release == 'wallaby':
-                    self.releases_config[release] = dict(
-                        os_ver_uri=OS_URI.format(release),
-                        deb_os_ver_uri=DEB_OS_URI.format('bullseye', release,
-                                                         'bullseye', release))
-                else:
-                    self.releases_config[release] = dict(
-                        os_ver_uri=OS_URI.format(release),
-                        deb_os_ver_uri=DEB_OS_URI.format('buster', release,
-                                                         'buster', release))
+                self.releases_config[release] = dict()
         if isinstance(content, io.IOBase):
             self.releases_config = yaml.load(content, Loader=yaml.FullLoader)
             self.releases = list(self.releases_config.keys())
-            for release in self.releases:
-                if 'deb_os_ver_uri' not in self.releases_config[release]:
-                    self.releases_config[release]['deb_os_ver_uri'] = list()
-                    for apt in self.releases_config[release]['apt']:
-                        apt = apt.split(' ')
-                        self.releases_config[release][
-                            'deb_os_ver_uri'].append(
-                            "{}/dists/{}/{}/source/Sources.gz".format(
-                                apt[1], apt[2], apt[3]))
+        for release in self.releases:
+            if 'apt' not in self.releases_config[release]:
+                self.releases_config[release] = dict()
+                self.releases_config[release]['apt'] = [APT[0].format(release),
+                                                        APT[1].format(release)]
+            if 'deb_os_ver_uri' not in self.releases_config[release]:
+                self.releases_config[release]['deb_os_ver_uri'] = list()
+                for apt in self.releases_config[release]['apt']:
+                    apt = apt.split(' ')
+                    self.releases_config[release]['deb_os_ver_uri'].append(
+                        DEB_OS_URI.format(apt[1], apt[2], apt[3]))
+            if 'os_ver_uri' not in self.releases_config[release]:
+                self.releases_config[release]['os_ver_uri'] = OS_URI.format(
+                    release.split('-')[1])
 
 
 class Renderer:
@@ -88,7 +85,8 @@ class Renderer:
             print(output)
         else:
             with open(self.file_name, 'w') as f:
-                f.write(htmlmin.minify(output, remove_empty_space=True))
+                f.write(output)
+                # f.write(htmlmin.minify(output, remove_empty_space=True))
 
 
 class DebianVersions:
@@ -104,7 +102,7 @@ class DebianVersions:
     @property
     def debian_versions(self):
         # get all yaml package info from debian HTML
-        pkg_info_yamls = [re.sub('Python.*-Version: .*', '',
+        pkg_info_yamls = [re.sub(r'Python.*-Version: .*', '',
                                  x.replace(": @", ": ")
                                  .replace('"', '')
                                  .replace('Maintainer: Maintainer:',
@@ -116,7 +114,7 @@ class DebianVersions:
         for pkg_info_yaml in pkg_info_yamls:
             pkg_info = yaml.safe_load(pkg_info_yaml)
             pkg_name = pkg_info.get('Package')
-            pkg_ver = re.search('([0-9]+:)?([^-]+)([-~+].+)?',
+            pkg_ver = re.search(r'([0-9]+:)?([^-]+)([-~+].+)?',
                                 str(pkg_info.get('Version'))).group(2)
             pkg_link = pkg_info.get('Vcs-Browser')
             pkg_info = dict(version=pkg_ver, href=pkg_link)
@@ -297,9 +295,10 @@ class VersionsComparator:
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option('-r', '--releases', is_flag=False, metavar='<releases>',
-              type=click.STRING, help='Comma separated releases to check',
-              required=False)
+@click.option('-r', '--releases', is_flag=False, metavar='<distro-release>',
+              type=click.STRING, required=False,
+              help='Comma separated releases '
+                   'with distribution of debian to check')
 @click.option('-t', '--file-type', default='html',
               show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))
