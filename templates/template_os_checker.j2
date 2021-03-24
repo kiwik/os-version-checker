@@ -36,13 +36,22 @@
   font-weight: bold;
   background: #B2BABB;
 }
+.tab1 {
+  tab-size: 2;
+}
+.tab2 {
+  tab-size: 4;
+}
+.tab3 {
+  tab-size: 8;
+}
 </style>
 <script>
 $(document).ready( function () {
 {%- for release in data %}
-  {%- set comparasions = data[release] %}
-  {%- for comparasion in comparasions %}
-  $('#table-{{- release }}-{{- comparasion | replace(":", "-") | replace(" ", "") }}').DataTable();
+  {%- set comparisons = data[release] %}
+  {%- for comparison in comparisons %}
+  $('#table-{{- release }}-{{- comparison | replace(":", "-") | replace(" ", "") }}').DataTable();
   {%- endfor %}
 {%- endfor %}
 } );
@@ -59,8 +68,8 @@ window.onload = function(){
 }
 </script>
 <script>
-function displayTable(release,comparasion){
-  var tableToDisplay = document.getElementById("div-".concat(release,"-",comparasion));
+function displayTable(release,comparison){
+  var tableToDisplay = document.getElementById("div-".concat(release,"-",comparison));
   var buttonToClicked = document.getElementById("button-".concat(release));
   var tables = document.getElementsByName("div-table");
   var buttons = document.getElementsByName("button-release");
@@ -74,22 +83,45 @@ function displayTable(release,comparasion){
 <body>
 <table id="table-switcher" class="switcher">
   <tr>
-    <td class="invisible">
+    <td class="invisible" width="85%">
       {%- for release in data %}
+        {%- if ((release != "stable") and (release != "unstable")) %}
       <input type="button" name="button-release" id="button-{{ release }}" value="{{ release }}" class="btn_release">
+        {%- endif %}
+      {%- endfor %}
+    </td>
+    <td class="invisible" width="15%">
+      {%- for release in data %}
+        {%- if ((release == "stable") or (release == "unstable")) %}
+      <input type="button" name="button-release" id="button-{{ release }}" value="{{ release }}" class="btn_release">
+        {%- endif %}
       {%- endfor %}
     </td>
   </tr>
 </table>
-<br>
-<b>Generated:   </b>{{ time }}
-<br><br>
+<pre class="tab1"><b>Generated:</b> {{ time }}</pre>
 {%- for release in data %}
-  {%- set comparasions = data[release] %}
-  {%- for comparasion in comparasions %}
-    {%- set packages = comparasions[comparasion]['data'] %}
-<div name="div-table" id="div-{{- release }}-{{- comparasion | replace(":", "-") | replace(" ", "") }}" style="display: none;">
-  <table id="table-{{- release }}-{{- comparasion | replace(":", "-") | replace(" ", "") }}" class="display" data-page-length='{{ packages|length }}'>
+  {%- set comparisons = data[release] %}
+  {%- for comparison in comparisons %}
+    {%- set packages = comparisons[comparison]['data'] %}
+    {%- set apts = comparisons[comparison]['apt'] %}
+<div name="div-table" id="div-{{- release }}-{{- comparison | replace(":", "-") | replace(" ", "") }}" style="display: none;">
+    {%- if apts|length == 1 %}
+  <pre class="tab1">
+<b>APT:</b> {{ apts[0] }}
+  </pre>
+    {%- endif %}
+    {%- if apts|length > 1 %}
+  <pre class="tab1">
+<b>APT:</b> {{ apts[0] }}
+      {%- for apt in apts %}
+        {%- if loop.index > 1 %}
+     {{ apts[loop.index - 1] }}
+        {%- endif %}
+      {%- endfor %}
+  </pre>
+    {%- endif %}
+  <table id="table-{{- release }}-{{- comparison | replace(":", "-") | replace(" ", "") }}" class="display" data-page-length='{{ packages|length }}'>
     <thead>
       <tr>
         <th>#</th>
@@ -101,7 +133,7 @@ function displayTable(release,comparasion){
     </thead>
     <tbody>
     {%- for package in packages %}
-    {%- set package_data = comparasions[comparasion]['data'][package] %}
+    {%- set package_data = comparisons[comparison]['data'][package] %}
     <tr>
       <td>{{ loop.index }}.</td>
       <td>{{ package }}</td>

@@ -1,4 +1,6 @@
 import datetime
+import gzip
+import io
 import os
 import sys
 import time
@@ -13,12 +15,40 @@ from os import path
 from packaging import version
 import htmlmin
 
-OS_VER_URI = "https://releases.openstack.org/{}"
-DEB_OS_VER_URI = "http://buster-{}.debian.net/debian/dists/buster-{}-backports/main/source/Sources"
+OS_URI = "https://releases.openstack.org/{}"
+DEB_OS_URI = "{}/dists/{}/{}/source/Sources.gz"
+APT = ["deb http://{0}.debian.net/debian {0}-backports-nochange main",
+       "deb http://{0}.debian.net/debian {0}-backports main"]
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_OK = ["2", "OK"]
 STATUS_MISSING = ["3", "MISSING"]
+
+
+class ReleasesConfig:
+    def __init__(self, content):
+        if isinstance(content, str):
+            self.releases_config = dict()
+            self.releases = [r.strip() for r in content.split(',')]
+            for release in self.releases:
+                self.releases_config[release] = dict()
+        if isinstance(content, io.IOBase):
+            self.releases_config = yaml.load(content, Loader=yaml.FullLoader)
+            self.releases = list(self.releases_config.keys())
+        for release in self.releases:
+            if 'apt' not in self.releases_config[release]:
+                self.releases_config[release] = dict()
+                self.releases_config[release]['apt'] = [APT[0].format(release),
+                                                        APT[1].format(release)]
+            if 'deb_os_ver_uri' not in self.releases_config[release]:
+                self.releases_config[release]['deb_os_ver_uri'] = list()
+                for apt in self.releases_config[release]['apt']:
+                    apt = apt.split(' ')
+                    self.releases_config[release]['deb_os_ver_uri'].append(
+                        DEB_OS_URI.format(apt[1], apt[2], apt[3]))
+            if 'os_ver_uri' not in self.releases_config[release]:
+                self.releases_config[release]['os_ver_uri'] = OS_URI.format(
+                    release.split('-')[1])
 
 
 class Renderer:
@@ -45,28 +75,38 @@ class Renderer:
                 output += "\n"
         if "html" == self.file_format:
             output = jinja2.Environment(
-                loader=jinja2.FileSystemLoader('./templates/')) \
-                .get_template(self.template) \
-                .render(data=self.data, time=datetime.datetime.utcnow())
+                loader=jinja2.FileSystemLoader('./templates/')).get_template(
+                self.template).render(data=self.data,
+                                      time=datetime.datetime.utcnow()
+                                      .strftime("%d.%m.%Y %H:%M:%S"))
         # if file name is not set,
         # then file format is None and output print to stdout
         if self.file_name is None:
             print(output)
         else:
             with open(self.file_name, 'w') as f:
-                minified = htmlmin.minify(output, remove_empty_space=True)
-                f.write(minified)
+                f.write(output)
+                # f.write(htmlmin.minify(output, remove_empty_space=True))
 
 
 class DebianVersions:
-    def __init__(self, release):
-        self.url_deb_content = requests \
-            .get(DEB_OS_VER_URI.format(release, release)).content.decode()
+    def __init__(self, release, config):
+        self.url_deb_content = ""
+        for deb_os_ver_uri in config.releases_config.get(
+                release).get('deb_os_ver_uri'):
+            self.url_deb_content += gzip.decompress(requests
+                                                    .get(deb_os_ver_uri,
+                                                         allow_redirects=True)
+                                                    .content).decode()
 
     @property
     def debian_versions(self):
         # get all yaml package info from debian HTML
-        pkg_info_yamls = [x.replace(": @", ": ")
+        pkg_info_yamls = [re.sub(r'Python.*-Version: .*', '',
+                                 x.replace(": @", ": ")
+                                 .replace('"', '')
+                                 .replace('Maintainer: Maintainer:',
+                                          'Maintainer: '))
                           for x in
                           self.url_deb_content.split('\n\n')
                           if x != '']
@@ -74,7 +114,7 @@ class DebianVersions:
         for pkg_info_yaml in pkg_info_yamls:
             pkg_info = yaml.safe_load(pkg_info_yaml)
             pkg_name = pkg_info.get('Package')
-            pkg_ver = re.search('([0-9]+:)?([^-]+)([-~+].+)?',
+            pkg_ver = re.search(r'([0-9]+:)?([^-]+)([-~+].+)?',
                                 str(pkg_info.get('Version'))).group(2)
             pkg_link = pkg_info.get('Vcs-Browser')
             pkg_info = dict(version=pkg_ver, href=pkg_link)
@@ -83,14 +123,14 @@ class DebianVersions:
 
 
 class UpstreamVersions:
-    def __init__(self, release):
-        self.url_os_content = requests \
-            .get(OS_VER_URI.format(release)).content.decode()
+    def __init__(self, release, config):
+        self.url_os_content = requests.get(config.releases_config.get(release)
+                                           .get('os_ver_uri')).content.decode()
 
     @property
     def upstream_versions(self):
         # get all links, which ends .tar.gz from HTML
-        links = re.findall("https://.*.tar.gz", self.url_os_content)
+        links = re.findall(r'https://.*\.tar\.gz', self.url_os_content)
         results = dict()
         for pkg_link in links:
             # get name and package informations from link
@@ -106,7 +146,7 @@ class UpstreamVersions:
                 pkg_info = dict(version=pkg_ver, href=pkg_link)
                 results[pkg_name2] = pkg_info
             else:
-                # if current versions < new version, than update it
+                # if current versions < new version, then update it
                 if version.parse(results.get(pkg_name2).get('version')) \
                         < version.parse(pkg_ver):
                     results.get(pkg_name2).update(version=pkg_ver)
@@ -175,7 +215,7 @@ class ImagesVersions:
                 overall_status=overall_status[1],
                 overall_status_id=overall_status[0], paired=len(image_data),
                 data=image_data)
-        return OrderedDict(sorted(images_data.items()))
+        return OrderedDict(images_data)
 
 
 class VersionsComparator:
@@ -189,7 +229,8 @@ class VersionsComparator:
             default_replace = _base_pkg_name.replace("_", "-")
             cases = {
                 "-": default_replace,
-                "python-": "python-{}".format(default_replace),
+                "+python-": "python-{}".format(default_replace),
+                "-python-": default_replace.replace("python-", ""),
                 "openstack-": default_replace.replace("openstack-", ""),
                 "puppet-": default_replace.replace("puppet-", "puppet-module-")
             }
@@ -202,7 +243,7 @@ class VersionsComparator:
             return False
 
         # try find modified to comparison package name in to comp. packages
-        replacements = ["-", "python-", "puppet-", "openstack-"]
+        replacements = ["-", "+python-", "-python-", "puppet-", "openstack-"]
         for replacement in replacements:
             if is_in_comp_data(base_pkg_name, replacement):
                 return sanitize_base_pkg_name(base_pkg_name, replacement)
@@ -213,7 +254,11 @@ class VersionsComparator:
             if "+" in comp_ver:
                 comp_ver = comp_ver.split('+')[0]
             if "~" in comp_ver:
-                comp_ver = comp_ver.split('~')[0]
+                if "rc" in comp_ver:
+                    comp_ver_arr = comp_ver.split('~')
+                    comp_ver = "{}.0{}".format(comp_ver_arr[0],comp_ver_arr[1])
+                else:
+                    comp_ver = comp_ver.split('~')[0]
             if version.parse(base_ver) == version.parse(comp_ver):
                 return STATUS_OK
             else:
@@ -254,8 +299,10 @@ class VersionsComparator:
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option('-r', '--releases', is_flag=False, metavar='<releases>',
-              type=click.STRING, help='Comma separated releases to check')
+@click.option('-r', '--releases', is_flag=False, metavar='<distro-release>',
+              type=click.STRING, required=False,
+              help='Comma separated releases '
+                   'with distribution of debian to check')
 @click.option('-t', '--file-type', default='html',
               show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))
@@ -269,7 +316,11 @@ class VersionsComparator:
 @click.option('-y', '--manifest', type=click.STRING,
               help='Jenkins kubernetes template file path',
               metavar='<manifest>')
-def run(releases, file_type, file_name_os, file_name_img, filters, manifest):
+@click.option('-c', '--config-file', type=click.STRING,
+              help='Config file for openstack releases',
+              metavar='<configfile_path>')
+def run(releases, file_type, file_name_os, file_name_img, filters, manifest,
+        config_file):
     if not file_name_os:
         file_name_os = "os_index.html"
     if not file_name_img:
@@ -297,14 +348,23 @@ def run(releases, file_type, file_name_os, file_name_img, filters, manifest):
                   "is specified, than all must be entered.")
             sys.exit(1)
 
+    releases_config = None
+    if config_file:
+        with open(config_file, 'r') as f:
+            releases_config = ReleasesConfig(f)
     if releases:
-        releases = [r.strip() for r in releases.split(',')]
+        releases_config = ReleasesConfig(releases)
+
+    if releases_config:
         ver_data = dict()
-        for release in releases:
+        for release in releases_config.releases:
             release_data = dict()
-            os_data = UpstreamVersions(release).upstream_versions
-            deb_data = DebianVersions(release).debian_versions
+            os_data = UpstreamVersions(release,
+                                       releases_config).upstream_versions
+            deb_data = DebianVersions(release, releases_config).debian_versions
             os_deb_data = VersionsComparator(os_data, deb_data).compared_data
+            os_deb_data['apt'] = releases_config.releases_config.get(
+                release).get('apt')
             release_data["git:" + release + " - apt:debian"] = os_deb_data
             ver_data[release] = release_data
         Renderer(ver_data, "template_os_checker.j2", file_type,

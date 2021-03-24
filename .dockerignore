@@ -2,9 +2,6 @@
 !requirements.txt
 !VersionStatus.py
 !/templates
-!/clients
-!/threads
-!/utils
 !DockerImageVersions.py
 !get_image_versions.sh
 !nexusconfig.py
