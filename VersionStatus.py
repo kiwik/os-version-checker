@@ -254,7 +254,7 @@ class VersionsComparator:
             if "+" in comp_ver:
                 comp_ver = comp_ver.split('+')[0]
             if "~" in comp_ver:
-                if "rc" in comp_ver:
+                if "~rc" or "~b" in comp_ver:
                     comp_ver_arr = comp_ver.split('~')
                     comp_ver = "{}.0{}".format(comp_ver_arr[0],comp_ver_arr[1])
                 else:
