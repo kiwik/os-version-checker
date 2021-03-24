@@ -57,6 +57,8 @@ class Renderer:
         self.file_format = file_format
         self.file_name = file_name
         self.template = template
+        self.path = os.path.abspath(os.path.dirname(sys.argv[0]))
+        self.template_path = "{}/templates/".format(self.path)
 
     def render(self):
         output = ""
@@ -75,7 +77,7 @@ class Renderer:
                 output += "\n"
         if "html" == self.file_format:
             output = jinja2.Environment(
-                loader=jinja2.FileSystemLoader('./templates/')).get_template(
+                loader=jinja2.FileSystemLoader(self.template_path)).get_template(
                 self.template).render(data=self.data,
                                       time=datetime.datetime.utcnow()
                                       .strftime("%d.%m.%Y %H:%M:%S"))
