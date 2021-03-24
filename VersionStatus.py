@@ -254,7 +254,11 @@ class VersionsComparator:
             if "+" in comp_ver:
                 comp_ver = comp_ver.split('+')[0]
             if "~" in comp_ver:
-                comp_ver = comp_ver.split('~')[0]
+                if "rc" in comp_ver:
+                    comp_ver_arr = comp_ver.split('~')
+                    comp_ver = "{}.0{}".format(comp_ver_arr[0],comp_ver_arr[1])
+                else:
+                    comp_ver = comp_ver.split('~')[0]
             if version.parse(base_ver) == version.parse(comp_ver):
                 return STATUS_OK
             else:
