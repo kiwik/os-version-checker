@@ -130,7 +130,6 @@ class DebianVersions:
         results = dict()
         for pkg_info_yaml in pkg_info_yamls:
             pkg_info = yaml.safe_load(pkg_info_yaml)
-            print(pkg_info)
             pkg_name = pkg_info.get('Package')
             pkg_ver = re.search(r'([0-9]+:)?([^-]+)([-~+].+)?',
                                 str(pkg_info.get('Version'))).group(2)
