@@ -48,3 +48,8 @@ unstable:
   os_ver_uri: "https://releases.openstack.org/victoria"
   apt:
     - "deb http://mirror.infomaniak.com/debian unstable main"
+experimental:
+  os_ver_uri: "https://releases.openstack.org/wallaby"
+  apt:
+    - "deb http://mirror.infomaniak.com/debian unstable main"
+    - "deb http://mirror.infomaniak.com/debian experimental main"
