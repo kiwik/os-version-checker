@@ -14,6 +14,7 @@ from collections import OrderedDict
 from os import path
 from packaging import version
 import htmlmin
+import tempfile
 
 OS_URI = "https://releases.openstack.org/{}"
 DEB_OS_URI = "{}/dists/{}/{}/source/Sources.gz"
@@ -86,6 +87,8 @@ class Renderer:
         if self.file_name is None:
             print(output)
         else:
+            if os.path.exists(self.file_name):
+                os.remove(self.file_name)
             with open(self.file_name, 'w') as f:
                 f.write(output)
                 # f.write(htmlmin.minify(output, remove_empty_space=True))
@@ -94,12 +97,24 @@ class Renderer:
 class DebianVersions:
     def __init__(self, release, config):
         self.url_deb_content = ""
+        downloaded = tempfile.NamedTemporaryFile()
+        sanitizied = tempfile.NamedTemporaryFile()
         for deb_os_ver_uri in config.releases_config.get(
                 release).get('deb_os_ver_uri'):
-            self.url_deb_content += gzip.decompress(requests
-                                                    .get(deb_os_ver_uri,
-                                                         allow_redirects=True)
-                                                    .content).decode()
+            with open(downloaded.name, "w") as f:
+                f.write(gzip.decompress(requests.get(
+                    deb_os_ver_uri, allow_redirects=True).content).decode())
+            with open(downloaded.name, "r") as d:
+                with open(sanitizied.name, "w") as s:
+                    for line in d:
+                        if re.search("^Package:|^Version", line):
+                            if re.search("^Package:", line):
+                                s.write("\n")
+                                s.write(line)
+                            if re.search("^Version:", line):
+                                s.write(line)
+            with open(sanitizied.name, "r") as f:
+                self.url_deb_content += f.read()
 
     @property
     def debian_versions(self):
@@ -115,6 +130,7 @@ class DebianVersions:
         results = dict()
         for pkg_info_yaml in pkg_info_yamls:
             pkg_info = yaml.safe_load(pkg_info_yaml)
+            print(pkg_info)
             pkg_name = pkg_info.get('Package')
             pkg_ver = re.search(r'([0-9]+:)?([^-]+)([-~+].+)?',
                                 str(pkg_info.get('Version'))).group(2)
@@ -137,21 +153,20 @@ class UpstreamVersions:
         for pkg_link in links:
             # get name and package informations from link
             tmp = pkg_link.split("/")
-            pkg_name = tmp[3]
             pkg_full_name = tmp[4]
-            pkg_name2 = pkg_full_name[0:pkg_full_name.rfind('-')]
+            pkg_name = pkg_full_name[0:pkg_full_name.rfind('-')]
             pkg_ver = pkg_full_name[
                       pkg_full_name.rfind('-') + 1:pkg_full_name.rfind('.tar')]
             # check if package with version are in results,
             # and check for higher version
-            if pkg_name2 not in results:
+            if pkg_name not in results:
                 pkg_info = dict(version=pkg_ver, href=pkg_link)
-                results[pkg_name2] = pkg_info
+                results[pkg_name] = pkg_info
             else:
                 # if current versions < new version, then update it
-                if version.parse(results.get(pkg_name2).get('version')) \
+                if version.parse(results.get(pkg_name).get('version')) \
                         < version.parse(pkg_ver):
-                    results.get(pkg_name2).update(version=pkg_ver)
+                    results.get(pkg_name).update(version=pkg_ver)
         return results
 
 
@@ -258,7 +273,7 @@ class VersionsComparator:
             if "~" in comp_ver:
                 if "~rc" or "~b" in comp_ver:
                     comp_ver_arr = comp_ver.split('~')
-                    comp_ver = "{}.0{}".format(comp_ver_arr[0],comp_ver_arr[1])
+                    comp_ver = "{}.0{}".format(comp_ver_arr[0], comp_ver_arr[1])
                 else:
                     comp_ver = comp_ver.split('~')[0]
             if version.parse(base_ver) == version.parse(comp_ver):
