@@ -15,6 +15,7 @@ from os import path
 from packaging import version
 import htmlmin
 import tempfile
+import lzma
 
 OS_URI = "https://releases.openstack.org/{}"
 DEB_OS_URI = "{}/dists/{}/{}/source/Sources.gz"
@@ -102,8 +103,13 @@ class DebianVersions:
         for deb_os_ver_uri in config.releases_config.get(
                 release).get('deb_os_ver_uri'):
             with open(downloaded.name, "w") as f:
-                f.write(gzip.decompress(requests.get(
-                    deb_os_ver_uri, allow_redirects=True).content).decode())
+                req = requests.get(deb_os_ver_uri, allow_redirects=True)
+                if req.status_code == 200:
+                    f.write(gzip.decompress(req.content).decode())
+                if req.status_code == 404:
+                    deb_os_ver_uri = deb_os_ver_uri.replace("Sources.gz", "Sources.xz")
+                    req = requests.get(deb_os_ver_uri, allow_redirects=True)
+                    f.write(lzma.decompress(req.content).decode())
             with open(downloaded.name, "r") as d:
                 with open(sanitizied.name, "w") as s:
                     for line in d:
