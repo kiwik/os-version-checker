@@ -6,7 +6,6 @@ venv
 virtualenv
 *.html
 *.txt
-images_versions
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -2,8 +2,3 @@
 !requirements.txt
 !VersionStatus.py
 !/templates
-!DockerImageVersions.py
-!get_image_versions.sh
-!nexusconfig.py
-
-

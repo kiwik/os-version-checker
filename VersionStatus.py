@@ -1,21 +1,18 @@
 import datetime
 import gzip
-import io
-import os
-import sys
-import time
-import yaml
-import requests
-import jinja2
-import re
-import operator
-import click
-from collections import OrderedDict
-from os import path
-from packaging import version
-import htmlmin
-import tempfile
 import lzma
+import operator
+import os
+import re
+import sys
+import tempfile
+from collections import OrderedDict
+
+import click
+import jinja2
+import requests
+import yaml
+from packaging import version
 
 OS_URI = "https://releases.openstack.org/{}"
 DEB_OS_URI = "{}/dists/{}/{}/source/Sources.gz"
@@ -34,9 +31,6 @@ class ReleasesConfig:
             self.releases = [r.strip() for r in content.split(',')]
             for release in self.releases:
                 self.releases_config[release] = dict()
-        if isinstance(content, io.IOBase):
-            self.releases_config = yaml.load(content, Loader=yaml.FullLoader)
-            self.releases = list(self.releases_config.keys())
         for release in self.releases:
             if 'apt' not in self.releases_config[release]:
                 self.releases_config[release] = dict()
@@ -175,71 +169,6 @@ class UpstreamVersions:
         return results
 
 
-class ImagesVersions:
-    def __init__(self, manifest, nexus_url, repository, tag):
-        with open(manifest, 'r') as f:
-            self._manifest = "".join(f.readlines())
-        self._nexus_url = nexus_url
-        self._repository = repository
-        self._tag = tag
-        self._results_dir = 'images_versions'
-
-    @property
-    def images(self):
-        return re.findall(r'image: ' + self._nexus_url + '/' +
-                          self._repository + '/' + '(.*?)' + ':' +
-                          self._tag + '\n', self._manifest)
-
-    # get all images data with tag and with compared versions
-    @property
-    def images_data(self):
-        files_counter = 0
-        attempts_counter = 0
-        images_count = len(self.images)
-        while files_counter != images_count:
-            if attempts_counter > 6:
-                print("Count of attempts is bigger than 6 (25 s), "
-                      "can not read all results")
-                sys.exit(1)
-            files_counter = 0
-            for file in os.listdir(self._results_dir + "/" + self._tag):
-                if file.endswith(".txt"):
-                    files_counter += 1
-            if files_counter != images_count:
-                time.sleep(5)
-                attempts_counter += 1
-
-        images_data = dict()
-        for file in os.listdir(self._results_dir + "/" + self._tag):
-            image_data = dict()
-            overall_status = STATUS_OK
-            with open(os.path.join(self._results_dir + "/" + self._tag,
-                                   file)) as f:
-                for line in f:
-                    package, *versions = line.split()
-                    if len(versions) == 2:
-                        image_data[package] = dict(
-                            comparison_package_version=versions[0],
-                            base_package_version=versions[1],
-                            status=STATUS_OUTDATED[1],
-                            status_id=STATUS_OUTDATED[0])
-                        overall_status = STATUS_OUTDATED
-                    elif len(versions) == 1:
-                        if not image_data.get(package):
-                            image_data[package] = dict(
-                                comparison_package_version=versions[0],
-                                base_package_version=versions[0],
-                                status=STATUS_OK[1], status_id=STATUS_OK[0])
-                    else:
-                        print("Too few values to unpack.")
-                        sys.exit(1)
-            images_data[file.replace('.txt', '')] = dict(
-                overall_status=overall_status[1],
-                overall_status_id=overall_status[0], paired=len(image_data),
-                data=image_data)
-        return OrderedDict(images_data)
-
-
 class VersionsComparator:
     def __init__(self, base_data, to_comparison_data):
         self._base_data = base_data
@@ -330,50 +259,11 @@ class VersionsComparator:
               type=click.Choice(['txt', 'html']))
 @click.option('-n', '--file-name-os', required=False, show_default=True,
               help='Output file name of openstack version checker')
-@click.option('-i', '--file-name-img', required=False, show_default=True,
-              help='Output file name of images version checker')
-@click.option('-f', '--filters', type=click.STRING,
-              help='Comma separated filters for images',
-              metavar='<release:repository:tag>')
-@click.option('-y', '--manifest', type=click.STRING,
-              help='Jenkins kubernetes template file path',
-              metavar='<manifest>')
-@click.option('-c', '--config-file', type=click.STRING,
-              help='Config file for openstack releases',
-              metavar='<configfile_path>')
-def run(releases, file_type, file_name_os, file_name_img, filters, manifest,
-        config_file):
+def run(releases, file_type, file_name_os, ):
     if not file_name_os:
         file_name_os = "os_index.html"
-    if not file_name_img:
-        file_name_img = "img_index.html"
-    if filters or manifest:
-        if filters and manifest:
-            if not path.exists(manifest):
-                print("Path to manifest does not exist")
-                sys.exit(1)
-            filters = [f.strip() for f in filters.split(',')]
-
-            ver_data = dict()
-            for f in filters:
-                dockerhub_url = f.split(':')[0]
-                images_repository = f.split(':')[1]
-                tag = f.split(':')[2].replace('^', '').replace('$', '')
-                ver_data[tag] = ImagesVersions(manifest, dockerhub_url,
-                                               images_repository,
-                                               tag).images_data
-
-            Renderer(ver_data, "template_image_checker.j2", file_type,
-                     file_name_img).render()
-        else:
-            print("If one of values (filters, mappings, manifest-path) "
-                  "is specified, than all must be entered.")
-            sys.exit(1)
 
     releases_config = None
-    if config_file:
-        with open(config_file, 'r') as f:
-            releases_config = ReleasesConfig(f)
     if releases:
         releases_config = ReleasesConfig(releases)
 

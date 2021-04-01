@@ -1,9 +1,8 @@
-This is repository for os-version-checker.
+This is repository for os-version-checker in openEuler, based on Debian
+OpenStack team's tool os-version-checker
+https://salsa.debian.org/openstack-team/debian/os-version-checker
 
-Os-Version-Checker will check and compare self
-from upstream against debian.
-
-Using templates/datatables
+os-version-checker will check and compare self from upstream against openEuler.
 
     pip install -r requirements.txt
 
@@ -19,11 +18,4 @@ Using templates/datatables
       -t, --file-type [txt|html]      Output file format  [default: html]
       -n, --file-name-os TEXT         Output file name of openstack version
                                       checker
-
-      -i, --file-name-img TEXT        Output file name of images version checker
-      -f, --filters <release:repository:tag>
-                                      Comma separated filters for images
-      -y, --manifest <manifest>       Jenkins kubernetes template file path
-      -c, --config-file <configfile_path>
-                                      Config file for openstack releases
       -h, --help                      Show this message and exit.
