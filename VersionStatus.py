@@ -27,7 +27,8 @@ class ReleasesConfig:
             for release in self.releases:
                 self.releases_config[release] = dict()
         for release in self.releases:
-            openeuler_version, openstack_version = release.split('-')
+            openeuler_version, openstack_version = release.rsplit('-')
+
             self.releases_config[release] = dict()
             if 'rpm_os_ver_uri' not in self.releases_config[release]:
                 self.releases_config[release]['rpm_os_ver_uri'] = list()
@@ -54,14 +55,17 @@ class Renderer:
             for release, pkg_vers_data in self.data.items():
                 output += "Release: {}\n\n".format(release)
                 output += "{:<30} {:<15} {:<15} {:<15}\n\n" \
-                    .format('Package name', 'OS version', 'DEB version',
+                    .format('Package name',
+                            'OpenStack version',
+                            'openEuler version',
                             'Status')
-                for pkg_name, pkg_info in pkg_vers_data.items():
-                    output += "{:<30} {:<15} {:<15} {:<15}\n".format(
-                        pkg_name,
-                        pkg_info.get('upstream_package_version'),
-                        str(pkg_info.get('debian_package_version')),
-                        pkg_info.get('status'))
+                for _value in pkg_vers_data.values():
+                    for pkg_name, pkg_info in _value['data'].items():
+                        output += "{:<30} {:<15} {:<15} {:<15}\n".format(
+                            pkg_name,
+                            pkg_info.get('base_package_version'),
+                            str(pkg_info.get('comparison_package_version')),
+                            pkg_info.get('status'))
                 output += "\n"
         if "html" == self.file_format:
             output = jinja2.Environment(
@@ -95,10 +99,8 @@ class RPMVersions:
             for _link in links:
                 pkg_link = _rpm_os_ver_uri + _link
                 # get name and package information from link
-                pkg_full_name = _link
-                pkg_full_name = _link[0:pkg_full_name.rfind('-')]
-                pkg_name = pkg_full_name[0:pkg_full_name.rfind('-')]
-                pkg_ver = pkg_full_name[pkg_full_name.rfind('-')+1:]
+                pkg_full_name, _ = _link.rsplit('-')
+                pkg_name, pkg_ver = pkg_full_name.rsplit('-')
                 # check if package with version are in results,
                 # and check for higher version
                 if pkg_name not in results:
@@ -253,11 +255,11 @@ def run(releases, file_type, file_name_os, arch):
             release_data = dict()
             os_data = UpstreamVersions(release,
                                        releases_config).upstream_versions
-            deb_data = RPMVersions(release, releases_config).rpm_versions
-            os_rpm_data = VersionsComparator(os_data, deb_data).compared_data
+            rpm_data = RPMVersions(release, releases_config).rpm_versions
+            os_rpm_data = VersionsComparator(os_data, rpm_data).compared_data
             os_rpm_data['apt'] = releases_config.releases_config.get(
                 release).get('rpm_os_ver_uri')
-            release_data["git:" + release + " - apt:debian"] = os_rpm_data
+            release_data["git:" + release + " - rpm:openEuler"] = os_rpm_data
             ver_data[release] = release_data
         Renderer(ver_data, "template_os_checker.j2", file_type,
                  file_name_os).render()
