@@ -1,23 +1,18 @@
 import datetime
-import gzip
-import lzma
 import operator
 import os
 import re
 import sys
-import tempfile
 from collections import OrderedDict
 
 import click
 import jinja2
 import requests
-import yaml
 from packaging import version
 
 OS_URI = "https://releases.openstack.org/{}"
-DEB_OS_URI = "{}/dists/{}/{}/source/Sources.gz"
-APT = ["deb http://{0}.debian.net/debian {0}-backports-nochange main",
-       "deb http://{0}.debian.net/debian {0}-backports main"]
+RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}}/{1}/{2}/Packages/"
+RPM_DIRECTORY = ["EPOL", "everything", "update"]
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_OK = ["2", "OK"]
@@ -25,26 +20,23 @@ STATUS_MISSING = ["3", "MISSING"]
 
 
 class ReleasesConfig:
-    def __init__(self, content):
+    def __init__(self, content, arch):
         if isinstance(content, str):
             self.releases_config = dict()
             self.releases = [r.strip() for r in content.split(',')]
             for release in self.releases:
                 self.releases_config[release] = dict()
         for release in self.releases:
-            if 'apt' not in self.releases_config[release]:
-                self.releases_config[release] = dict()
-                self.releases_config[release]['apt'] = [APT[0].format(release),
-                                                        APT[1].format(release)]
-            if 'deb_os_ver_uri' not in self.releases_config[release]:
-                self.releases_config[release]['deb_os_ver_uri'] = list()
-                for apt in self.releases_config[release]['apt']:
-                    apt = apt.split(' ')
-                    self.releases_config[release]['deb_os_ver_uri'].append(
-                        DEB_OS_URI.format(apt[1], apt[2], apt[3]))
+            openeuler_version, openstack_version = release.split('-')
+            self.releases_config[release] = dict()
+            if 'rpm_os_ver_uri' not in self.releases_config[release]:
+                self.releases_config[release]['rpm_os_ver_uri'] = list()
+                for _dir in RPM_DIRECTORY:
+                    self.releases_config[release]['rpm_os_ver_uri'].append(
+                        RPM_OS_URI.format(openeuler_version, _dir, arch))
             if 'os_ver_uri' not in self.releases_config[release]:
                 self.releases_config[release]['os_ver_uri'] = OS_URI.format(
-                    release.split('-')[1])
+                    openstack_version)
 
 
 class Renderer:
@@ -86,56 +78,37 @@ class Renderer:
                 os.remove(self.file_name)
             with open(self.file_name, 'w') as f:
                 f.write(output)
-                # f.write(htmlmin.minify(output, remove_empty_space=True))
 
 
-class DebianVersions:
+class RPMVersions:
     def __init__(self, release, config):
-        self.url_deb_content = ""
-        downloaded = tempfile.NamedTemporaryFile()
-        sanitizied = tempfile.NamedTemporaryFile()
-        for deb_os_ver_uri in config.releases_config.get(
-                release).get('deb_os_ver_uri'):
-            with open(downloaded.name, "w") as f:
-                req = requests.get(deb_os_ver_uri, allow_redirects=True)
-                if req.status_code == 200:
-                    f.write(gzip.decompress(req.content).decode())
-                if req.status_code == 404:
-                    deb_os_ver_uri = deb_os_ver_uri.replace("Sources.gz", "Sources.xz")
-                    req = requests.get(deb_os_ver_uri, allow_redirects=True)
-                    f.write(lzma.decompress(req.content).decode())
-            with open(downloaded.name, "r") as d:
-                with open(sanitizied.name, "w") as s:
-                    for line in d:
-                        if re.search("^Package:|^Version", line):
-                            if re.search("^Package:", line):
-                                s.write("\n")
-                                s.write(line)
-                            if re.search("^Version:", line):
-                                s.write(line)
-            with open(sanitizied.name, "r") as f:
-                self.url_deb_content += f.read()
+        self.rpm_os_ver_uri_list = config.releases_config.get(release).get(
+            'rpm_os_ver_uri')
 
     @property
-    def debian_versions(self):
-        # get all yaml package info from debian HTML
-        pkg_info_yamls = [re.sub(r'Python.*-Version: .*', '',
-                                 x.replace(": @", ": ")
-                                 .replace('"', '')
-                                 .replace('Maintainer: Maintainer:',
-                                          'Maintainer: '))
-                          for x in
-                          self.url_deb_content.split('\n\n')
-                          if x != '']
-        results = dict()
-        for pkg_info_yaml in pkg_info_yamls:
-            pkg_info = yaml.safe_load(pkg_info_yaml)
-            pkg_name = pkg_info.get('Package')
-            pkg_ver = re.search(r'([0-9]+:)?([^-]+)([-~+].+)?',
-                                str(pkg_info.get('Version'))).group(2)
-            pkg_link = pkg_info.get('Vcs-Browser')
-            pkg_info = dict(version=pkg_ver, href=pkg_link)
-            results[pkg_name] = pkg_info
+    def upstream_versions(self):
+        for _rpm_os_ver_uri in self.rpm_os_ver_uri_list:
+            uri_content = requests.get(_rpm_os_ver_uri).content.decode()
+            # get all links, which ends .rpm from HTML
+            links = re.findall(r'\shref="(.*\.rpm)"\s', uri_content)
+            results = dict()
+            for _link in links:
+                pkg_link = _rpm_os_ver_uri + _link
+                # get name and package information from link
+                pkg_full_name = _link
+                pkg_full_name = _link[0:pkg_full_name.rfind('-')]
+                pkg_name = pkg_full_name[0:pkg_full_name.rfind('-')]
+                pkg_ver = pkg_full_name[pkg_full_name.rfind('-')+1:]
+                # check if package with version are in results,
+                # and check for higher version
+                if pkg_name not in results:
+                    pkg_info = dict(version=pkg_ver, href=pkg_link)
+                    results[pkg_name] = pkg_info
+                else:
+                    # if current version < new version, then update it
+                    if version.parse(results.get(pkg_name).get('version')) \
+                            < version.parse(pkg_ver):
+                        results.get(pkg_name).update(version=pkg_ver)
         return results
 
 
@@ -251,21 +224,28 @@ class VersionsComparator:
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option('-r', '--releases', is_flag=False, metavar='<distro-release>',
-              type=click.STRING, required=False,
-              help='Comma separated releases '
-                   'with distribution of debian to check')
+              type=click.STRING, required=True,
+              help='Comma separated releases with distribution of openEuler '
+                   'and openstack to check, for example: 20.03-LTS-SP1-train')
 @click.option('-t', '--file-type', default='html',
               show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))
-@click.option('-n', '--file-name-os', required=False, show_default=True,
+@click.option('-n', '--file-name-os', default='index.html',
+              required=False, show_default=True,
               help='Output file name of openstack version checker')
-def run(releases, file_type, file_name_os, ):
+@click.option('-a', '--arch', default='aarch64',
+              required=False, show_default=True,
+              type=click.Choice(['aarch64', 'x86_64']),
+              help='CPU architecture of distribution')
+def run(releases, file_type, file_name_os, arch):
     if not file_name_os:
-        file_name_os = "os_index.html"
+        file_name_os = "index.html"
+    if not arch:
+        arch = "aarch64"
 
     releases_config = None
     if releases:
-        releases_config = ReleasesConfig(releases)
+        releases_config = ReleasesConfig(releases, arch)
 
     if releases_config:
         ver_data = dict()
@@ -273,11 +253,11 @@ def run(releases, file_type, file_name_os, ):
             release_data = dict()
             os_data = UpstreamVersions(release,
                                        releases_config).upstream_versions
-            deb_data = DebianVersions(release, releases_config).debian_versions
-            os_deb_data = VersionsComparator(os_data, deb_data).compared_data
-            os_deb_data['apt'] = releases_config.releases_config.get(
-                release).get('apt')
-            release_data["git:" + release + " - apt:debian"] = os_deb_data
+            deb_data = RPMVersions(release, releases_config).rpm_versions
+            os_rpm_data = VersionsComparator(os_data, deb_data).compared_data
+            os_rpm_data['apt'] = releases_config.releases_config.get(
+                release).get('rpm_os_ver_uri')
+            release_data["git:" + release + " - apt:debian"] = os_rpm_data
             ver_data[release] = release_data
         Renderer(ver_data, "template_os_checker.j2", file_type,
                  file_name_os).render()
