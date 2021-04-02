@@ -11,7 +11,7 @@ import requests
 from packaging import version
 
 OS_URI = "https://releases.openstack.org/{}"
-RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}}/{1}/{2}/Packages/"
+RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}/{1}/{2}/Packages/"
 RPM_DIRECTORY = ["EPOL", "everything", "update"]
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
@@ -27,7 +27,7 @@ class ReleasesConfig:
             for release in self.releases:
                 self.releases_config[release] = dict()
         for release in self.releases:
-            openeuler_version, openstack_version = release.rsplit('-')
+            openeuler_version, openstack_version = release.rsplit('-', 1)
 
             self.releases_config[release] = dict()
             if 'rpm_os_ver_uri' not in self.releases_config[release]:
@@ -99,8 +99,8 @@ class RPMVersions:
             for _link in links:
                 pkg_link = _rpm_os_ver_uri + _link
                 # get name and package information from link
-                pkg_full_name, _ = _link.rsplit('-')
-                pkg_name, pkg_ver = pkg_full_name.rsplit('-')
+                pkg_full_name, _ = _link.rsplit('-', 1)
+                pkg_name, pkg_ver = pkg_full_name.rsplit('-', 1)
                 # check if package with version are in results,
                 # and check for higher version
                 if pkg_name not in results:
