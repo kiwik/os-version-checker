@@ -90,12 +90,12 @@ class RPMVersions:
             'rpm_os_ver_uri')
 
     @property
-    def upstream_versions(self):
+    def rpm_versions(self):
+        results = dict()
         for _rpm_os_ver_uri in self.rpm_os_ver_uri_list:
             uri_content = requests.get(_rpm_os_ver_uri).content.decode()
             # get all links, which ends .rpm from HTML
             links = re.findall(r'\shref="(.*\.rpm)"\s', uri_content)
-            results = dict()
             for _link in links:
                 pkg_link = _rpm_os_ver_uri + _link
                 # get name and package information from link
@@ -157,7 +157,10 @@ class VersionsComparator:
                 "-": default_replace,
                 "+python-": "python-{}".format(default_replace),
                 "-python-": default_replace.replace("python-", ""),
-                "openstack-": default_replace.replace("openstack-", ""),
+                "+python3-": "python3-{}".format(default_replace),
+                "-python3-": default_replace.replace("python3-", ""),
+                "+openstack-": "openstack-{}".format(default_replace),
+                "-openstack-": default_replace.replace("openstack-", ""),
                 "puppet-": default_replace.replace("puppet-", "puppet-module-")
             }
             return cases.get(str_to_replace)
@@ -169,7 +172,14 @@ class VersionsComparator:
             return False
 
         # try find modified to comparison package name in to comp. packages
-        replacements = ["-", "+python-", "-python-", "puppet-", "openstack-"]
+        replacements = ["-",
+                        "+python-",
+                        "-python-",
+                        "+python3-",
+                        "-python3-",
+                        "+openstack-",
+                        "-openstack-",
+                        "puppet-"]
         for replacement in replacements:
             if is_in_comp_data(base_pkg_name, replacement):
                 return sanitize_base_pkg_name(base_pkg_name, replacement)
@@ -259,7 +269,9 @@ def run(releases, file_type, file_name_os, arch):
             os_rpm_data = VersionsComparator(os_data, rpm_data).compared_data
             os_rpm_data['apt'] = releases_config.releases_config.get(
                 release).get('rpm_os_ver_uri')
-            release_data["git:" + release + " - rpm:openEuler"] = os_rpm_data
+            release_data["git:" +
+                         release.replace('.', '-') +
+                         " - rpm:openEuler"] = os_rpm_data
             ver_data[release] = release_data
         Renderer(ver_data, "template_os_checker.j2", file_type,
                  file_name_os).render()
