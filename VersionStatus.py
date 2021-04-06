@@ -155,13 +155,9 @@ class VersionsComparator:
             default_replace = _base_pkg_name.replace("_", "-")
             cases = {
                 "-": default_replace,
-                "+python-": "python-{}".format(default_replace),
-                "-python-": default_replace.replace("python-", ""),
+                "python2to3-": default_replace.replace("python-", "python3-"),
                 "+python3-": "python3-{}".format(default_replace),
-                "-python3-": default_replace.replace("python3-", ""),
-                "+openstack-": "openstack-{}".format(default_replace),
-                "-openstack-": default_replace.replace("openstack-", ""),
-                "puppet-": default_replace.replace("puppet-", "puppet-module-")
+                "+openstack-": "openstack-{}".format(default_replace)
             }
             return cases.get(str_to_replace)
 
@@ -173,13 +169,9 @@ class VersionsComparator:
 
         # try find modified to comparison package name in to comp. packages
         replacements = ["-",
-                        "+python-",
-                        "-python-",
+                        "python2to3-",
                         "+python3-",
-                        "-python3-",
-                        "+openstack-",
-                        "-openstack-",
-                        "puppet-"]
+                        "+openstack-"]
         for replacement in replacements:
             if is_in_comp_data(base_pkg_name, replacement):
                 return sanitize_base_pkg_name(base_pkg_name, replacement)
