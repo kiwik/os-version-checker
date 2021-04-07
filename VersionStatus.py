@@ -17,6 +17,12 @@ STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_OK = ["2", "OK"]
 STATUS_MISSING = ["3", "MISSING"]
+STATUS_MISMATCH = ["4", "MISMATCH"]
+UPSTREAM_FILTER_LIST = [
+    re.compile(r"^puppet[-_][-_\w]+$"),  # puppet-*
+    re.compile(r"^[-_\w]+[-_]dashboard$"),  # *-dashboard
+    re.compile(r"^[-_\w]+[-_]tempest[-_]plugin$"),  # *-tempest-plugin
+]
 
 
 class ReleasesConfig:
@@ -189,15 +195,23 @@ class VersionsComparator:
                     comp_ver = comp_ver.split('~')[0]
             if version.parse(base_ver) == version.parse(comp_ver):
                 return STATUS_OK
-            else:
+            elif version.parse(base_ver) > version.parse(comp_ver):
                 return STATUS_OUTDATED
+            else:
+                return STATUS_MISMATCH
+
+        def filter_upstream(_base_pkg_name):
+            for pattern in UPSTREAM_FILTER_LIST:
+                if pattern.match(_base_pkg_name):
+                    return False
+            return True
 
         result_data = dict()
         paired = 0
         overall_status = STATUS_NONE
-        for base_pkg_name, base_pkg_info in self._base_data.items():
+        for base_pkg_name in filter(filter_upstream, self._base_data.keys()):
             comp_pkg_name = self.get_pair(base_pkg_name, self._comp_data)
-            base_pkg_ver = base_pkg_info.get('version')
+            base_pkg_ver = self._base_data.get(base_pkg_name).get('version')
             # if to comparison package and base package have pair
             if comp_pkg_name is not None:
                 comp_pkg_info = self._comp_data.get(comp_pkg_name)
