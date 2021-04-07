@@ -15,9 +15,9 @@ RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}/{1}/{2}/Packages/"
 RPM_DIRECTORY = ["EPOL", "everything", "update"]
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
-STATUS_OK = ["2", "OK"]
-STATUS_MISSING = ["3", "MISSING"]
-STATUS_MISMATCH = ["4", "MISMATCH"]
+STATUS_MISMATCH = ["2", "MISMATCH"]
+STATUS_OK = ["3", "OK"]
+STATUS_MISSING = ["4", "MISSING"]
 UPSTREAM_FILTER_LIST = [
     re.compile(r"^puppet[-_][-_\w]+$"),  # puppet-*
     re.compile(r"^[-_\w]+[-_]dashboard$"),  # *-dashboard
