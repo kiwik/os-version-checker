@@ -1,0 +1,42 @@
+name: Publish OS Version Checker Page
+
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+    branches: [ main ]
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+    branches: [ main ]
+  schedule:
+    # Runs at 01:00 UTC (9:00 AM Beijing) every day
+    - cron:  '0 1 * * *'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ['3.8']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Generate OS Version Checker Page
+        run: |
+          python VersionStatus.py -r victoria-21.03,train-ussuri,train-20.03-LTS-SP1 -n docs/index.html
+      - name: Publish
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: gh-pages
+          commit_message: ${{ github.event.head_commit.message }}
