@@ -115,12 +115,17 @@ function displayTable(release,comparison){
   </pre>
     {%- endif %}
   <table id="table-{{- release | replace(".", "-") }}-{{- comparison | replace(":", "-") | replace(" ", "") }}" class="display" data-page-length='{{ packages|length }}'>
+  {%- set ver_from, ver_to = release.split('-', 1) %}
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>version</th>
-        <th>openEuler<br>version</th>
+        <th>OpenStack<br>{{ ver_from }}</th>
+        {%- if '.' in ver_to %}
+        <th>openEuler<br>{{ ver_to }}</th>
+        {%- else %}
+        <th>OpenStack<br>{{ ver_to }}</th>
+        {%- endif %}
         <th>Status</th>
       </tr>
     </thead>
