@@ -86,10 +86,10 @@ class Renderer:
                 output += "\n"
         if "html" == self.file_format:
             output = jinja2.Environment(
-                loader=jinja2.FileSystemLoader(self.template_path)).get_template(
-                self.template).render(data=self.data,
-                                      time=datetime.datetime.utcnow()
-                                      .strftime("%d.%m.%Y %H:%M:%S"))
+                loader=jinja2.FileSystemLoader(
+                    self.template_path)).get_template(self.template).render(
+                data=self.data,
+                time=datetime.datetime.utcnow().strftime("%d.%m.%Y %H:%M:%S"))
         # if file name is not set,
         # then file format is None and output print to stdout
         if self.file_name is None:
@@ -206,7 +206,8 @@ class VersionsComparator:
             if "~" in comp_ver:
                 if "~rc" or "~b" in comp_ver:
                     comp_ver_arr = comp_ver.split('~')
-                    comp_ver = "{}.0{}".format(comp_ver_arr[0], comp_ver_arr[1])
+                    comp_ver = "{}.0{}".format(comp_ver_arr[0],
+                                               comp_ver_arr[1])
                 else:
                     comp_ver = comp_ver.split('~')[0]
             if version.parse(base_ver) == version.parse(comp_ver):
