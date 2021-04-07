@@ -21,9 +21,11 @@ STATUS_MISSING = ["4", "MISSING"]
 UPSTREAM_FILTER_LIST = [
     re.compile(r"^puppet[-_][-_\w]+$"),  # puppet-*
     re.compile(r"^[-_\w]+[-_]dashboard$"),  # *-dashboard
+    re.compile(r"^[-_\w]+[-_]ui$"),  # *-ui
     re.compile(r"^[-_\w]+[-_]tempest[-_]plugin$"),  # *-tempest-plugin
 ]
 OPENEULER_VERSION_PATTERN = re.compile(r"^\d.*$")
+OPENEULER_DEFAULT_REPLACE = re.compile(r"[._]")
 
 
 class ReleasesConfig:
@@ -166,9 +168,13 @@ class VersionsComparator:
     @staticmethod
     def get_pair(base_pkg_name, from_data):
         def sanitize_base_pkg_name(_base_pkg_name, str_to_replace):
-            default_replace = _base_pkg_name.replace("_", "-")
+            default_replace = OPENEULER_DEFAULT_REPLACE.sub("-",
+                                                            _base_pkg_name)
             cases = {
+                # Check between openstack versions
                 "*": _base_pkg_name,
+                # Check between openstack and openEuler packages, package name
+                # should to be transformed
                 "-": default_replace,
                 "python2to3-": default_replace.replace("python-", "python3-"),
                 "+python3-": "python3-{}".format(default_replace),
