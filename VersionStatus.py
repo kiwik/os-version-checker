@@ -23,6 +23,7 @@ UPSTREAM_FILTER_LIST = [
     re.compile(r"^[-_\w]+[-_]dashboard$"),  # *-dashboard
     re.compile(r"^[-_\w]+[-_]tempest[-_]plugin$"),  # *-tempest-plugin
 ]
+OPENEULER_VERSION_PATTERN = re.compile(r"^\d.*$")
 
 
 class ReleasesConfig:
@@ -33,17 +34,25 @@ class ReleasesConfig:
             for release in self.releases:
                 self.releases_config[release] = dict()
         for release in self.releases:
-            openeuler_version, openstack_version = release.rsplit('-', 1)
+            from_os_version, to_os_version = release.split('-', 1)
+
+            # openstack version check openeuler
+            check_openeuler = OPENEULER_VERSION_PATTERN.match(to_os_version)
 
             self.releases_config[release] = dict()
             if 'rpm_os_ver_uri' not in self.releases_config[release]:
                 self.releases_config[release]['rpm_os_ver_uri'] = list()
-                for _dir in RPM_DIRECTORY:
-                    self.releases_config[release]['rpm_os_ver_uri'].append(
-                        RPM_OS_URI.format(openeuler_version, _dir, arch))
+                if check_openeuler:
+                    for _dir in RPM_DIRECTORY:
+                        self.releases_config[release]['rpm_os_ver_uri'].append(
+                            RPM_OS_URI.format(to_os_version, _dir, arch))
             if 'os_ver_uri' not in self.releases_config[release]:
-                self.releases_config[release]['os_ver_uri'] = OS_URI.format(
-                    openstack_version)
+                self.releases_config[release]['os_ver_uri'] = list()
+                self.releases_config[release]['os_ver_uri'].append(
+                    OS_URI.format(from_os_version))
+                if not check_openeuler:
+                    self.releases_config[release]['os_ver_uri'].append(
+                        OS_URI.format(to_os_version))
 
 
 class Renderer:
@@ -121,9 +130,8 @@ class RPMVersions:
 
 
 class UpstreamVersions:
-    def __init__(self, release, config):
-        self.url_os_content = requests.get(config.releases_config.get(release)
-                                           .get('os_ver_uri')).content.decode()
+    def __init__(self, _os_ver_uri):
+        self.url_os_content = requests.get(_os_ver_uri).content.decode()
 
     @property
     def upstream_versions(self):
@@ -160,6 +168,7 @@ class VersionsComparator:
         def sanitize_base_pkg_name(_base_pkg_name, str_to_replace):
             default_replace = _base_pkg_name.replace("_", "-")
             cases = {
+                "*": _base_pkg_name,
                 "-": default_replace,
                 "python2to3-": default_replace.replace("python-", "python3-"),
                 "+python3-": "python3-{}".format(default_replace),
@@ -174,7 +183,8 @@ class VersionsComparator:
             return False
 
         # try find modified to comparison package name in to comp. packages
-        replacements = ["-",
+        replacements = ["*",
+                        "-",
                         "python2to3-",
                         "+python3-",
                         "+openstack-"]
@@ -241,10 +251,11 @@ class VersionsComparator:
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option('-r', '--releases', is_flag=False, metavar='<distro-release>',
+@click.option('-r', '--releases', is_flag=False, metavar='<release-distro>',
               type=click.STRING, required=True,
-              help='Comma separated releases with distribution of openEuler '
-                   'and openstack to check, for example: 20.03-LTS-SP1-train')
+              help='Comma separated releases with openstack or '
+                   'distribution of openEuler to check, for example: '
+                   'train-20.03-LTS-SP1,train-ussuri')
 @click.option('-t', '--file-type', default='html',
               show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))
@@ -269,12 +280,25 @@ def run(releases, file_type, file_name_os, arch):
         ver_data = dict()
         for release in releases_config.releases:
             release_data = dict()
-            os_data = UpstreamVersions(release,
-                                       releases_config).upstream_versions
-            rpm_data = RPMVersions(release, releases_config).rpm_versions
-            os_rpm_data = VersionsComparator(os_data, rpm_data).compared_data
+            from_os_uri = releases_config.releases_config.get(
+                release).get('os_ver_uri')[0]
+            from_os_data = UpstreamVersions(from_os_uri).upstream_versions
+            # openstack version check openEuler
+            if releases_config.releases_config.get(
+                    release).get('rpm_os_ver_uri'):
+                to_os_data = RPMVersions(release, releases_config).rpm_versions
+            # openstack version check openstack
+            else:
+                to_os_uri = releases_config.releases_config.get(
+                    release).get('os_ver_uri')[-1]
+                to_os_data = UpstreamVersions(to_os_uri).upstream_versions
+
+            os_rpm_data = VersionsComparator(from_os_data,
+                                             to_os_data).compared_data
             os_rpm_data['apt'] = releases_config.releases_config.get(
-                release).get('rpm_os_ver_uri')
+                release).get('os_ver_uri')
+            os_rpm_data['apt'].extend(releases_config.releases_config.get(
+                release).get('rpm_os_ver_uri'))
             release_data["git:" +
                          release.replace('.', '-') +
                          " - rpm:openEuler"] = os_rpm_data

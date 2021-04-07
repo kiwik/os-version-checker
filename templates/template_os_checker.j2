@@ -101,12 +101,12 @@ function displayTable(release,comparison){
 <div name="div-table" id="div-{{- release | replace(".", "-") }}-{{- comparison | replace(":", "-") | replace(" ", "") }}" style="display: none;">
     {%- if apts|length == 1 %}
   <pre class="tab1">
-<b>APT:</b> {{ apts[0] }}
+<b>URI:</b> {{ apts[0] }}
   </pre>
     {%- endif %}
     {%- if apts|length > 1 %}
   <pre class="tab1">
-<b>APT:</b> {{ apts[0] }}
+<b>URI:</b> {{ apts[0] }}
       {%- for apt in apts %}
         {%- if loop.index > 1 %}
      {{ apts[loop.index - 1] }}
