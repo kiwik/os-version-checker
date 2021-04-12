@@ -262,7 +262,7 @@ class VersionsComparator:
               type=click.STRING, required=True,
               help='Comma separated releases with openstack or '
                    'distribution of openEuler to check, for example: '
-                   'train-20.03-LTS-SP1,train-ussuri')
+                   'rocky-20.03-LTS-SP1,rocky-train')
 @click.option('-t', '--file-type', default='html',
               show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))

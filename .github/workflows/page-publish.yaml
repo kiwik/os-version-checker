@@ -2,12 +2,7 @@ name: Publish OS Version Checker Page
 
 on:
   push:
-    paths:
-      - '.github/workflows/**'
-    branches: [ main ]
-  pull_request:
-    paths:
-      - '.github/workflows/**'
+    # Runs on any change be merged to main
     branches: [ main ]
   schedule:
     # Runs at 01:00 UTC (9:00 AM Beijing) every day
@@ -32,7 +27,7 @@ jobs:
           pip install -r requirements.txt
       - name: Generate OS Version Checker Page
         run: |
-          python VersionStatus.py -r victoria-21.03,train-ussuri,train-20.03-LTS-SP1 -n docs/index.html
+          python VersionStatus.py -r victoria-21.03,rocky-train,rocky-20.03-LTS-SP1 -n docs/index.html
       - name: Publish
         uses: peaceiris/actions-gh-pages@v3
         with:

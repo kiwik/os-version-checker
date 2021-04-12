@@ -1,6 +1,9 @@
-This is repository for os-version-checker in openEuler, based on Debian
-OpenStack team's tool os-version-checker
+This repository is os-version-checker for [openEuler](https://openeuler.org/),
+based on Debian OpenStack team's tool os-version-checker
 https://salsa.debian.org/openstack-team/debian/os-version-checker
+
+Github action will generate latest page everyday, check here
+https://kiwik.github.io/os-version-checker/
 
 os-version-checker will check and compare self from upstream against openEuler
 or other version of OpenStack.
@@ -15,7 +18,7 @@ or other version of OpenStack.
     -r, --releases <release-distro>
                                     Comma separated releases with openstack or
                                     distribution of openEuler to check, for
-                                    example: train-20.03-LTS-SP1,train-ussuri
+                                    example: rocky-20.03-LTS-SP1,rocky-train
                                     [required]
 
     -t, --file-type [txt|html]      Output file format  [default: html]
