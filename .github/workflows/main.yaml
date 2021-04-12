@@ -31,5 +31,5 @@ jobs:
           flake8 --count .
       - name: Run
         run: |
-          python VersionStatus.py -r victoria-21.03,train-ussuri,train-20.03-LTS-SP1 -n docs/index.html
+          python VersionStatus.py -r victoria-21.03,rocky-train,rocky-20.03-LTS-SP1 -n docs/index.html
           file docs/index.html
