@@ -1,9 +1,8 @@
 name: OS Version Checker CI
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
+    # Runs on any pull request to main
     branches: [ main ]
 
   workflow_dispatch:
