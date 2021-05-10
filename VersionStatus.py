@@ -21,7 +21,6 @@ STATUS_MISSING = ["4", "MISSING"]
 UPSTREAM_FILTER_LIST = [
     re.compile(r"^puppet[-_][-_\w]+$"),  # puppet-*
     re.compile(r"^[-_\w]+[-_]dashboard$"),  # *-dashboard
-    re.compile(r"^[-_\w]+[-_]ui$"),  # *-ui
     re.compile(r"^[-_\w]+[-_]tempest[-_]plugin$"),  # *-tempest-plugin
 ]
 OPENEULER_VERSION_PATTERN = re.compile(r"^\d.*$")

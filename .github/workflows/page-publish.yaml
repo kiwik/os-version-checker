@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt
       - name: Generate OS Version Checker Page
         run: |
-          python VersionStatus.py -r victoria-21.03,rocky-train,rocky-20.03-LTS-SP1 -n docs/index.html
+          python VersionStatus.py -r victoria-21.03,queens-rocky,rocky-20.03-LTS-SP1 -n docs/index.html
       - name: Publish
         uses: peaceiris/actions-gh-pages@v3
         with:
