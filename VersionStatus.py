@@ -35,7 +35,7 @@ class ReleasesConfig:
             for release in self.releases:
                 self.releases_config[release] = dict()
         for release in self.releases:
-            from_os_version, to_os_version = release.split('-', 1)
+            from_os_version, to_os_version = release.split('/', 1)
 
             # openstack version check openeuler
             check_openeuler = OPENEULER_VERSION_PATTERN.match(to_os_version)
@@ -109,7 +109,11 @@ class RPMVersions:
     def rpm_versions(self):
         results = dict()
         for _rpm_os_ver_uri in self.rpm_os_ver_uri_list:
-            uri_content = requests.get(_rpm_os_ver_uri).content.decode()
+            r = requests.get(_rpm_os_ver_uri)
+            if r.status_code != requests.codes.ok:
+                print("%s can't get", _rpm_os_ver_uri)
+                continue
+            uri_content = r.content.decode()
             # get all links, which ends .rpm from HTML
             links = re.findall(r'\shref="(.*\.rpm)"\s', uri_content)
             for _link in links:
@@ -261,7 +265,7 @@ class VersionsComparator:
               type=click.STRING, required=True,
               help='Comma separated releases with openstack or '
                    'distribution of openEuler to check, for example: '
-                   'rocky-20.03-LTS-SP1,rocky-train')
+                   'rocky/20.03-LTS-SP2,rocky/train')
 @click.option('-t', '--file-type', default='html',
               show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))
