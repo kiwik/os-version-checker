@@ -115,7 +115,7 @@ function displayTable(release,comparison){
   </pre>
     {%- endif %}
   <table id="table-{{- release | replace(".", "-") }}-{{- comparison | replace(":", "-") | replace(" ", "") }}" class="display" data-page-length='{{ packages|length }}'>
-  {%- set ver_from, ver_to = release.split('-', 1) %}
+  {%- set ver_from, ver_to = release.split('/', 1) %}
     <thead>
       <tr>
         <th>#</th>

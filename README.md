@@ -18,7 +18,7 @@ or other version of OpenStack.
     -r, --releases <release-distro>
                                     Comma separated releases with openstack or
                                     distribution of openEuler to check, for
-                                    example: rocky-20.03-LTS-SP1,rocky-train
+                                    example: rocky/20.03-LTS-SP2,rocky/train
                                     [required]
 
     -t, --file-type [txt|html]      Output file format  [default: html]
