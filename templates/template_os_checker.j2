@@ -53,7 +53,7 @@ $(document).ready( function () {
 {%- for release in data %}
   {%- set comparisons = data[release] %}
   {%- for comparison in comparisons %}
-  $('#table-{{- release | replace(".", "-") }}-{{- comparison | replace(":", "-") | replace(" ", "") }}').DataTable();
+  $('#table-{{- release | replace(".", "-") | replace("/", "-") }}-{{- comparison | replace(":", "-") | replace("/", "-") | replace(" ", "") }}').DataTable();
   {%- endfor %}
 {%- endfor %}
 } );
@@ -61,12 +61,12 @@ $(document).ready( function () {
 <script>
 window.onload = function(){
 {%- for release in data %}
-  document.getElementById("button-{{ release | replace(".", "-") }}").onclick = function () {
-    displayTable('{{release | replace(".", "-")}}','{{ data[release] | first | replace(":", "-") | replace(" ", "") }}')
+  document.getElementById("button-{{ release | replace(".", "-") | replace("/", "-") }}").onclick = function () {
+    displayTable('{{release | replace(".", "-") | replace("/", "-")}}','{{ data[release] | first | replace(":", "-") | replace("/", "-") | replace(" ", "") }}')
   }
 {%- endfor %}
-  document.getElementById("button-{{ data | first | replace(".", "-") }}").className = 'btn_release_clicked';
-  document.getElementById("div-{{ data | first | replace(".", "-") }}-{{ data[data | first] | first | replace(":", "-") | replace(" ", "") }}").style.display = "block";
+  document.getElementById("button-{{ data | first | replace(".", "-") | replace("/", "-") }}").className = 'btn_release_clicked';
+  document.getElementById("div-{{ data | first | replace(".", "-") | replace("/", "-") }}-{{ data[data | first] | first | replace(":", "-") | replace("/", "-") | replace(" ", "") }}").style.display = "block";
 }
 </script>
 <script>
@@ -87,7 +87,7 @@ function displayTable(release,comparison){
   <tr>
     <td class="invisible" width="100%">
       {%- for release in data %}
-      <input type="button" name="button-release" id="button-{{ release | replace(".", "-") }}" value="{{ release }}" class="btn_release">
+      <input type="button" name="button-release" id="button-{{ release | replace(".", "-") | replace("/", "-") }}" value="{{ release }}" class="btn_release">
       {%- endfor %}
     </td>
   </tr>
@@ -98,7 +98,7 @@ function displayTable(release,comparison){
   {%- for comparison in comparisons %}
     {%- set packages = comparisons[comparison]['data'] %}
     {%- set apts = comparisons[comparison]['apt'] %}
-<div name="div-table" id="div-{{- release | replace(".", "-") }}-{{- comparison | replace(":", "-") | replace(" ", "") }}" style="display: none;">
+<div name="div-table" id="div-{{- release | replace(".", "-") | replace("/", "-") }}-{{- comparison | replace(":", "-") | replace("/", "-") | replace(" ", "") }}" style="display: none;">
     {%- if apts|length == 1 %}
   <pre class="tab1">
 <b>URI:</b> <a href="{{ apts[0] }}">{{ apts[0] }}</a>
@@ -114,7 +114,7 @@ function displayTable(release,comparison){
       {%- endfor %}
   </pre>
     {%- endif %}
-  <table id="table-{{- release | replace(".", "-") }}-{{- comparison | replace(":", "-") | replace(" ", "") }}" class="display" data-page-length='{{ packages|length }}'>
+  <table id="table-{{- release | replace(".", "-") | replace("/", "-") }}-{{- comparison | replace(":", "-") | replace("/", "-") | replace(" ", "") }}" class="display" data-page-length='{{ packages|length }}'>
   {%- set ver_from, ver_to = release.split('/', 1) %}
     <thead>
       <tr>
