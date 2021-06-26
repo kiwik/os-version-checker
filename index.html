@@ -50,25 +50,25 @@
 </style>
 <script>
 $(document).ready( function () {
-  $('#table-victoria-21-03-git-victoria-21-03-rpm-openEuler').DataTable();
-  $('#table-rocky-20-03-LTS-SP2-git-rocky-20-03-LTS-SP2-rpm-openEuler').DataTable();
+  $('#table-victoria-21-03').dataTable();
+  $('#table-rocky-20-03-LTS-SP2').dataTable();
 } );
 </script>
 <script>
 window.onload = function(){
-  document.getElementById("button-victoria-21-03").onclick = function () {
-    displayTable('victoria-21-03','git-victoria-21-03-rpm-openEuler')
+  document.getElementById("button-victoria/21.03").onclick = function () {
+    displayTable('victoria/21.03')
   }
-  document.getElementById("button-rocky-20-03-LTS-SP2").onclick = function () {
-    displayTable('rocky-20-03-LTS-SP2','git-rocky-20-03-LTS-SP2-rpm-openEuler')
+  document.getElementById("button-rocky/20.03-LTS-SP2").onclick = function () {
+    displayTable('rocky/20.03-LTS-SP2')
   }
-  document.getElementById("button-victoria-21-03").className = 'btn_release_clicked';
-  document.getElementById("div-victoria-21-03-git-victoria-21-03-rpm-openEuler").style.display = "block";
+  document.getElementById("button-victoria/21.03").className = 'btn_release_clicked';
+  document.getElementById("div-victoria/21.03").style.display = "block";
 }
 </script>
 <script>
-function displayTable(release,comparison){
-  var tableToDisplay = document.getElementById("div-".concat(release,"-",comparison));
+function displayTable(release){
+  var tableToDisplay = document.getElementById("div-".concat(release));
   var buttonToClicked = document.getElementById("button-".concat(release));
   var tables = document.getElementsByName("div-table");
   var buttons = document.getElementsByName("button-release");
@@ -83,20 +83,20 @@ function displayTable(release,comparison){
 <table id="table-switcher" class="switcher">
   <tr>
     <td class="invisible" width="100%">
-      <input type="button" name="button-release" id="button-victoria-21-03" value="victoria/21.03" class="btn_release">
-      <input type="button" name="button-release" id="button-rocky-20-03-LTS-SP2" value="rocky/20.03-LTS-SP2" class="btn_release">
+      <input type="button" name="button-release" id="button-victoria/21.03" value="victoria/21.03" class="btn_release">
+      <input type="button" name="button-release" id="button-rocky/20.03-LTS-SP2" value="rocky/20.03-LTS-SP2" class="btn_release">
     </td>
   </tr>
 </table>
-<pre class="tab1"><b>Generated:</b> 26.06.2021 00:16:01</pre>
-<div name="div-table" id="div-victoria-21-03-git-victoria-21-03-rpm-openEuler" style="display: none;">
+<pre class="tab1"><b>Generated:</b> 26.06.2021 09:05:13</pre>
+<div name="div-table" id="div-victoria/21.03" style="display: none;">
   <pre class="tab1">
-<b>URI:</b> <a href="https://releases.openstack.org/victoria">https://releases.openstack.org/victoria</a>
-     <a href="https://repo.openeuler.org/openEuler-21.03/EPOL/aarch64/Packages/">https://repo.openeuler.org/openEuler-21.03/EPOL/aarch64/Packages/</a>
-     <a href="https://repo.openeuler.org/openEuler-21.03/everything/aarch64/Packages/">https://repo.openeuler.org/openEuler-21.03/everything/aarch64/Packages/</a>
-     <a href="https://repo.openeuler.org/openEuler-21.03/update/aarch64/Packages/">https://repo.openeuler.org/openEuler-21.03/update/aarch64/Packages/</a>
+<b>URI:</b> <a href="https://releases.openstack.org/victoria" target="view_window">https://releases.openstack.org/victoria</a>
+     <a href="https://repo.openeuler.org/openEuler-21.03/EPOL/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-21.03/EPOL/aarch64/Packages/</a>
+     <a href="https://repo.openeuler.org/openEuler-21.03/everything/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-21.03/everything/aarch64/Packages/</a>
+     <a href="https://repo.openeuler.org/openEuler-21.03/update/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-21.03/update/aarch64/Packages/</a>
   </pre>
-  <table id="table-victoria-21-03-git-victoria-21-03-rpm-openEuler" class="display" data-page-length='206'>
+  <table id="table-victoria-21-03" class="display" data-page-length='206'>
     <thead>
       <tr>
         <th>#</th>
@@ -1552,14 +1552,14 @@ function displayTable(release,comparison){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-rocky-20-03-LTS-SP2-git-rocky-20-03-LTS-SP2-rpm-openEuler" style="display: none;">
+<div name="div-table" id="div-rocky/20.03-LTS-SP2" style="display: none;">
   <pre class="tab1">
-<b>URI:</b> <a href="https://releases.openstack.org/rocky">https://releases.openstack.org/rocky</a>
-     <a href="https://repo.openeuler.org/openEuler-20.03-LTS-SP2/EPOL/aarch64/Packages/">https://repo.openeuler.org/openEuler-20.03-LTS-SP2/EPOL/aarch64/Packages/</a>
-     <a href="https://repo.openeuler.org/openEuler-20.03-LTS-SP2/everything/aarch64/Packages/">https://repo.openeuler.org/openEuler-20.03-LTS-SP2/everything/aarch64/Packages/</a>
-     <a href="https://repo.openeuler.org/openEuler-20.03-LTS-SP2/update/aarch64/Packages/">https://repo.openeuler.org/openEuler-20.03-LTS-SP2/update/aarch64/Packages/</a>
+<b>URI:</b> <a href="https://releases.openstack.org/rocky" target="view_window">https://releases.openstack.org/rocky</a>
+     <a href="https://repo.openeuler.org/openEuler-20.03-LTS-SP2/EPOL/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-20.03-LTS-SP2/EPOL/aarch64/Packages/</a>
+     <a href="https://repo.openeuler.org/openEuler-20.03-LTS-SP2/everything/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-20.03-LTS-SP2/everything/aarch64/Packages/</a>
+     <a href="https://repo.openeuler.org/openEuler-20.03-LTS-SP2/update/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-20.03-LTS-SP2/update/aarch64/Packages/</a>
   </pre>
-  <table id="table-rocky-20-03-LTS-SP2-git-rocky-20-03-LTS-SP2-rpm-openEuler" class="display" data-page-length='192'>
+  <table id="table-rocky-20-03-LTS-SP2" class="display" data-page-length='192'>
     <thead>
       <tr>
         <th>#</th>
