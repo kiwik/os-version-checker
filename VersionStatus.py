@@ -111,7 +111,7 @@ class RPMVersions:
         for _rpm_os_ver_uri in self.rpm_os_ver_uri_list:
             r = requests.get(_rpm_os_ver_uri)
             if r.status_code != requests.codes.ok:
-                print("%s can't get", _rpm_os_ver_uri)
+                print("CAN NOT GET", _rpm_os_ver_uri)
                 continue
             uri_content = r.content.decode()
             # get all links, which ends .rpm from HTML

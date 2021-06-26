@@ -51,19 +51,19 @@
 <script>
 $(document).ready( function () {
 {%- for release in data %}
-  $('#table-{{- release | replace(".", "-") | replace("/", "-") }}').DataTable();
+  $('#table-{{ release | replace(".", "-") | replace("/", "-") }}').dataTable();
 {%- endfor %}
 } );
 </script>
 <script>
 window.onload = function(){
 {%- for release in data %}
-  document.getElementById("button-{{ release | replace(".", "-") | replace("/", "-") }}").onclick = function () {
-    displayTable('{{release | replace(".", "-") | replace("/", "-")}}')
+  document.getElementById("button-{{ release }}").onclick = function () {
+    displayTable('{{ release }}')
   }
 {%- endfor %}
-  document.getElementById("button-{{ data | first | replace(".", "-") | replace("/", "-") }}").className = 'btn_release_clicked';
-  document.getElementById("div-{{ data | first | replace(".", "-") | replace("/", "-") }}").style.display = "block";
+  document.getElementById("button-{{ data | first }}").className = 'btn_release_clicked';
+  document.getElementById("div-{{ data | first }}").style.display = "block";
 }
 </script>
 <script>
@@ -84,7 +84,7 @@ function displayTable(release){
   <tr>
     <td class="invisible" width="100%">
       {%- for release in data %}
-      <input type="button" name="button-release" id="button-{{ release | replace(".", "-") | replace("/", "-") }}" value="{{ release }}" class="btn_release">
+      <input type="button" name="button-release" id="button-{{ release }}" value="{{ release }}" class="btn_release">
       {%- endfor %}
     </td>
   </tr>
@@ -94,7 +94,7 @@ function displayTable(release){
   {%- set comparison = data[release] %}
     {%- set packages = comparison['data'] %}
     {%- set apts = comparison['apt'] %}
-<div name="div-table" id="div-{{- release | replace(".", "-") | replace("/", "-") }}" style="display: none;">
+<div name="div-table" id="div-{{ release }}" style="display: none;">
     {%- if apts|length == 1 %}
   <pre class="tab1">
 <b>URI:</b> <a href="{{ apts[0] }}">{{ apts[0] }}</a>
@@ -110,7 +110,7 @@ function displayTable(release){
       {%- endfor %}
   </pre>
     {%- endif %}
-  <table id="table-{{- release | replace(".", "-") | replace("/", "-") }}" class="display" data-page-length='{{ packages|length }}'>
+  <table id="table-{{ release | replace(".", "-") | replace("/", "-") }}" class="display" data-page-length='{{ packages|length }}'>
   {%- set ver_from, ver_to = release.split('/', 1) %}
     <thead>
       <tr>
