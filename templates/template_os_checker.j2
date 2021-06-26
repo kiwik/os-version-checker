@@ -97,15 +97,15 @@ function displayTable(release){
 <div name="div-table" id="div-{{ release }}" style="display: none;">
     {%- if apts|length == 1 %}
   <pre class="tab1">
-<b>URI:</b> <a href="{{ apts[0] }}">{{ apts[0] }}</a>
+<b>URI:</b> <a href="{{ apts[0] }}" target="view_window">{{ apts[0] }}</a>
   </pre>
     {%- endif %}
     {%- if apts|length > 1 %}
   <pre class="tab1">
-<b>URI:</b> <a href="{{ apts[0] }}">{{ apts[0] }}</a>
+<b>URI:</b> <a href="{{ apts[0] }}" target="view_window">{{ apts[0] }}</a>
       {%- for apt in apts %}
         {%- if loop.index > 1 %}
-     <a href="{{ apts[loop.index - 1] }}">{{ apts[loop.index - 1] }}</a>
+     <a href="{{ apts[loop.index - 1] }}" target="view_window">{{ apts[loop.index - 1] }}</a>
         {%- endif %}
       {%- endfor %}
   </pre>
