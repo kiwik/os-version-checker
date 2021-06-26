@@ -51,27 +51,24 @@
 <script>
 $(document).ready( function () {
 {%- for release in data %}
-  {%- set comparisons = data[release] %}
-  {%- for comparison in comparisons %}
-  $('#table-{{- release | replace(".", "-") | replace("/", "-") }}-{{- comparison | replace(":", "-") | replace("/", "-") | replace(" ", "") }}').DataTable();
-  {%- endfor %}
+  $('#table-{{ release | replace(".", "-") | replace("/", "-") }}').dataTable();
 {%- endfor %}
 } );
 </script>
 <script>
 window.onload = function(){
 {%- for release in data %}
-  document.getElementById("button-{{ release | replace(".", "-") | replace("/", "-") }}").onclick = function () {
-    displayTable('{{release | replace(".", "-") | replace("/", "-")}}','{{ data[release] | first | replace(":", "-") | replace("/", "-") | replace(" ", "") }}')
+  document.getElementById("button-{{ release }}").onclick = function () {
+    displayTable('{{ release }}')
   }
 {%- endfor %}
-  document.getElementById("button-{{ data | first | replace(".", "-") | replace("/", "-") }}").className = 'btn_release_clicked';
-  document.getElementById("div-{{ data | first | replace(".", "-") | replace("/", "-") }}-{{ data[data | first] | first | replace(":", "-") | replace("/", "-") | replace(" ", "") }}").style.display = "block";
+  document.getElementById("button-{{ data | first }}").className = 'btn_release_clicked';
+  document.getElementById("div-{{ data | first }}").style.display = "block";
 }
 </script>
 <script>
-function displayTable(release,comparison){
-  var tableToDisplay = document.getElementById("div-".concat(release,"-",comparison));
+function displayTable(release){
+  var tableToDisplay = document.getElementById("div-".concat(release));
   var buttonToClicked = document.getElementById("button-".concat(release));
   var tables = document.getElementsByName("div-table");
   var buttons = document.getElementsByName("button-release");
@@ -87,34 +84,33 @@ function displayTable(release,comparison){
   <tr>
     <td class="invisible" width="100%">
       {%- for release in data %}
-      <input type="button" name="button-release" id="button-{{ release | replace(".", "-") | replace("/", "-") }}" value="{{ release }}" class="btn_release">
+      <input type="button" name="button-release" id="button-{{ release }}" value="{{ release }}" class="btn_release">
       {%- endfor %}
     </td>
   </tr>
 </table>
 <pre class="tab1"><b>Generated:</b> {{ time }}</pre>
 {%- for release in data %}
-  {%- set comparisons = data[release] %}
-  {%- for comparison in comparisons %}
-    {%- set packages = comparisons[comparison]['data'] %}
-    {%- set apts = comparisons[comparison]['apt'] %}
-<div name="div-table" id="div-{{- release | replace(".", "-") | replace("/", "-") }}-{{- comparison | replace(":", "-") | replace("/", "-") | replace(" ", "") }}" style="display: none;">
+  {%- set comparison = data[release] %}
+    {%- set packages = comparison['data'] %}
+    {%- set apts = comparison['apt'] %}
+<div name="div-table" id="div-{{ release }}" style="display: none;">
     {%- if apts|length == 1 %}
   <pre class="tab1">
-<b>URI:</b> <a href="{{ apts[0] }}">{{ apts[0] }}</a>
+<b>URI:</b> <a href="{{ apts[0] }}" target="view_window">{{ apts[0] }}</a>
   </pre>
     {%- endif %}
     {%- if apts|length > 1 %}
   <pre class="tab1">
-<b>URI:</b> <a href="{{ apts[0] }}">{{ apts[0] }}</a>
+<b>URI:</b> <a href="{{ apts[0] }}" target="view_window">{{ apts[0] }}</a>
       {%- for apt in apts %}
         {%- if loop.index > 1 %}
-     <a href="{{ apts[loop.index - 1] }}">{{ apts[loop.index - 1] }}</a>
+     <a href="{{ apts[loop.index - 1] }}" target="view_window">{{ apts[loop.index - 1] }}</a>
         {%- endif %}
       {%- endfor %}
   </pre>
     {%- endif %}
-  <table id="table-{{- release | replace(".", "-") | replace("/", "-") }}-{{- comparison | replace(":", "-") | replace("/", "-") | replace(" ", "") }}" class="display" data-page-length='{{ packages|length }}'>
+  <table id="table-{{ release | replace(".", "-") | replace("/", "-") }}" class="display" data-page-length='{{ packages|length }}'>
   {%- set ver_from, ver_to = release.split('/', 1) %}
     <thead>
       <tr>
@@ -131,7 +127,7 @@ function displayTable(release,comparison){
     </thead>
     <tbody>
     {%- for package in packages %}
-    {%- set package_data = comparisons[comparison]['data'][package] %}
+    {%- set package_data = comparison['data'][package] %}
     <tr>
       <td>{{ loop.index }}.</td>
       <td>{{ package }}</td>
@@ -143,6 +139,5 @@ function displayTable(release,comparison){
     </tbody>
   </table>
 </div>
-  {%- endfor %}
 {%- endfor %}
 </body>

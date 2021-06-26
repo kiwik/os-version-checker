@@ -111,7 +111,7 @@ class RPMVersions:
         for _rpm_os_ver_uri in self.rpm_os_ver_uri_list:
             r = requests.get(_rpm_os_ver_uri)
             if r.status_code != requests.codes.ok:
-                print("%s can't get", _rpm_os_ver_uri)
+                print("CAN NOT GET", _rpm_os_ver_uri)
                 continue
             uri_content = r.content.decode()
             # get all links, which ends .rpm from HTML
@@ -289,7 +289,6 @@ def run(releases, file_type, file_name_os, arch):
     if releases_config:
         ver_data = dict()
         for release in releases_config.releases:
-            release_data = dict()
             from_os_uri = releases_config.releases_config.get(
                 release).get('os_ver_uri')[0]
             from_os_data = UpstreamVersions(from_os_uri).upstream_versions
@@ -309,10 +308,7 @@ def run(releases, file_type, file_name_os, arch):
                 release).get('os_ver_uri')
             os_rpm_data['apt'].extend(releases_config.releases_config.get(
                 release).get('rpm_os_ver_uri'))
-            release_data["git:" +
-                         release.replace('.', '-') +
-                         " - rpm:openEuler"] = os_rpm_data
-            ver_data[release] = release_data
+            ver_data[release] = os_rpm_data
         Renderer(ver_data, "template_os_checker.j2", file_type,
                  file_name_os).render()
 
