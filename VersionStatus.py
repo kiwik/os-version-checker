@@ -84,11 +84,18 @@ class Renderer:
                             pkg_info.get('status'))
                 output += "\n"
         if "html" == self.file_format:
+            SHA_TZ = datetime.timezone(
+                datetime.timedelta(hours=8),
+                name='Asia/Shanghai',
+            )
+            utc_now = datetime.datetime.utcnow().replace(
+                tzinfo=datetime.timezone.utc)
+            xian_now = utc_now.astimezone(SHA_TZ)
             output = jinja2.Environment(
                 loader=jinja2.FileSystemLoader(
                     self.template_path)).get_template(self.template).render(
                 data=self.data,
-                time=datetime.datetime.utcnow().strftime("%d.%m.%Y %H:%M:%S"))
+                time=xian_now.strftime("%Y.%m.%d %H:%M:%S %Z"))
         # if file name is not set,
         # then file format is None and output print to stdout
         if self.file_name is None:
