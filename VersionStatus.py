@@ -186,7 +186,9 @@ class VersionsComparator:
                 # Check between openstack and openEuler packages, package name
                 # should to be transformed
                 "-": default_replace,
-                "python2to3-": default_replace.replace("python-", "python3-"),
+                "python-to2-": default_replace.replace("python-", "python2-"),
+                "python-to3-": default_replace.replace("python-", "python3-"),
+                "+python2-": "python2-{}".format(default_replace),
                 "+python3-": "python3-{}".format(default_replace),
                 "+openstack-": "openstack-{}".format(default_replace)
             }
@@ -201,7 +203,9 @@ class VersionsComparator:
         # try find modified to comparison package name in to comp. packages
         replacements = ["*",
                         "-",
-                        "python2to3-",
+                        "python-to2-",
+                        "python-to3-",
+                        "+python2-",
                         "+python3-",
                         "+openstack-"]
         for replacement in replacements:
