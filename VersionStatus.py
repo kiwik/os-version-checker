@@ -11,11 +11,19 @@ import requests
 from packaging import version
 
 OS_URI = "https://releases.openstack.org/{}"
-RPM_OS_URI_LEGACY = \
+RPM_OS_LEGACY_URI = \
     "https://repo.openeuler.org/openEuler-{0}/{1}/{2}/Packages/"
-LEGACY_VERSION = ['openEuler-20.03-LTS', 'openEuler-20.03-LTS-SP1', '21.03']
+RPM_LEGACY_VERSION = ['openEuler-20.03-LTS',
+                      'openEuler-20.03-LTS-SP1',
+                      '21.03']
 RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}/{1}/main/{2}/Packages/"
-RPM_DIRECTORY = ["EPOL", "everything", "update"]
+RPM_OEPKG_URI = 'https://repo.oepkgs.net/openEuler/rpm/'\
+                'openEuler-{0}}/budding-openeuler/'\
+                'openstack/{1}/{2}/Packages/'
+
+RPM_OEPKG_VERSION = ['openEuler-20.03-LTS-SP2', ]
+EPOL_PATH = "EPOL"
+RPM_DIRECTORY = [EPOL_PATH, "everything", "update"]
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_MISMATCH = ["2", "MISMATCH"]
@@ -47,12 +55,23 @@ class ReleasesConfig:
             if 'rpm_os_ver_uri' not in self.releases_config[release]:
                 self.releases_config[release]['rpm_os_ver_uri'] = list()
                 if check_openeuler:
-                    for _dir in RPM_DIRECTORY:
-                        _url = RPM_OS_URI \
-                            if to_os_version not in LEGACY_VERSION \
-                            else RPM_OS_URI_LEGACY
+                    # in oepkg repository
+                    if to_os_version in RPM_OEPKG_VERSION:
+                        _url = RPM_OEPKG_URI
                         self.releases_config[release]['rpm_os_ver_uri'].append(
-                            _url.format(to_os_version, _dir, arch))
+                            _url.format(to_os_version, from_os_version, arch))
+                    # in openEuler repository, EPOL/everything/update
+                    else:
+                        for _dir in RPM_DIRECTORY:
+                            # EPOL path should add "main" directory
+                            if _dir == EPOL_PATH and \
+                                    to_os_version not in RPM_LEGACY_VERSION:
+                                _url = RPM_OS_URI
+                            else:
+                                _url = RPM_OS_LEGACY_URI
+                            self.releases_config[release][
+                                'rpm_os_ver_uri'].append(
+                                _url.format(to_os_version, _dir, arch))
             if 'os_ver_uri' not in self.releases_config[release]:
                 self.releases_config[release]['os_ver_uri'] = list()
                 self.releases_config[release]['os_ver_uri'].append(
