@@ -144,8 +144,9 @@ class RPMVersions:
                 print("CAN NOT GET", _rpm_os_ver_uri)
                 continue
             uri_content = r.content.decode()
-            # get all links, which ends .rpm from HTML
-            links = re.findall(r'<a href="(.*\.rpm)"[ >]', uri_content)
+            # get all links, which ends .rpm from HTML, work for oepkg and
+            # openEuler EPOL page format
+            links = re.findall(r'<a\shref="(.*?\.rpm)"[\s>]', uri_content)
             for _link in links:
                 pkg_link = _rpm_os_ver_uri + _link
                 # get name and package information from link
