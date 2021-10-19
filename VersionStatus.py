@@ -13,15 +13,13 @@ from packaging import version
 OS_URI = "https://releases.openstack.org/{}"
 RPM_OS_LEGACY_URI = \
     "https://repo.openeuler.org/openEuler-{0}/{1}/{2}/Packages/"
-RPM_LEGACY_VERSION = ['openEuler-20.03-LTS',
-                      'openEuler-20.03-LTS-SP1',
-                      '21.03']
+RPM_LEGACY_VERSION = ['20.03-LTS', '20.03-LTS-SP1', '21.03']
 RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}/{1}/main/{2}/Packages/"
 RPM_OEPKG_URI = 'https://repo.oepkgs.net/openEuler/rpm/'\
-                'openEuler-{0}}/budding-openeuler/'\
+                'openEuler-{0}/budding-openeuler/'\
                 'openstack/{1}/{2}/Packages/'
 
-RPM_OEPKG_VERSION = ['openEuler-20.03-LTS-SP2', ]
+RPM_OEPKG_VERSION = ['20.03-LTS-SP2', ]
 EPOL_PATH = "EPOL"
 RPM_DIRECTORY = [EPOL_PATH, "everything", "update"]
 STATUS_NONE = ["0", "NONE"]
