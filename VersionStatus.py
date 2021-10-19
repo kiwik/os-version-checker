@@ -145,7 +145,7 @@ class RPMVersions:
                 continue
             uri_content = r.content.decode()
             # get all links, which ends .rpm from HTML
-            links = re.findall(r'\shref="(.*\.rpm)"\s', uri_content)
+            links = re.findall(r'<a href="(.*\.rpm)"[ >]', uri_content)
             for _link in links:
                 pkg_link = _rpm_os_ver_uri + _link
                 # get name and package information from link
