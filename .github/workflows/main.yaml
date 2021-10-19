@@ -29,6 +29,12 @@ jobs:
           pip install flake8
           flake8 --count .
       - name: Run
+        # Run tool, then check file and content
         run: |
           python VersionStatus.py -r victoria/21.03,wallaby/21.09,queens/20.03-LTS-SP2,rocky/20.03-LTS-SP2 -n docs/index.html
           file docs/index.html
+          output=$(grep 'releases.openstack.org' docs/index.html)
+          echo $output | grep 'victoria'
+          echo $output | grep 'wallaby'
+          echo $output | grep 'queens'
+          echo $output | grep 'rocky'
