@@ -12,16 +12,14 @@ from packaging import version
 
 OS_URI = "https://releases.openstack.org/{}"
 RPM_OS_LEGACY_URI = \
-    "https://repo.openeuler.org/openEuler-{0}/{1}/{2}/Packages/"
+    "https://repo.openeuler.org/openEuler-{0}/EPOL/{1}/Packages/"
 RPM_LEGACY_VERSION = ['20.03-LTS', '20.03-LTS-SP1', '21.03']
-RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}/{1}/main/{2}/Packages/"
+RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}/EPOL/main/{1}/Packages/"
 RPM_OEPKG_URI = 'https://repo.oepkgs.net/openEuler/rpm/'\
                 'openEuler-{0}/budding-openeuler/'\
                 'openstack/{1}/{2}/Packages/'
 
-RPM_OEPKG_VERSION = ['20.03-LTS-SP2', ]
-EPOL_PATH = "EPOL"
-RPM_DIRECTORY = [EPOL_PATH, "everything", "update"]
+OPENSTACK_IN_OEPKG_VERSION = ['queens', 'rocky']
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_MISMATCH = ["2", "MISMATCH"]
@@ -38,45 +36,34 @@ OPENEULER_DEFAULT_REPLACE = re.compile(r"[._]")
 
 class ReleasesConfig:
     def __init__(self, content, arch):
-        if isinstance(content, str):
-            self.releases_config = dict()
-            self.releases = [r.strip() for r in content.split(',')]
-            for release in self.releases:
-                self.releases_config[release] = dict()
+        if not isinstance(content, str):
+            raise RuntimeError('Input Error')
+        self.releases = [r.strip() for r in content.split(',')]
+        self.releases_config = dict()
         for release in self.releases:
             from_os_version, to_os_version = release.split('/', 1)
-
-            # openstack version check openeuler
-            check_openeuler = OPENEULER_VERSION_PATTERN.match(to_os_version)
-
             self.releases_config[release] = dict()
-            if 'rpm_os_ver_uri' not in self.releases_config[release]:
-                self.releases_config[release]['rpm_os_ver_uri'] = list()
-                if check_openeuler:
-                    # in oepkg repository
-                    if to_os_version in RPM_OEPKG_VERSION:
-                        _url = RPM_OEPKG_URI
-                        self.releases_config[release]['rpm_os_ver_uri'].append(
-                            _url.format(to_os_version, from_os_version, arch))
-                    # in openEuler repository, EPOL/everything/update
-                    else:
-                        for _dir in RPM_DIRECTORY:
-                            # EPOL path should add "main" directory
-                            if _dir == EPOL_PATH and \
-                                    to_os_version not in RPM_LEGACY_VERSION:
-                                _url = RPM_OS_URI
-                            else:
-                                _url = RPM_OS_LEGACY_URI
-                            self.releases_config[release][
-                                'rpm_os_ver_uri'].append(
-                                _url.format(to_os_version, _dir, arch))
-            if 'os_ver_uri' not in self.releases_config[release]:
-                self.releases_config[release]['os_ver_uri'] = list()
+            self.releases_config[release]['rpm_os_ver_uri'] = list()
+            self.releases_config[release]['os_ver_uri'] = [
+                OS_URI.format(from_os_version), ]
+            # openstack vs (openeuler or openstack)
+            vs_openeuler = OPENEULER_VERSION_PATTERN.match(to_os_version)
+            if vs_openeuler:
+                # in oepkg repository
+                if from_os_version in OPENSTACK_IN_OEPKG_VERSION:
+                    _url = RPM_OEPKG_URI
+                    self.releases_config[release]['rpm_os_ver_uri'].append(
+                        _url.format(to_os_version, from_os_version, arch))
+                else:
+                    # EPOL path should add "main" directory for new format
+                    _url = RPM_OS_LEGACY_URI \
+                        if to_os_version in RPM_LEGACY_VERSION \
+                        else RPM_OS_URI
+                    self.releases_config[release]['rpm_os_ver_uri'].append(
+                        _url.format(to_os_version, arch))
+            else:
                 self.releases_config[release]['os_ver_uri'].append(
-                    OS_URI.format(from_os_version))
-                if not check_openeuler:
-                    self.releases_config[release]['os_ver_uri'].append(
-                        OS_URI.format(to_os_version))
+                    OS_URI.format(to_os_version))
 
 
 class Renderer:
