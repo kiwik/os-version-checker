@@ -118,9 +118,8 @@ class Renderer:
 
 
 class RPMVersions:
-    def __init__(self, release, config):
-        self.rpm_os_ver_uri_list = config.releases_config.get(release).get(
-            'rpm_os_ver_uri')
+    def __init__(self, _rpm_os_ver_uri_list):
+        self.rpm_os_ver_uri_list = _rpm_os_ver_uri_list
 
     @property
     def rpm_versions(self):
@@ -299,40 +298,29 @@ class VersionsComparator:
               type=click.Choice(['aarch64', 'x86_64']),
               help='CPU architecture of distribution')
 def run(releases, file_type, file_name_os, arch):
-    if not file_name_os:
-        file_name_os = "index.html"
-    if not arch:
-        arch = "aarch64"
-
-    releases_config = None
     if releases:
         releases_config = ReleasesConfig(releases, arch)
+    ver_data = dict()
+    for release in releases_config.releases:
+        _release_config = releases_config.releases_config.get(release)
+        from_os_uri = _release_config.get('os_ver_uri')[0]
+        from_os_data = UpstreamVersions(from_os_uri).upstream_versions
+        # openstack version check openEuler
+        _rpm_os_ver_uri = _release_config.get('rpm_os_ver_uri')
+        if _rpm_os_ver_uri:
+            to_os_data = RPMVersions(_rpm_os_ver_uri).rpm_versions
+        # openstack version check openstack
+        else:
+            to_os_uri = _release_config.get('os_ver_uri')[-1]
+            to_os_data = UpstreamVersions(to_os_uri).upstream_versions
 
-    if releases_config:
-        ver_data = dict()
-        for release in releases_config.releases:
-            from_os_uri = releases_config.releases_config.get(
-                release).get('os_ver_uri')[0]
-            from_os_data = UpstreamVersions(from_os_uri).upstream_versions
-            # openstack version check openEuler
-            if releases_config.releases_config.get(
-                    release).get('rpm_os_ver_uri'):
-                to_os_data = RPMVersions(release, releases_config).rpm_versions
-            # openstack version check openstack
-            else:
-                to_os_uri = releases_config.releases_config.get(
-                    release).get('os_ver_uri')[-1]
-                to_os_data = UpstreamVersions(to_os_uri).upstream_versions
+        ver_data[release] = VersionsComparator(from_os_data,
+                                               to_os_data).compared_data
+        ver_data[release]['apt'] = _release_config.get(
+            'os_ver_uri') + _release_config.get('rpm_os_ver_uri')
 
-            os_rpm_data = VersionsComparator(from_os_data,
-                                             to_os_data).compared_data
-            os_rpm_data['apt'] = releases_config.releases_config.get(
-                release).get('os_ver_uri')
-            os_rpm_data['apt'].extend(releases_config.releases_config.get(
-                release).get('rpm_os_ver_uri'))
-            ver_data[release] = os_rpm_data
-        Renderer(ver_data, "template_os_checker.j2", file_type,
-                 file_name_os).render()
+    Renderer(ver_data, "template_os_checker.j2", file_type,
+             file_name_os).render()
 
 
 if __name__ == '__main__':
