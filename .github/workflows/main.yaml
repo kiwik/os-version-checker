@@ -1,4 +1,4 @@
-name: OS Version Checker CI
+name: CI
 
 on:
   pull_request:
@@ -11,9 +11,10 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: ['3.8']
+        os: [ubuntu-20.04, macos-latest]
+        python-version: ['3.8', '3.x', 'pypy-3.8']
     runs-on: ${{ matrix.os }}
+    name: Test it with python ${{ matrix.python-version }} on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
