@@ -18,7 +18,9 @@ RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}/EPOL/main/{1}/Packages/"
 RPM_OEPKG_URI = 'https://repo.oepkgs.net/openEuler/rpm/'\
                 'openEuler-{0}/budding-openeuler/'\
                 'openstack/{1}/{2}/Packages/'
-
+RPM_119_URI = 'http://119.3.219.20:82/openEuler:/{0}:/{1}:/{2}:/'\
+              'Epol/standard_{3}/{4}/'
+RPM_119_SUB_DIR = 'noarch'
 OPENSTACK_IN_OEPKG_VERSION = ['queens', 'rocky']
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
@@ -46,7 +48,7 @@ class ReleasesConfig:
             self.releases_config[release]['rpm_os_ver_uri'] = list()
             self.releases_config[release]['os_ver_uri'] = [
                 OS_URI.format(from_os_version), ]
-            # openstack vs (openeuler or openstack)
+            # openstack vs openEuler
             vs_openeuler = OPENEULER_VERSION_PATTERN.match(to_os_version)
             if vs_openeuler:
                 # in oepkg repository
@@ -61,6 +63,25 @@ class ReleasesConfig:
                         else RPM_OS_URI
                     self.releases_config[release]['rpm_os_ver_uri'].append(
                         _url.format(to_os_version, arch))
+            # openstack vs 119 openEuler
+            elif to_os_version.startswith('dev-'):
+                _url = RPM_119_URI
+                to_os_version = to_os_version[4:]
+                _version_parts = to_os_version.split('-')
+                # LTS Next and release
+                if len(_version_parts) > 1:
+                    # aarch64
+                    _version_parts.extend([arch, arch])
+                    self.releases_config[release]['rpm_os_ver_uri'].append(
+                        _url.format(*_version_parts))
+                    # noarch
+                    _version_parts[-1] = RPM_119_SUB_DIR
+                    self.releases_config[release]['rpm_os_ver_uri'].append(
+                        _url.format(*_version_parts))
+                # Mainline and innovation release
+                else:
+                    pass
+            # openstack vs openstack
             else:
                 self.releases_config[release]['os_ver_uri'].append(
                     OS_URI.format(to_os_version))
@@ -127,8 +148,7 @@ class RPMVersions:
         for _rpm_os_ver_uri in self.rpm_os_ver_uri_list:
             r = requests.get(_rpm_os_ver_uri)
             if r.status_code != requests.codes.ok:
-                print("CAN NOT GET", _rpm_os_ver_uri)
-                continue
+                raise RuntimeError('CAN NOT GET {}'.format(_rpm_os_ver_uri))
             uri_content = r.content.decode()
             # get all links, which ends .rpm from HTML, work for oepkg and
             # openEuler EPOL page format
