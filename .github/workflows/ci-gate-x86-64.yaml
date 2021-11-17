@@ -1,4 +1,4 @@
-name: CI
+name: CI gate on x86_64
 
 on:
   pull_request:
@@ -8,13 +8,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  check-on-x86-64:
     strategy:
       matrix:
         os: [ubuntu-20.04, ubuntu-latest]
+        arch: ['x86_64']
         python-version: ['3.8', '3.x']
     runs-on: ${{ matrix.os }}
-    name: Test it with python ${{ matrix.python-version }} on ${{ matrix.os }}
+    name: Test it on ${{ matrix.os }} ${{ matrix.arch }} with python3
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python

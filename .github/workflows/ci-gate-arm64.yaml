@@ -1,0 +1,39 @@
+name: CI gate on arm64
+
+on:
+  pull_request:
+    # Runs on any pull request to main
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  check-on-arm64:
+    strategy:
+      matrix:
+        os: [ubuntu20.04]
+        arch: ['aarch64']
+    runs-on: ubuntu-20.04
+    name: Test it on ${{ matrix.os }} ${{ matrix.arch }} with python3
+    steps:
+      - uses: actions/checkout@v2
+      - uses: uraimo/run-on-arch-action@v2.1.1
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.os }}
+          githubToken: ${{ github.token }}
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y python3-minimal python3-pip
+          run: |
+            pip3 install -r requirements.txt
+            pip3 install flake8
+            flake8 --count .
+            python3 VersionStatus.py -n docs/index.html -r victoria/21.03,wallaby/21.09,queens/20.03-LTS-SP2,rocky/20.03-LTS-SP2,train/dev-20.03-LTS-Next
+            file docs/index.html
+            output=$(grep 'releases.openstack.org' docs/index.html)
+            echo $output | grep 'victoria'
+            echo $output | grep 'wallaby'
+            echo $output | grep 'queens'
+            echo $output | grep 'rocky'
+            echo $output | grep 'train'
