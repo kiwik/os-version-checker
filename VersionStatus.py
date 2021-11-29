@@ -40,7 +40,7 @@ class ReleasesConfig:
     def __init__(self, content, arch):
         if not isinstance(content, str):
             raise RuntimeError('Input Error')
-        self.releases = [r.strip() for r in content.split(',')]
+        self.releases = [r.strip() for r in content.split(',') if r]
         self.releases_config = dict()
         for release in self.releases:
             from_os_version, to_os_version = release.split('/', 1)
