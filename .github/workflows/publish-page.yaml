@@ -16,8 +16,8 @@ jobs:
         wallaby/21.09,\
         queens/20.03-LTS-SP2,\
         rocky/20.03-LTS-SP2,\
+        train/20.03-LTS-SP3,\
         train/dev-20.03-LTS-Next,\
-        train/dev-20.03-LTS-SP3,\
         "
     strategy:
       matrix:
