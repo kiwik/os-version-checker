@@ -13,13 +13,19 @@ from packaging import version
 OS_URI = "https://releases.openstack.org/{}"
 RPM_OS_LEGACY_URI = \
     "https://repo.openeuler.org/openEuler-{0}/EPOL/{1}/Packages/"
-RPM_LEGACY_VERSION = ['20.03-LTS', '20.03-LTS-SP1', '21.03']
+RPM_LEGACY_VERSION = ['20.03-LTS', '20.03-LTS-SP1',
+                      '20.09', '21.03']
 RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}/EPOL/main/{1}/Packages/"
 RPM_OEPKG_URI = 'https://repo.oepkgs.net/openEuler/rpm/'\
                 'openEuler-{0}/budding-openeuler/'\
                 'openstack/{1}/{2}/Packages/'
-RPM_119_URI = 'http://119.3.219.20:82/openEuler:/{0}:/{1}:/{2}:/'\
-              'Epol/standard_{3}/{4}/'
+RPM_119_LEGACY_URI = 'http://119.3.219.20:82/openEuler:/{0}/{1}/{2}/'\
+                     'Epol/standard_{3}/{4}/'
+RPM_119_LEGACY_VERSION = ['20.03-LTS', '20.03-LTS-SP1', '20.03-LTS-SP2',
+                          '20.03-LTS-SP3', '20.03-LTS-Next',
+                          '20.09', '21.03', '21.09']
+RPM_119_URI = 'http://119.3.219.20:82/openEuler:/{0}/{1}/{2}/'\
+              'Epol:/Multi-Version:/OpenStack:/{5}/standard_{3}/{4}'
 RPM_119_SUB_DIR = 'noarch'
 OPENSTACK_IN_OEPKG_VERSION = ['queens', 'rocky']
 STATUS_NONE = ["0", "NONE"]
@@ -65,17 +71,22 @@ class ReleasesConfig:
                         _url.format(to_os_version, arch))
             # openstack vs 119 openEuler
             elif to_os_version.startswith('dev-'):
-                _url = RPM_119_URI
                 to_os_version = to_os_version[4:]
-                _version_parts = to_os_version.split('-')
+                _url = RPM_119_LEGACY_URI \
+                    if to_os_version in RPM_119_LEGACY_VERSION else RPM_119_URI
+                _parts = to_os_version.split('-')
+                # pad placeholder in URI
+                _version_parts = [_parts[i] + ':' if i < len(_parts) else ''
+                                  for i in range(3)]
                 # LTS Next and release
                 if len(_version_parts) > 1:
                     # aarch64
-                    _version_parts.extend([arch, arch])
+                    _version_parts.extend([arch, arch,
+                                           from_os_version.capitalize()])
                     self.releases_config[release]['rpm_os_ver_uri'].append(
                         _url.format(*_version_parts))
                     # noarch
-                    _version_parts[-1] = RPM_119_SUB_DIR
+                    _version_parts[-2] = RPM_119_SUB_DIR
                     self.releases_config[release]['rpm_os_ver_uri'].append(
                         _url.format(*_version_parts))
                 # Mainline and innovation release
