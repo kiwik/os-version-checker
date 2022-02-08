@@ -17,6 +17,10 @@ jobs:
           queens/20.03-LTS-SP2,\
           wallaby/21.09,\
           victoria/21.03,\
+          train/dev-20.03-LTS-Next,\
+          train/dev-20.03-LTS-SP3,\
+          train/dev-20.03-LTS-SP1,\
+          train/dev-21.09,\
           "
     outputs:
       check-input: ${{ env.check-input }}
@@ -24,7 +28,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04, ubuntu-latest]
         arch: ['x86_64']
-        python-version: ['3.8', '3.x']
+        python-version: ['3.8']
     runs-on: ${{ matrix.os }}
     name: Test it on ${{ matrix.os }} ${{ matrix.arch }} with python${{ matrix.python-version }}
     steps:
