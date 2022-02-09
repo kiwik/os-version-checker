@@ -12,6 +12,7 @@ jobs:
     env:
       check-input: "\
           train/dev-22.03-LTS-Next,\
+          wallaby/dev-22.03-LTS-Next,\
           train/20.03-LTS-SP3,\
           rocky/20.03-LTS-SP2,\
           queens/20.03-LTS-SP2,\
@@ -50,12 +51,8 @@ jobs:
         run: |
           python VersionStatus.py -n docs/index.html -r ${{ env.check-input }}
           file docs/index.html
-          output=$(grep 'releases.openstack.org' docs/index.html)
-          echo $output | grep 'victoria'
-          echo $output | grep 'wallaby'
-          echo $output | grep 'queens'
-          echo $output | grep 'rocky'
-          echo $output | grep 'train'
+          output=$(grep 'view_window' docs/index.html)
+          echo $output
   check-on-arm64:
     needs: check-on-x86-64
     strategy:
@@ -80,5 +77,5 @@ jobs:
             flake8 --count .
             python3 VersionStatus.py -n docs/index.html -r ${{ needs.check-on-x86-64.outputs.check-input }}
             file docs/index.html
-            output=$(grep 'releases.openstack.org' docs/index.html)
-            echo $output | grep -A 5 "URI:"
+            output=$(grep 'view_window' docs/index.html)
+            echo $output
