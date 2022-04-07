@@ -11,14 +11,19 @@ import requests
 from packaging import version
 
 OS_URI = "https://releases.openstack.org/{}"
-RPM_OS_LEGACY_URI = \
-    "https://repo.openeuler.org/openEuler-{0}/EPOL/{1}/Packages/"
-RPM_LEGACY_VERSION = ['20.03-LTS', '20.03-LTS-SP1',
-                      '20.09', '21.03']
-RPM_OS_URI = "https://repo.openeuler.org/openEuler-{0}/EPOL/main/{1}/Packages/"
-RPM_OEPKG_URI = 'https://repo.oepkgs.net/openEuler/rpm/'\
-                'openEuler-{0}/budding-openeuler/'\
-                'openstack/{1}/{2}/Packages/'
+RPM_OS_URI_MAPPING = {
+    ('20.03-LTS', '20.03-LTS-SP1', '20.09', '21.03'):
+        "https://repo.openeuler.org/openEuler-{0}/EPOL/{1}/Packages/",
+    ('20.03-LTS-SP2',):
+        "https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/budding-openeuler"
+        "/openstack/{2}/{1}/Packages/",
+    ('20.03-LTS-SP3', '21.09'):
+        "https://repo.openeuler.org/openEuler-{0}/EPOL/main/{1}/Packages/",
+    ('22.03-LTS',):
+        "https://repo.openeuler.org/openEuler-{0}/EPOL/multi_version"
+        "/OpenStack/{2}/{1}/Packages/",
+}
+OPENEULER_REPO_DOMAIN = "repo.openeuler.org"
 RPM_119_LEGACY_URI = 'http://119.3.219.20:82/openEuler:/{0}/{1}/{2}/'\
                      'Epol/standard_{3}/{4}/'
 RPM_119_LEGACY_VERSION = ['20.03-LTS', '20.03-LTS-SP1', '20.03-LTS-SP2',
@@ -27,7 +32,6 @@ RPM_119_LEGACY_VERSION = ['20.03-LTS', '20.03-LTS-SP1', '20.03-LTS-SP2',
 RPM_119_URI = 'http://119.3.219.20:82/openEuler:/{0}/{1}/{2}/'\
               'Epol:/Multi-Version:/OpenStack:/{5}/standard_{3}/{4}'
 RPM_119_SUB_DIR = 'noarch'
-OPENSTACK_IN_OEPKG_VERSION = ['queens', 'rocky']
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_MISMATCH = ["2", "MISMATCH"]
@@ -58,17 +62,16 @@ class ReleasesConfig:
             vs_openeuler = OPENEULER_VERSION_PATTERN.match(to_os_version)
             if vs_openeuler:
                 # in oepkg repository
-                if from_os_version in OPENSTACK_IN_OEPKG_VERSION:
-                    _url = RPM_OEPKG_URI
-                    self.releases_config[release]['rpm_os_ver_uri'].append(
-                        _url.format(to_os_version, from_os_version, arch))
+                for _to_version_tuple in RPM_OS_URI_MAPPING.keys():
+                    if to_os_version in _to_version_tuple:
+                        _url = RPM_OS_URI_MAPPING.get(_to_version_tuple)
+                        break
                 else:
-                    # EPOL path should add "main" directory for new format
-                    _url = RPM_OS_LEGACY_URI \
-                        if to_os_version in RPM_LEGACY_VERSION \
-                        else RPM_OS_URI
-                    self.releases_config[release]['rpm_os_ver_uri'].append(
-                        _url.format(to_os_version, arch))
+                    raise RuntimeError('Input Error')
+                _from_os_version = from_os_version.capitalize() \
+                    if OPENEULER_REPO_DOMAIN in _url else from_os_version
+                self.releases_config[release]['rpm_os_ver_uri'].append(
+                    _url.format(to_os_version, arch, _from_os_version))
             # openstack vs 119 openEuler
             elif to_os_version.startswith('dev-'):
                 to_os_version = to_os_version[4:]
