@@ -15,6 +15,7 @@ jobs:
         train/22.03-LTS,\
         wallaby/22.03-LTS,\
         train/dev-22.03-LTS-Next,\
+        wallaby/dev-Mainline,\
         train/20.03-LTS-SP3,\
         rocky/20.03-LTS-SP2,\
         queens/20.03-LTS-SP2,\
