@@ -14,7 +14,8 @@ jobs:
           train/22.03-LTS,\
           wallaby/22.03-LTS,\
           train/dev-22.03-LTS-Next,\
-          wallaby/dev-22.03-LTS-Next,\
+          wallaby/dev-Mainline,\
+          wallaby/dev-22.03-LTS,\
           train/20.03-LTS-SP3,\
           rocky/20.03-LTS-SP2,\
           queens/20.03-LTS-SP2,\
@@ -22,6 +23,7 @@ jobs:
           victoria/21.03,\
           train/dev-20.03-LTS-Next,\
           train/dev-20.03-LTS-SP3,\
+          train/dev-20.03-LTS-SP2,\
           train/dev-20.03-LTS-SP1,\
           train/dev-21.09,\
           "

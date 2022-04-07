@@ -22,15 +22,18 @@ RPM_OS_URI_MAPPING = {
     ('22.03-LTS',):
         "https://repo.openeuler.org/openEuler-{0}/EPOL/multi_version"
         "/OpenStack/{2}/{1}/Packages/",
+    ('dev-20.03-LTS', 'dev-20.03-LTS-SP1', 'dev-20.03-LTS-SP2',
+     'dev-20.03-LTS-SP3', 'dev-20.03-LTS-Next',
+     'dev-20.09', 'dev-21.03', 'dev-21.09',
+     'dev-Mainline'):
+        "http://119.3.219.20:82/openEuler:/{0}/{1}/{2}"
+        "/Epol/standard_{3}/{4}/",
+    ('dev-22.03-LTS',
+     'dev-22.03-LTS-Next'):
+        "http://119.3.219.20:82/openEuler:/{0}/{1}/{2}"
+        "/Epol:/Multi-Version:/OpenStack:/{5}/standard_{3}/{4}",
 }
 OPENEULER_REPO_DOMAIN = "repo.openeuler.org"
-RPM_119_LEGACY_URI = 'http://119.3.219.20:82/openEuler:/{0}/{1}/{2}/'\
-                     'Epol/standard_{3}/{4}/'
-RPM_119_LEGACY_VERSION = ['20.03-LTS', '20.03-LTS-SP1', '20.03-LTS-SP2',
-                          '20.03-LTS-SP3', '20.03-LTS-Next',
-                          '20.09', '21.03', '21.09']
-RPM_119_URI = 'http://119.3.219.20:82/openEuler:/{0}/{1}/{2}/'\
-              'Epol:/Multi-Version:/OpenStack:/{5}/standard_{3}/{4}'
 RPM_119_SUB_DIR = 'noarch'
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
@@ -42,7 +45,6 @@ UPSTREAM_FILTER_LIST = [
     re.compile(r"^[-_\w]+[-_]dashboard$"),  # *-dashboard
     re.compile(r"^[-_\w]+[-_]tempest[-_]plugin$"),  # *-tempest-plugin
 ]
-OPENEULER_VERSION_PATTERN = re.compile(r"^\d.*$")
 OPENEULER_DEFAULT_REPLACE = re.compile(r"[._]")
 
 
@@ -58,47 +60,42 @@ class ReleasesConfig:
             self.releases_config[release]['rpm_os_ver_uri'] = list()
             self.releases_config[release]['os_ver_uri'] = [
                 OS_URI.format(from_os_version), ]
+            # Get URL template
+            for _to_version_tuple in RPM_OS_URI_MAPPING.keys():
+                if to_os_version in _to_version_tuple:
+                    _url = RPM_OS_URI_MAPPING.get(_to_version_tuple)
+                    break
+            # openstack vs openstack
+            else:
+                self.release_config[release]['os_ver_url'].append(
+                    OS_URI.format(to_os_version))
+                return
+
+            # openstack vs 119 openEuler
+            if to_os_version.startswith('dev-'):
+                to_os_version = to_os_version[4:]
+                _parts = to_os_version.split('-')
+                # pad placeholder in URI
+                _version_parts = [_parts[i] + ':'
+                                  if (i < len(_parts) and
+                                      to_os_version != 'Mainline')
+                                  else ''
+                                  for i in range(3)]
+                # aarch64
+                _version_parts.extend([arch, arch,
+                                       from_os_version.capitalize()])
+                self.releases_config[release]['rpm_os_ver_uri'].append(
+                    _url.format(*_version_parts))
+                # noarch
+                _version_parts[-2] = RPM_119_SUB_DIR
+                self.releases_config[release]['rpm_os_ver_uri'].append(
+                    _url.format(*_version_parts))
             # openstack vs openEuler
-            vs_openeuler = OPENEULER_VERSION_PATTERN.match(to_os_version)
-            if vs_openeuler:
-                # in oepkg repository
-                for _to_version_tuple in RPM_OS_URI_MAPPING.keys():
-                    if to_os_version in _to_version_tuple:
-                        _url = RPM_OS_URI_MAPPING.get(_to_version_tuple)
-                        break
-                else:
-                    raise RuntimeError('Input Error')
+            else:
                 _from_os_version = from_os_version.capitalize() \
                     if OPENEULER_REPO_DOMAIN in _url else from_os_version
                 self.releases_config[release]['rpm_os_ver_uri'].append(
                     _url.format(to_os_version, arch, _from_os_version))
-            # openstack vs 119 openEuler
-            elif to_os_version.startswith('dev-'):
-                to_os_version = to_os_version[4:]
-                _url = RPM_119_LEGACY_URI \
-                    if to_os_version in RPM_119_LEGACY_VERSION else RPM_119_URI
-                _parts = to_os_version.split('-')
-                # pad placeholder in URI
-                _version_parts = [_parts[i] + ':' if i < len(_parts) else ''
-                                  for i in range(3)]
-                # LTS Next and release
-                if len(_version_parts) > 1:
-                    # aarch64
-                    _version_parts.extend([arch, arch,
-                                           from_os_version.capitalize()])
-                    self.releases_config[release]['rpm_os_ver_uri'].append(
-                        _url.format(*_version_parts))
-                    # noarch
-                    _version_parts[-2] = RPM_119_SUB_DIR
-                    self.releases_config[release]['rpm_os_ver_uri'].append(
-                        _url.format(*_version_parts))
-                # Mainline and innovation release
-                else:
-                    pass
-            # openstack vs openstack
-            else:
-                self.releases_config[release]['os_ver_uri'].append(
-                    OS_URI.format(to_os_version))
 
 
 class Renderer:
