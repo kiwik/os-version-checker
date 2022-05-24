@@ -12,10 +12,10 @@ jobs:
   publish:
     env:
       publish-input: "\
-        train/22.03-LTS,\
-        wallaby/22.03-LTS,\
+        yoga/dev-Mainline,\
         train/dev-22.03-LTS-Next,\
-        wallaby/dev-Mainline,\
+        wallaby/22.03-LTS,\
+        train/22.03-LTS,\
         train/20.03-LTS-SP3,\
         rocky/20.03-LTS-SP2,\
         queens/20.03-LTS-SP2,\
