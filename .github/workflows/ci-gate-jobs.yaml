@@ -27,29 +27,29 @@ jobs:
       check-input: ${{ env.check-input }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, ubuntu-latest]
+        os: [ubuntu-20.04]
+        container-image: ['docker.io/openeuler/openeuler']
         arch: ['x86_64']
-        python-version: ['3.8']
     runs-on: ${{ matrix.os }}
-    name: Test it on ${{ matrix.os }} ${{ matrix.arch }} with python${{ matrix.python-version }}
+    container: ${{ matrix.container-image }}
+    name: Test it on ${{ matrix.container-image }} ${{ matrix.arch }} with python3
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
+      - uses: actions/checkout@v3
+      - name: Env
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Lint with flake8
+          uname -a
+          cat /etc/os-release
+      - name: Setup
         run: |
-          pip install flake8
+          dnf install -y python3 python3-pip file grep
+          pip3 install -r requirements.txt
+      - name: Lint
+        run: |
+          pip3 install flake8
           flake8 --count .
       - name: Run
-        # Run tool, then check file and content
         run: |
-          python VersionStatus.py -n docs/index.html -r ${{ env.check-input }}
+          python3 VersionStatus.py -n docs/index.html -r ${{ env.check-input }}
           file docs/index.html
           output=$(grep 'view_window' docs/index.html)
           echo $output
@@ -62,19 +62,19 @@ jobs:
     runs-on: ubuntu-20.04
     name: Test it on ${{ matrix.os }} ${{ matrix.arch }} with python3
     steps:
-      - uses: actions/checkout@v2
-      - uses: uraimo/run-on-arch-action@v2.1.1
+      - uses: actions/checkout@v3
+      - uses: uraimo/run-on-arch-action@v2.2.1
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.os }}
           githubToken: ${{ github.token }}
           install: |
+            uname -a
+            cat /etc/os-release
             apt-get update -q -y
-            apt-get install -q -y python3-minimal python3-pip
+            apt-get install -q -y python3 python3-pip file grep
           run: |
             pip3 install -r requirements.txt
-            pip3 install flake8
-            flake8 --count .
             python3 VersionStatus.py -n docs/index.html -r ${{ needs.check-on-x86-64.outputs.check-input }}
             file docs/index.html
             output=$(grep 'view_window' docs/index.html)
