@@ -1,19 +1,27 @@
 task:
   name: Run inference on
-#  only_if: "changesIncludeOnly('ai/*')"
+  only_if: "changesInclude('ai/*', '.cirrus.yml')"
   matrix:
     arm_container:
       image: docker.io/openeuler/openeuler
+      cpu: 4
+      memory: 4G
     container:
-      image: docker.io/library/rockylinux:9
+      image: docker.io/openeuler/openeuler
+      cpu: 4
+      memory: 4G
   env_script: |
     uname -a
     cat /etc/os-release
   setup_script: |
     if [[ -x "$(command -v dnf)" ]]
     then
-      dnf install -y python3 python3-pip
+      dnf install -y python3 python3-pip wget tar
     fi
-    pip3 install onnxruntime
+    pip3 install onnxruntime pillow
+    wget https://s3.amazonaws.com/onnx-model-zoo/resnet/resnet50v2/resnet50v2.tar.gz
+    tar xvzf resnet50v2.tar.gz --warning=no-unknown-keyword -C ai/inference/resnet50/
   script: |
     echo "checking pull request #${CIRRUS_PR}"
+    cd ai/inference/resnet50/
+    python3 resnet50_modelzoo_onnxruntime_inference.py
