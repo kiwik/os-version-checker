@@ -4,6 +4,10 @@ on:
   pull_request:
     # Runs on any pull request to main
     branches: [ main ]
+    # AI directory apply .cirrus.yml to test
+    paths-ignore:
+      - 'ai/**'
+      - '.cirrus.yml'
 
   workflow_dispatch:
 
