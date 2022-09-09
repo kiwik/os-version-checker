@@ -10,6 +10,9 @@ task:
       image: docker.io/openeuler/openeuler
       cpu: 4
       memory: 4G
+    persistent_worker:
+      labels:
+        provider: huaweicloud
   env_script: |
     uname -a
     cat /etc/os-release
