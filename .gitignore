@@ -10,3 +10,6 @@ virtualenv
 __pycache__/
 *.py[cod]
 *$py.class
+
+# AI model files
+ai/inference/resnet50/resnet50v2/
