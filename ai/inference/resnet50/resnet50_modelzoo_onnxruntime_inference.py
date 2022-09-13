@@ -12,9 +12,9 @@ def load_labels(path):
     return np.asarray(data)
 
 
-def preprocess(input_data):
+def preprocess(_input_data):
     # convert the input data into the float32 input
-    img_data = input_data.astype('float32')
+    img_data = _input_data.astype('float32')
 
     # normalize
     mean_vec = np.array([0.485, 0.456, 0.406])
