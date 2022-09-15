@@ -50,7 +50,7 @@ file_data = list()
 loop_times = 500
 
 for one in input_file_names:
-    image = Image.open('images/{}.jpg'.format(one))
+    image = Image.open('../images/{}.jpg'.format(one))
     image_data = np.array(image).transpose(2, 0, 1)
     input_data = preprocess(image_data)
     file_data.append({'input_data': input_data, 'size': image.size})
@@ -76,6 +76,6 @@ for _name, _data in zip(input_file_names, file_data):
                                           str(_data.get('top'))))
 print('========================================')
 inference_time = np.round((end - start), 2)
-print('{} times inference time: {}s'.format(loop_times * len(input_file_names),
-                                            str(inference_time)))
+print('{} times inference time: {} sec'.format(
+    loop_times * len(input_file_names), str(inference_time)))
 print('========================================')
