@@ -19,12 +19,16 @@ task:
   setup_script: |
     if [[ -x "$(command -v dnf)" ]]
     then
-      dnf install -y python3 python3-pip wget tar
+      dnf install -y python3 python3-pip curl tar
     fi
-    pip3 install onnxruntime pillow
-    wget https://s3.amazonaws.com/onnx-model-zoo/resnet/resnet50v2/resnet50v2.tar.gz
+    pip3 install onnxruntime pillow matplotlib
+    curl https://s3.amazonaws.com/onnx-model-zoo/resnet/resnet50v2/resnet50v2.tar.gz -o resnet50v2.tar.gz 
     tar xvzf resnet50v2.tar.gz --warning=no-unknown-keyword -C ai/inference/resnet50/
-  script: |
+    curl https://media.githubusercontent.com/media/onnx/models/main/vision/object_detection_segmentation/yolov3/model/yolov3-10.onnx --create-dirs -o ai/inference/yolo/yolov3/yolov3.onnx
     echo "checking pull request #${CIRRUS_PR}"
+  resnet50_script: |
     cd ai/inference/resnet50/
     python3 resnet50_modelzoo_onnxruntime_inference.py
+  yolov3_script: |
+    cd ai/inference/yolo/
+    python3 yoloV3_object_detection_onnxruntime_inference.py
