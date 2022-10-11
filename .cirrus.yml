@@ -25,6 +25,7 @@ task:
     curl https://s3.amazonaws.com/onnx-model-zoo/resnet/resnet50v2/resnet50v2.tar.gz -o resnet50v2.tar.gz 
     tar xvzf resnet50v2.tar.gz --warning=no-unknown-keyword -C ai/inference/resnet50/
     curl https://media.githubusercontent.com/media/onnx/models/main/vision/object_detection_segmentation/yolov3/model/yolov3-10.onnx --create-dirs -o ai/inference/yolo/yolov3/yolov3.onnx
+    curl https://media.githubusercontent.com/media/onnx/models/main/text/machine_comprehension/bert-squad/model/bertsquad-12.onnx --create-dirs -o ai/inference/bert/bert-qa/bertsquad-12.onnx
     echo "checking pull request #${CIRRUS_PR}"
   resnet50_script: |
     cd ai/inference/resnet50/
@@ -32,3 +33,6 @@ task:
   yolov3_script: |
     cd ai/inference/yolo/
     python3 yoloV3_object_detection_onnxruntime_inference.py
+  bert_script: |
+    cd ai/inference/bert/
+    python3 bert_qa_onnxruntime_inference.py

@@ -13,3 +13,4 @@ __pycache__/
 # AI model files
 ai/inference/resnet50/resnet50v2/
 ai/inference/yolo/yolov3/
+ai/inference/bert/bert-qa/*.onnx
