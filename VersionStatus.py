@@ -3,12 +3,15 @@ import operator
 import os
 import re
 import sys
+from collections import defaultdict
 from collections import OrderedDict
 
 import click
 import jinja2
 import requests
 from packaging import version
+import validators
+
 
 OS_URI = "https://releases.openstack.org/{}"
 RPM_OS_URI_MAPPING = {
@@ -18,7 +21,14 @@ RPM_OS_URI_MAPPING = {
         "https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/budding-openeuler"
         "/openstack/{2}/{1}/Packages/",
     ('20.03-LTS-SP3', '21.09'):
-        "https://repo.openeuler.org/openEuler-{0}/EPOL/main/{1}/Packages/",
+        defaultdict(
+            lambda: "https://repo.openeuler.org/openEuler-{0}/EPOL/"
+                    "main/{1}/Packages/",
+            dict(rocky="https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/"
+                       "budding-openeuler/openstack/{2}/{1}/Packages/",
+                 queens="https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/"
+                        "budding-openeuler/openstack/{2}/{1}/Packages/")
+        ),
     ('22.03-LTS',):
         "https://repo.openeuler.org/openEuler-{0}/EPOL/multi_version"
         "/OpenStack/{2}/{1}/Packages/",
@@ -46,6 +56,7 @@ UPSTREAM_FILTER_LIST = [
     re.compile(r"^[-_\w]+[-_]tempest[-_]plugin$"),  # *-tempest-plugin
 ]
 OPENEULER_DEFAULT_REPLACE = re.compile(r"[._]")
+PROXY = {}
 
 
 class ReleasesConfig:
@@ -64,6 +75,8 @@ class ReleasesConfig:
             for _to_version_tuple in RPM_OS_URI_MAPPING.keys():
                 if to_os_version in _to_version_tuple:
                     _url = RPM_OS_URI_MAPPING.get(_to_version_tuple)
+                    if isinstance(_url, dict):
+                        _url = _url[from_os_version]
                     break
             # openstack vs openstack
             else:
@@ -157,7 +170,7 @@ class RPMVersions:
     def rpm_versions(self):
         results = dict()
         for _rpm_os_ver_uri in self.rpm_os_ver_uri_list:
-            r = requests.get(_rpm_os_ver_uri)
+            r = requests.get(_rpm_os_ver_uri, proxies=PROXY, verify=False)
             if r.status_code != requests.codes.ok:
                 raise RuntimeError('CAN NOT GET {}'.format(_rpm_os_ver_uri))
             uri_content = r.content.decode()
@@ -184,7 +197,9 @@ class RPMVersions:
 
 class UpstreamVersions:
     def __init__(self, _os_ver_uri):
-        self.url_os_content = requests.get(_os_ver_uri).content.decode()
+        self.url_os_content = requests.get(_os_ver_uri,
+                                           proxies=PROXY,
+                                           verify=False).content.decode()
 
     @property
     def upstream_versions(self):
@@ -328,9 +343,13 @@ class VersionsComparator:
               required=False, show_default=True,
               type=click.Choice(['aarch64', 'x86_64']),
               help='CPU architecture of distribution')
-def run(releases, file_type, file_name_os, arch):
+@click.option('-p', '--proxy', required=False, help='HTTP proxy url')
+def run(releases, file_type, file_name_os, arch, proxy):
     if releases:
         releases_config = ReleasesConfig(releases, arch)
+    if isinstance(proxy, str) and validators.url(proxy):
+        PROXY.update({'http': proxy, 'https': proxy})
+
     ver_data = dict()
     for release in releases_config.releases:
         _release_config = releases_config.releases_config.get(release)
