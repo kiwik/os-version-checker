@@ -1,4 +1,4 @@
-name: CI gate
+name: CI Gate
 
 on:
   pull_request:
@@ -16,13 +16,13 @@ jobs:
     env:
       check-input: "\
           yoga/dev-Mainline,\
+          wallaby/dev-22.03-LTS-Next,\
           train/dev-22.03-LTS-Next,\
           wallaby/22.03-LTS,\
           train/22.03-LTS,\
-          wallaby/dev-22.03-LTS,\
           train/20.03-LTS-SP3,\
-          rocky/20.03-LTS-SP2,\
-          queens/20.03-LTS-SP2,\
+          rocky/20.03-LTS-SP3,\
+          queens/20.03-LTS-SP3,\
           wallaby/21.09,\
           victoria/21.03,\
           train/dev-20.03-LTS-SP3,\
@@ -31,7 +31,7 @@ jobs:
       check-input: ${{ env.check-input }}
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
         container-image: ['docker.io/openeuler/openeuler']
         arch: ['x86_64']
     runs-on: ${{ matrix.os }}
@@ -61,13 +61,13 @@ jobs:
     needs: check-on-x86-64
     strategy:
       matrix:
-        os: [ubuntu20.04]
+        os: [ubuntu22.04]
         arch: ['aarch64']
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Test it on ${{ matrix.os }} ${{ matrix.arch }} with python3
     steps:
       - uses: actions/checkout@v3
-      - uses: uraimo/run-on-arch-action@v2.2.1
+      - uses: uraimo/run-on-arch-action@v2.3.0
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.os }}
