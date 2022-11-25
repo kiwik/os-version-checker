@@ -3,15 +3,13 @@ import operator
 import os
 import re
 import sys
-from collections import defaultdict
-from collections import OrderedDict
+from collections import defaultdict, OrderedDict
 
 import click
 import jinja2
 import requests
-from packaging import version
 import validators
-
+from packaging import version
 
 OS_URI = "https://releases.openstack.org/{}"
 RPM_OS_URI_MAPPING = {
@@ -56,7 +54,7 @@ UPSTREAM_FILTER_LIST = [
     re.compile(r"^[-_\w]+[-_]tempest[-_]plugin$"),  # *-tempest-plugin
 ]
 OPENEULER_DEFAULT_REPLACE = re.compile(r"[._]")
-PROXY = {}
+REQUESTS_ARGS = {}
 
 
 class ReleasesConfig:
@@ -64,23 +62,23 @@ class ReleasesConfig:
         if not isinstance(content, str):
             raise RuntimeError('Input Error')
         self.releases = [r.strip() for r in content.split(',') if r]
-        self.releases_config = dict()
+        self.releases_config = {}
         for release in self.releases:
             from_os_version, to_os_version = release.split('/', 1)
-            self.releases_config[release] = dict()
-            self.releases_config[release]['rpm_os_ver_uri'] = list()
+            self.releases_config[release] = {}
+            self.releases_config[release]['rpm_os_ver_uri'] = []
             self.releases_config[release]['os_ver_uri'] = [
                 OS_URI.format(from_os_version), ]
             # Get URL template
             for _to_version_tuple in RPM_OS_URI_MAPPING.keys():
                 if to_os_version in _to_version_tuple:
-                    _url = RPM_OS_URI_MAPPING.get(_to_version_tuple)
+                    _url = RPM_OS_URI_MAPPING[_to_version_tuple]
                     if isinstance(_url, dict):
                         _url = _url[from_os_version]
                     break
             # openstack vs openstack
             else:
-                self.release_config[release]['os_ver_url'].append(
+                self.releases_config[release]['os_ver_url'].append(
                     OS_URI.format(to_os_version))
                 return
 
@@ -134,18 +132,18 @@ class Renderer:
                     for pkg_name, pkg_info in _value['data'].items():
                         output += "{:<30} {:<15} {:<15} {:<15}\n".format(
                             pkg_name,
-                            pkg_info.get('base_package_version'),
-                            str(pkg_info.get('comparison_package_version')),
-                            pkg_info.get('status'))
+                            pkg_info['base_package_version'],
+                            str(pkg_info['comparison_package_version']),
+                            pkg_info['status'])
                 output += "\n"
         if "html" == self.file_format:
-            SHA_TZ = datetime.timezone(
+            sha_tz = datetime.timezone(
                 datetime.timedelta(hours=8),
                 name='Asia/Shanghai',
             )
             utc_now = datetime.datetime.utcnow().replace(
                 tzinfo=datetime.timezone.utc)
-            xian_now = utc_now.astimezone(SHA_TZ)
+            xian_now = utc_now.astimezone(sha_tz)
             output = jinja2.Environment(
                 loader=jinja2.FileSystemLoader(
                     self.template_path)).get_template(self.template).render(
@@ -170,7 +168,7 @@ class RPMVersions:
     def rpm_versions(self):
         results = dict()
         for _rpm_os_ver_uri in self.rpm_os_ver_uri_list:
-            r = requests.get(_rpm_os_ver_uri, proxies=PROXY, verify=False)
+            r = requests.get(_rpm_os_ver_uri, **REQUESTS_ARGS)
             if r.status_code != requests.codes.ok:
                 raise RuntimeError('CAN NOT GET {}'.format(_rpm_os_ver_uri))
             uri_content = r.content.decode()
@@ -189,17 +187,16 @@ class RPMVersions:
                     results[pkg_name] = pkg_info
                 else:
                     # if current version < new version, then update it
-                    if version.parse(results.get(pkg_name).get('version')) \
+                    if version.parse(results[pkg_name]['version']) \
                             < version.parse(pkg_ver):
-                        results.get(pkg_name).update(version=pkg_ver)
+                        results[pkg_name].update(version=pkg_ver)
         return results
 
 
 class UpstreamVersions:
     def __init__(self, _os_ver_uri):
         self.url_os_content = requests.get(_os_ver_uri,
-                                           proxies=PROXY,
-                                           verify=False).content.decode()
+                                           **REQUESTS_ARGS).content.decode()
 
     @property
     def upstream_versions(self):
@@ -207,7 +204,7 @@ class UpstreamVersions:
         links = re.findall(r'https://.*\.tar\.gz', self.url_os_content)
         results = dict()
         for pkg_link in links:
-            # get name and package informations from link
+            # get name and package information from link
             tmp = pkg_link.split("/")
             pkg_full_name = tmp[4]
             pkg_name = pkg_full_name[0:pkg_full_name.rfind('-')]
@@ -220,9 +217,9 @@ class UpstreamVersions:
                 results[pkg_name] = pkg_info
             else:
                 # if current versions < new version, then update it
-                if version.parse(results.get(pkg_name).get('version')) \
+                if version.parse(results[pkg_name]['version']) \
                         < version.parse(pkg_ver):
-                    results.get(pkg_name).update(version=pkg_ver)
+                    results[pkg_name].update(version=pkg_ver)
         return results
 
 
@@ -248,7 +245,7 @@ class VersionsComparator:
                 "+python3-": "python3-{}".format(default_replace),
                 "+openstack-": "openstack-{}".format(default_replace)
             }
-            return cases.get(str_to_replace)
+            return cases[str_to_replace]
 
         def is_in_comp_data(_base_pkg_name, _replacement):
             if sanitize_base_pkg_name(_base_pkg_name, replacement) \
@@ -298,25 +295,25 @@ class VersionsComparator:
         overall_status = STATUS_NONE
         for base_pkg_name in filter(filter_upstream, self._base_data.keys()):
             comp_pkg_name = self.get_pair(base_pkg_name, self._comp_data)
-            base_pkg_ver = self._base_data.get(base_pkg_name).get('version')
+            base_pkg_ver = self._base_data[base_pkg_name]['version']
             # if to comparison package and base package have pair
             if comp_pkg_name is not None:
-                comp_pkg_info = self._comp_data.get(comp_pkg_name)
-                comp_pkg_ver = comp_pkg_info.get('version')
+                comp_pkg_info = self._comp_data[comp_pkg_name]
+                comp_pkg_ver = comp_pkg_info['version']
                 status = set_status(base_pkg_ver, comp_pkg_ver)
-                pkg_infos = dict(comparison_package_version=comp_pkg_ver,
-                                 base_package_version=base_pkg_ver,
-                                 status=status[1], status_id=status[0])
+                pkg_info = dict(comparison_package_version=comp_pkg_ver,
+                                base_package_version=base_pkg_ver,
+                                status=status[1], status_id=status[0])
                 if status == STATUS_OUTDATED:
                     overall_status = STATUS_OUTDATED
                 paired += 1
                 del self._comp_data[comp_pkg_name]
             else:
-                pkg_infos = dict(comparison_package_version=None,
-                                 base_package_version=base_pkg_ver,
-                                 status=STATUS_MISSING[1],
-                                 status_id=STATUS_MISSING[0])
-            result_data[base_pkg_name] = pkg_infos
+                pkg_info = dict(comparison_package_version=None,
+                                base_package_version=base_pkg_ver,
+                                status=STATUS_MISSING[1],
+                                status_id=STATUS_MISSING[0])
+            result_data[base_pkg_name] = pkg_info
 
         result_data = OrderedDict(sorted(result_data.items(),
                                          key=lambda x:
@@ -328,15 +325,15 @@ class VersionsComparator:
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option('-r', '--releases', is_flag=False, metavar='<release-distro>',
-              type=click.STRING, required=True,
-              help='Comma separated releases with openstack or '
-                   'distribution of openEuler to check, for example: '
-                   'rocky/20.03-LTS-SP2,rocky/train')
-@click.option('-t', '--file-type', default='html',
+@click.option('-r', '--releases', default='train/20.03-LTS-SP3',
+              type=click.STRING, required=False, show_default=True,
+              help='Comma separated releases with openstack/openEuler '
+                   'to check, for example: '
+                   'rocky/20.03-LTS-SP2,train/20.03-LTS-SP3')
+@click.option('-t', '--file-type', default='html', required=False,
               show_default=True, help='Output file format',
               type=click.Choice(['txt', 'html']))
-@click.option('-n', '--file-name-os', default='index.html',
+@click.option('-n', '--file-name', default='index.html',
               required=False, show_default=True,
               help='Output file name of openstack version checker')
 @click.option('-a', '--arch', default='aarch64',
@@ -344,37 +341,37 @@ class VersionsComparator:
               type=click.Choice(['aarch64', 'x86_64']),
               help='CPU architecture of distribution')
 @click.option('-p', '--proxy', required=False, help='HTTP proxy url')
-def run(releases, file_type, file_name_os, arch, proxy):
-    if releases:
-        releases_config = ReleasesConfig(releases, arch)
+@click.option('-b', '--bypass-ssl-verify', default=False,
+              required=False, show_default=True, is_flag=True,
+              help='Bypass SSL verify')
+def run(releases, file_type, file_name, arch, proxy, bypass_ssl_verify):
     if isinstance(proxy, str) and validators.url(proxy):
-        PROXY.update({'http': proxy, 'https': proxy})
+        REQUESTS_ARGS.update({'proxies': {'http': proxy, 'https': proxy}})
+    REQUESTS_ARGS.update({'verify': not bypass_ssl_verify})
+    releases_config = ReleasesConfig(releases, arch)
+    ver_data = {}
 
-    ver_data = dict()
     for release in releases_config.releases:
-        _release_config = releases_config.releases_config.get(release)
-        from_os_uri = _release_config.get('os_ver_uri')[0]
+        _release_config = releases_config.releases_config[release]
+        from_os_uri = _release_config['os_ver_uri'][0]
         from_os_data = UpstreamVersions(from_os_uri).upstream_versions
         # openstack version check openEuler
-        _rpm_os_ver_uri = _release_config.get('rpm_os_ver_uri')
+        _rpm_os_ver_uri = _release_config['rpm_os_ver_uri']
         if _rpm_os_ver_uri:
             to_os_data = RPMVersions(_rpm_os_ver_uri).rpm_versions
         # openstack version check openstack
         else:
-            to_os_uri = _release_config.get('os_ver_uri')[-1]
+            to_os_uri = _release_config['os_ver_uri'][-1]
             to_os_data = UpstreamVersions(to_os_uri).upstream_versions
 
         ver_data[release] = VersionsComparator(from_os_data,
                                                to_os_data).compared_data
-        ver_data[release]['apt'] = _release_config.get(
-            'os_ver_uri') + _release_config.get('rpm_os_ver_uri')
+        ver_data[release]['apt'] = _release_config['os_ver_uri'] + \
+            _release_config['rpm_os_ver_uri']
 
     Renderer(ver_data, "template_os_checker.j2", file_type,
-             file_name_os).render()
+             file_name).render()
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 1:
-        run.main(['--help'])
-    else:
-        run()
+    run()
