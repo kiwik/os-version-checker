@@ -349,10 +349,10 @@ def run(releases, file_name, proxy, bypass_ssl_verify):
     for release in releases_config.releases:
         _release_config = releases_config.releases_config[release]
         from_os_uri = _release_config['os_ver_uri'][0]
+        rpm_os_ver_uri = _release_config['rpm_os_ver_uri']
         try:
             from_os_data = UpstreamVersions(from_os_uri).upstream_versions
             # openstack version check openEuler
-            rpm_os_ver_uri = _release_config['rpm_os_ver_uri']
             if rpm_os_ver_uri:
                 to_os_data = RPMVersions(rpm_os_ver_uri).rpm_versions
             # openstack version check openstack
