@@ -42,7 +42,9 @@ RPM_OS_URI_MAPPING = {
         "/Epol:/Multi-Version:/OpenStack:/{5}/standard_{3}/{4}",
 }
 OPENEULER_REPO_DOMAIN = "repo.openeuler.org"
+DEFAULT_ARCH = 'aarch64'
 RPM_119_SUB_DIR = 'noarch'
+DEFAULT_FILE_TYPE = 'html'
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
 STATUS_MISMATCH = ["2", "MISMATCH"]
@@ -58,7 +60,7 @@ REQUESTS_ARGS = {}
 
 
 class ReleasesConfig:
-    def __init__(self, content, arch):
+    def __init__(self, content, arch=DEFAULT_ARCH):
         if not isinstance(content, str):
             raise RuntimeError('Input Error')
         self.releases = [r.strip() for r in content.split(',') if r]
@@ -330,47 +332,46 @@ class VersionsComparator:
               help='Comma separated releases with openstack/openEuler '
                    'to check, for example: '
                    'rocky/20.03-LTS-SP2,train/20.03-LTS-SP3')
-@click.option('-t', '--file-type', default='html', required=False,
-              show_default=True, help='Output file format',
-              type=click.Choice(['txt', 'html']))
 @click.option('-n', '--file-name', default='index.html',
               required=False, show_default=True,
               help='Output file name of openstack version checker')
-@click.option('-a', '--arch', default='aarch64',
-              required=False, show_default=True,
-              type=click.Choice(['aarch64', 'x86_64']),
-              help='CPU architecture of distribution')
 @click.option('-p', '--proxy', required=False, help='HTTP proxy url')
 @click.option('-b', '--bypass-ssl-verify', default=False,
               required=False, show_default=True, is_flag=True,
               help='Bypass SSL verify')
-def run(releases, file_type, file_name, arch, proxy, bypass_ssl_verify):
+def run(releases, file_name, proxy, bypass_ssl_verify):
     if isinstance(proxy, str) and validators.url(proxy):
         REQUESTS_ARGS.update({'proxies': {'http': proxy, 'https': proxy}})
     REQUESTS_ARGS.update({'verify': not bypass_ssl_verify})
-    releases_config = ReleasesConfig(releases, arch)
+    releases_config = ReleasesConfig(releases)
     ver_data = {}
 
     for release in releases_config.releases:
         _release_config = releases_config.releases_config[release]
         from_os_uri = _release_config['os_ver_uri'][0]
-        from_os_data = UpstreamVersions(from_os_uri).upstream_versions
-        # openstack version check openEuler
-        _rpm_os_ver_uri = _release_config['rpm_os_ver_uri']
-        if _rpm_os_ver_uri:
-            to_os_data = RPMVersions(_rpm_os_ver_uri).rpm_versions
-        # openstack version check openstack
-        else:
-            to_os_uri = _release_config['os_ver_uri'][-1]
-            to_os_data = UpstreamVersions(to_os_uri).upstream_versions
+        try:
+            from_os_data = UpstreamVersions(from_os_uri).upstream_versions
+            # openstack version check openEuler
+            rpm_os_ver_uri = _release_config['rpm_os_ver_uri']
+            if rpm_os_ver_uri:
+                to_os_data = RPMVersions(rpm_os_ver_uri).rpm_versions
+            # openstack version check openstack
+            else:
+                to_os_uri = _release_config['os_ver_uri'][-1]
+                to_os_data = UpstreamVersions(to_os_uri).upstream_versions
+        except Exception as e:
+            print('from_os_uri: {}\nrpm_os_ver_uri: {}\n'.format(
+                from_os_uri,
+                rpm_os_ver_uri))
+            raise e
 
         ver_data[release] = VersionsComparator(from_os_data,
                                                to_os_data).compared_data
         ver_data[release]['apt'] = _release_config['os_ver_uri'] + \
             _release_config['rpm_os_ver_uri']
 
-    Renderer(ver_data, "template_os_checker.j2", file_type,
-             file_name).render()
+    Renderer(ver_data, "template_os_checker.j2", DEFAULT_FILE_TYPE, file_name
+             ).render()
 
 
 if __name__ == '__main__':
