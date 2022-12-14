@@ -203,12 +203,19 @@ class UpstreamVersions:
     @property
     def upstream_versions(self):
         # get all links, which ends .tar.gz from HTML
+        # regular package format: https://releases.openstack.org/
+        # {pkg_name}/{pkg_name}-{pkg-version}.tar.gz
+        # a new format is added at 2022-12: https://releases.openstack.org/
+        # {pkg_name}/{pkg_name}-{release-version}-last.tar.gz
         links = re.findall(r'https://.*\.tar\.gz', self.url_os_content)
         results = dict()
         for pkg_link in links:
             # get name and package information from link
             tmp = pkg_link.split("/")
             pkg_full_name = tmp[4]
+            # can not get pkg version from url, just ignore it
+            if pkg_full_name.endswith('-last.tar.gz'):
+                continue
             pkg_name = pkg_full_name[0:pkg_full_name.rfind('-')]
             pkg_ver = pkg_full_name[
                       pkg_full_name.rfind('-') + 1:pkg_full_name.rfind('.tar')]
