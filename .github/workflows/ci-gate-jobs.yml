@@ -67,6 +67,9 @@ jobs:
     name: Test it on ${{ matrix.os }} ${{ matrix.arch }} with python3
     steps:
       - uses: actions/checkout@v3
+      # TODO(ChenRui): run-on-arch-action will support openEuler in 3.0.0
+      # refactor this job when it's available.
+      # https://github.com/uraimo/run-on-arch-action/pull/89
       - uses: uraimo/run-on-arch-action@v2.3.0
         with:
           arch: ${{ matrix.arch }}
