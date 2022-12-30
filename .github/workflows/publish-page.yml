@@ -27,14 +27,9 @@ jobs:
         wallaby/21.09,\
         victoria/21.03,\
         "
-    strategy:
-      matrix:
-        os: [ubuntu-22.04]
-        container-image: ['docker.io/openeuler/openeuler']
-    runs-on: ${{ matrix.os }}
-#    container: ${{ matrix.container-image }}
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.2.0
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
