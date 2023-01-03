@@ -18,7 +18,7 @@ RPM_OS_URI_MAPPING = {
     ('20.03-LTS-SP2',):
         "https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/budding-openeuler"
         "/openstack/{2}/{1}/Packages/",
-    ('20.03-LTS-SP3', '21.09'):
+    ('20.03-LTS-SP3', '21.09', '22.09'):
         defaultdict(
             lambda: "https://repo.openeuler.org/openEuler-{0}/EPOL/"
                     "main/{1}/Packages/",
@@ -27,16 +27,16 @@ RPM_OS_URI_MAPPING = {
                  queens="https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/"
                         "budding-openeuler/openstack/{2}/{1}/Packages/")
         ),
-    ('22.03-LTS',):
+    ('22.03-LTS', '22.03-LTS-SP1'):
         "https://repo.openeuler.org/openEuler-{0}/EPOL/multi_version"
         "/OpenStack/{2}/{1}/Packages/",
     ('dev-20.03-LTS', 'dev-20.03-LTS-SP1', 'dev-20.03-LTS-SP2',
      'dev-20.03-LTS-SP3', 'dev-20.03-LTS-Next',
-     'dev-20.09', 'dev-21.03', 'dev-21.09',
+     'dev-20.09', 'dev-21.03', 'dev-21.09', 'dev-22.09',
      'dev-Mainline'):
         "http://119.3.219.20:82/openEuler:/{0}/{1}/{2}"
         "/Epol/standard_{3}/{4}/",
-    ('dev-22.03-LTS',
+    ('dev-22.03-LTS', 'dev-22.03-LTS-SP1',
      'dev-22.03-LTS-Next'):
         "http://119.3.219.20:82/openEuler:/{0}/{1}/{2}"
         "/Epol:/Multi-Version:/OpenStack:/{5}/standard_{3}/{4}",
@@ -334,11 +334,11 @@ class VersionsComparator:
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option('-r', '--releases', default='train/20.03-LTS-SP3',
+@click.option('-r', '--releases', default='train/22.03-LTS-SP1',
               type=click.STRING, required=False, show_default=True,
               help='Comma separated releases with openstack/openEuler '
                    'to check, for example: '
-                   'rocky/20.03-LTS-SP2,train/20.03-LTS-SP3')
+                   'rocky/20.03-LTS-SP3,train/20.03-LTS-SP3')
 @click.option('-n', '--file-name', default='index.html',
               required=False, show_default=True,
               help='Output file name of openstack version checker')
