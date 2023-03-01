@@ -1,24 +1,32 @@
-import datetime
-import operator
-import os
-import re
-import sys
 from collections import defaultdict, OrderedDict
 
 import click
+import datetime
 import jinja2
+import operator
+import os
+import re
 import requests
+import sys
 import validators
 from packaging import version
 
 OS_URI = "https://releases.openstack.org/{}"
 RPM_OS_URI_MAPPING = {
-    ('20.03-LTS', '20.03-LTS-SP1', '20.09', '21.03'):
+    # Archives version
+    ('20.09', '21.03'):
+        "https://archives.openeuler.openatom.cn/openEuler-{0}/EPOL/{1}/"
+        "Packages/",
+    # Archives version
+    ('21.09',):
+        "https://archives.openeuler.openatom.cn/openEuler-{0}/EPOL/main/{1}/"
+        "Packages/",
+    ('20.03-LTS', '20.03-LTS-SP1'):
         "https://repo.openeuler.org/openEuler-{0}/EPOL/{1}/Packages/",
     ('20.03-LTS-SP2',):
         "https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/budding-openeuler"
         "/openstack/{2}/{1}/Packages/",
-    ('20.03-LTS-SP3', '21.09', '22.09'):
+    ('20.03-LTS-SP3', '22.09'):
         defaultdict(
             lambda: "https://repo.openeuler.org/openEuler-{0}/EPOL/"
                     "main/{1}/Packages/",
