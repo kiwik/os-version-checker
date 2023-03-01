@@ -1,13 +1,14 @@
-from collections import defaultdict, OrderedDict
-
-import click
 import datetime
-import jinja2
 import operator
 import os
 import re
-import requests
 import sys
+from collections import defaultdict, OrderedDict
+from typing import Any
+
+import click
+import jinja2
+import requests
 import validators
 from packaging import version
 
@@ -15,43 +16,45 @@ OS_URI = "https://releases.openstack.org/{}"
 RPM_OS_URI_MAPPING = {
     # Archives version
     ('20.09', '21.03'):
-        "https://archives.openeuler.openatom.cn/openEuler-{0}/EPOL/{1}/"
-        "Packages/",
+        "https://archives.openeuler.openatom.cn/openEuler-{oe_version}/EPOL/"
+        "{aarch}/Packages/",
     # Archives version
     ('21.09',):
-        "https://archives.openeuler.openatom.cn/openEuler-{0}/EPOL/main/{1}/"
-        "Packages/",
+        "https://archives.openeuler.openatom.cn/openEuler-{oe_version}/EPOL/"
+        "main/{aarch}/Packages/",
     ('20.03-LTS', '20.03-LTS-SP1'):
-        "https://repo.openeuler.org/openEuler-{0}/EPOL/{1}/Packages/",
+        "https://repo.openeuler.org/openEuler-{oe_version}/EPOL/{aarch}/"
+        "Packages/",
     ('20.03-LTS-SP2',):
-        "https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/budding-openeuler"
-        "/openstack/{2}/{1}/Packages/",
+        "https://repo.oepkgs.net/openEuler/rpm/openEuler-{oe_version}/"
+        "budding-openeuler/openstack/{os_version}/{aarch}/Packages/",
     ('20.03-LTS-SP3', '22.09'):
         defaultdict(
-            lambda: "https://repo.openeuler.org/openEuler-{0}/EPOL/"
-                    "main/{1}/Packages/",
-            dict(rocky="https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/"
-                       "budding-openeuler/openstack/{2}/{1}/Packages/",
-                 queens="https://repo.oepkgs.net/openEuler/rpm/openEuler-{0}/"
-                        "budding-openeuler/openstack/{2}/{1}/Packages/")
+            lambda: "https://repo.openeuler.org/openEuler-{oe_version}/EPOL/"
+                    "main/{aarch}/Packages/",
+            dict(rocky="https://repo.oepkgs.net/openEuler/rpm/"
+                       "openEuler-{oe_version}/budding-openeuler/openstack/"
+                       "{os_version}/{aarch}/Packages/",
+                 queens="https://repo.oepkgs.net/openEuler/rpm/"
+                        "openEuler-{oe_version}/budding-openeuler/openstack/"
+                        "{os_version}/{aarch}/Packages/")
         ),
     ('22.03-LTS', '22.03-LTS-SP1'):
-        "https://repo.openeuler.org/openEuler-{0}/EPOL/multi_version"
-        "/OpenStack/{2}/{1}/Packages/",
+        "https://repo.openeuler.org/openEuler-{oe_version}/EPOL/multi_version"
+        "/OpenStack/{os_version}/{aarch}/Packages/",
     ('dev-20.03-LTS', 'dev-20.03-LTS-SP1', 'dev-20.03-LTS-SP2',
      'dev-20.03-LTS-SP3', 'dev-20.03-LTS-Next',
      'dev-20.09', 'dev-21.03', 'dev-21.09', 'dev-22.09',
      'dev-Mainline'):
-        "http://119.3.219.20:82/openEuler:/{0}/{1}/{2}"
-        "/Epol/standard_{3}/{4}/",
+        "http://119.3.219.20:82/openEuler:/{oe_version_v}/{oe_version_lts}/"
+        "{oe_version_sp}/Epol/standard_{aarch}/{aarch_option}/",
     ('dev-22.03-LTS', 'dev-22.03-LTS-SP1',
      'dev-22.03-LTS-Next'):
-        "http://119.3.219.20:82/openEuler:/{0}/{1}/{2}"
-        "/Epol:/Multi-Version:/OpenStack:/{5}/standard_{3}/{4}",
+        "http://119.3.219.20:82/openEuler:/{oe_version_v}/{oe_version_lts}/"
+        "{oe_version_sp}/Epol:/Multi-Version:/OpenStack:/{os_version}/"
+        "standard_{aarch}/{aarch_option}",
 }
 OPENEULER_REPO_DOMAIN = "repo.openeuler.org"
-DEFAULT_ARCH = 'aarch64'
-RPM_119_SUB_DIR = 'noarch'
 DEFAULT_FILE_TYPE = 'html'
 STATUS_NONE = ["0", "NONE"]
 STATUS_OUTDATED = ["1", "OUTDATED"]
@@ -65,10 +68,29 @@ UPSTREAM_FILTER_LIST = [
 ]
 OPENEULER_DEFAULT_REPLACE = re.compile(r"[._]")
 REQUESTS_ARGS = {}
+AARCH64 = 'aarch64'
+NOARCH = 'noarch'
+
+
+class FormatInput(dict):
+    def __init__(self) -> None:
+        self.oe_version = None
+        self.oe_version_v = None
+        self.oe_version_lts = None
+        self.oe_version_sp = None
+        self.os_version = None
+        self.aarch = AARCH64
+        self.aarch_option = AARCH64
+
+    def __getattribute__(self, name: str) -> Any:
+        return dict.__getitem__(self, name)
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        return dict.__setitem__(self, name, value)
 
 
 class ReleasesConfig:
-    def __init__(self, content, arch=DEFAULT_ARCH):
+    def __init__(self, content):
         if not isinstance(content, str):
             raise RuntimeError('Input Error')
         self.releases = [r.strip() for r in content.split(',') if r]
@@ -92,31 +114,34 @@ class ReleasesConfig:
                     OS_URI.format(to_os_version))
                 return
 
+            format_input = FormatInput()
+            format_input.oe_version = to_os_version
             # openstack vs 119 openEuler
             if to_os_version.startswith('dev-'):
                 to_os_version = to_os_version[4:]
                 _parts = to_os_version.split('-')
                 # pad placeholder in URI
-                _version_parts = [_parts[i] + ':'
-                                  if (i < len(_parts) and
-                                      to_os_version != 'Mainline')
-                                  else ''
-                                  for i in range(3)]
+                (format_input.oe_version_v, format_input.oe_version_lts,
+                 format_input.oe_version_sp) = (
+                    _parts[i] + ':'
+                    if i < len(_parts) and to_os_version != 'Mainline'
+                    else ''
+                    for i in range(3))
                 # aarch64
-                _version_parts.extend([arch, arch,
-                                       from_os_version.capitalize()])
+                format_input.os_version = from_os_version.capitalize()
                 self.releases_config[release]['rpm_os_ver_uri'].append(
-                    _url.format(*_version_parts))
+                    _url.format(**format_input))
                 # noarch
-                _version_parts[-2] = RPM_119_SUB_DIR
+                format_input.aarch_option = NOARCH
                 self.releases_config[release]['rpm_os_ver_uri'].append(
-                    _url.format(*_version_parts))
+                    _url.format(**format_input))
             # openstack vs openEuler
             else:
                 _from_os_version = from_os_version.capitalize() \
                     if OPENEULER_REPO_DOMAIN in _url else from_os_version
+                format_input.os_version = _from_os_version
                 self.releases_config[release]['rpm_os_ver_uri'].append(
-                    _url.format(to_os_version, arch, _from_os_version))
+                    _url.format(**format_input))
 
 
 class Renderer:
