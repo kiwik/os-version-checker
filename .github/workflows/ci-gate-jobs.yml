@@ -15,10 +15,10 @@ jobs:
   check-on-x86-64:
     env:
       check-input: "\
+          wallaby/22.03-LTS-SP2,\
+          train/22.03-LTS-SP2,\
           wallaby/22.03-LTS-SP1,\
           train/22.03-LTS-SP1,\
-          wallaby/22.03-LTS,\
-          train/22.03-LTS,\
           train/20.03-LTS-SP3,\
           rocky/20.03-LTS-SP3,\
           queens/20.03-LTS-SP3,\
@@ -27,6 +27,8 @@ jobs:
           victoria/21.03,\
           wallaby/dev-22.03-LTS-Next,\
           train/dev-22.03-LTS-Next,\
+          wallaby/22.03-LTS,\
+          train/22.03-LTS,\
           train/dev-20.03-LTS-SP3,\
           yoga/dev-Mainline,\
           "
@@ -35,13 +37,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-22.04]
-        container-image: ['docker.io/openeuler/openeuler:22.03']
+        container-image: ['quay.io/openeuler/openeuler:22.03-lts-sp2']
         arch: ['x86_64']
     runs-on: ${{ matrix.os }}
     container: ${{ matrix.container-image }}
     name: Test it on ${{ matrix.container-image }} ${{ matrix.arch }} with python3
     steps:
-      - uses: actions/checkout@v3.2.0
+      - uses: actions/checkout@v4
       - name: Env
         run: |
           uname -a
@@ -69,11 +71,11 @@ jobs:
     runs-on: ubuntu-22.04
     name: Test it on ${{ matrix.os }} ${{ matrix.arch }} with python3
     steps:
-      - uses: actions/checkout@v3.2.0
+      - uses: actions/checkout@v4
       # TODO(ChenRui): run-on-arch-action will support openEuler in 3.0.0
       # refactor this job when it's available.
       # https://github.com/uraimo/run-on-arch-action/pull/89
-      - uses: uraimo/run-on-arch-action@v2.3.0
+      - uses: uraimo/run-on-arch-action@v2.6.0
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.os }}
