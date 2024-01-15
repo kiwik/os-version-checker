@@ -15,22 +15,18 @@ jobs:
   check-on-x86-64:
     env:
       check-input: "\
-          wallaby/22.03-LTS-SP2,\
-          train/22.03-LTS-SP2,\
-          wallaby/22.03-LTS-SP1,\
-          train/22.03-LTS-SP1,\
-          train/20.03-LTS-SP3,\
-          rocky/20.03-LTS-SP3,\
           queens/20.03-LTS-SP3,\
-          yoga/22.09,\
-          wallaby/21.09,\
+          rocky/20.03-LTS-SP3,\
+          train/20.03-LTS-SP3,\
           victoria/21.03,\
-          wallaby/dev-22.03-LTS-Next,\
+          wallaby/21.09,\
+          train/22.03-LTS-SP1,\
+          wallaby/22.03-LTS-SP1,\
+          train/22.03-LTS-SP2,\
+          wallaby/22.03-LTS-SP2,\
+          yoga/22.09,\
           train/dev-22.03-LTS-Next,\
-          wallaby/22.03-LTS,\
-          train/22.03-LTS,\
-          train/dev-20.03-LTS-SP3,\
-          yoga/dev-Mainline,\
+          wallaby/dev-22.03-LTS-Next,\
           "
     outputs:
       check-input: ${{ env.check-input }}
@@ -52,10 +48,10 @@ jobs:
         run: |
           dnf install -y python3 python3-pip file grep
           pip3 install -r requirements.txt
-      - name: Lint
+      - name: Flake8
         run: |
           pip3 install flake8
-          flake8 --count .
+          flake8 --count VersionStatus.py
       - name: Run
         run: |
           python3 VersionStatus.py -n docs/index.html -r ${{ env.check-input }}

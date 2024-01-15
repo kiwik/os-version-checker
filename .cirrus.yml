@@ -16,6 +16,7 @@ task:
   env_script: |
     uname -a
     cat /etc/os-release
+    echo "checking pull request #${CIRRUS_PR}"
   setup_script: |
     if [[ -x "$(command -v dnf)" ]]
     then
@@ -26,7 +27,9 @@ task:
     tar xvzf resnet50v2.tar.gz --warning=no-unknown-keyword -C ai/inference/resnet50/
     curl https://media.githubusercontent.com/media/onnx/models/main/validated/vision/object_detection_segmentation/yolov3/model/yolov3-12.onnx --create-dirs -o ai/inference/yolo/yolov3/yolov3.onnx
     curl https://media.githubusercontent.com/media/onnx/models/main/validated/text/machine_comprehension/bert-squad/model/bertsquad-12.onnx --create-dirs -o ai/inference/bert/bert-qa/bertsquad-12.onnx
-    echo "checking pull request #${CIRRUS_PR}"
+  flake8_script: |
+    pip3 install flake8
+    #flake8 --count ai/
   resnet50_script: |
     cd ai/inference/resnet50/
     python3 resnet50_modelzoo_onnxruntime_inference.py
