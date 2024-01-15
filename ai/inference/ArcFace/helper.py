@@ -65,10 +65,8 @@ def nms(boxes, overlap_threshold, mode='Union'):
             overlap = inter / (area[i] + area[idxs[:last]] - inter)
 
         # delete all indexes from the index list that have
-        idxs = np.delete(idxs, np.concatenate(([last],
-                                               np.where(
-                                                   overlap > overlap_threshold)[
-                                                   0])))
+        idxs = np.delete(idxs, np.concatenate(
+            ([last], np.where(overlap > overlap_threshold)[0])))
 
     return pick
 
