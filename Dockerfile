@@ -10,4 +10,4 @@ RUN mkdir /opt/app/images_versions && \
     chmod 777 /opt/app/images_versions
 
 ENTRYPOINT [ "python3", "./VersionStatus.py"]
-CMD [  "-r", "yoga/22.09,rocky/20.03-LTS-SP3" ]
+CMD [  "-r", "wallaby/22.03-LTS-SP2,train/22.03-LTS-SP2,yoga/22.09" ]

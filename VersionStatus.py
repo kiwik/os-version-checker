@@ -14,22 +14,21 @@ from packaging import version
 
 OS_URI = "https://releases.openstack.org/{}"
 RPM_OS_URI_MAPPING = {
-    # Archives version
+    # Archived version
     ('20.09', '21.03'):
         "https://archives.openeuler.openatom.cn/openEuler-{oe_version}/EPOL/"
         "{aarch}/Packages/",
-    # Archives version
-    ('21.09',):
+    ('21.09', '22.09'):
         "https://archives.openeuler.openatom.cn/openEuler-{oe_version}/EPOL/"
         "main/{aarch}/Packages/",
+    # Active version
     ('20.03-LTS', '20.03-LTS-SP1'):
         "https://repo.openeuler.org/openEuler-{oe_version}/EPOL/{aarch}/"
         "Packages/",
-    # Active version
     ('20.03-LTS-SP2',):
         "https://repo.oepkgs.net/openEuler/rpm/openEuler-{oe_version}/"
         "budding-openeuler/openstack/{os_version}/{aarch}/Packages/",
-    ('20.03-LTS-SP3', '22.09'):
+    ('20.03-LTS-SP3',):
         defaultdict(
             lambda: "https://repo.openeuler.org/openEuler-{oe_version}/EPOL/"
                     "main/{aarch}/Packages/",
