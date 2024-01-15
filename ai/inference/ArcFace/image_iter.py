@@ -43,7 +43,6 @@ class FaceImageIter(io.DataIter):
                     header, _ = recordio.unpack(s)
                     a, b = int(header.label[0]), int(header.label[1])
                     self.id2range[identity] = (a, b)
-                    count = b - a
                 print('id2range', len(self.id2range))
             else:
                 self.imgidx = list(self.imgrec.keys)

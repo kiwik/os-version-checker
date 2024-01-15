@@ -229,7 +229,6 @@ def get_dataset_ytf(input_dir):
 
 def get_dataset_clfw(input_dir):
     ret = []
-    label = 0
     for img in os.listdir(input_dir):
         fimage = edict()
         fimage.id = img
