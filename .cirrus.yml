@@ -3,13 +3,13 @@ task:
   only_if: "changesInclude('ai/**', '.cirrus.yml')"
   matrix:
     arm_container:
-      image: docker.io/openeuler/openeuler:22.03
+      image: quay.io/openeuler/openeuler:22.03-lts-sp3
       cpu: 4
       memory: 4G
-    container:
-      image: docker.io/openeuler/openeuler:22.03
-      cpu: 4
-      memory: 4G
+#    container:
+#      image: quay.io/openeuler/openeuler:22.03-lts-sp3
+#      cpu: 4
+#      memory: 4G
 #    persistent_worker:
 #      labels:
 #        provider: huaweicloud
