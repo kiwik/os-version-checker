@@ -43,7 +43,7 @@ RPM_OS_URI_MAPPING = {
     # from openEuler 23.03 because of lacking users that use OpenStack with
     # openEuler innovation release, most users use openEuler LTS release to
     # deploy OpenStack. openEuler LTS supporting will continue forever :)
-    ('22.03-LTS', '22.03-LTS-SP1', '22.03-LTS-SP2'):
+    ('22.03-LTS', '22.03-LTS-SP1', '22.03-LTS-SP2', '22.03-LTS-SP3'):
         "https://repo.openeuler.org/openEuler-{oe_version}/EPOL/multi_version"
         "/OpenStack/{os_version}/{aarch}/Packages/",
     # dev version
@@ -62,9 +62,9 @@ RPM_OS_URI_MAPPING = {
 OPENEULER_REPO_DOMAIN = "repo.openeuler.org"
 DEFAULT_FILE_TYPE = 'html'
 STATUS_NONE = ["0", "NONE"]
-STATUS_OUTDATED = ["1", "OUTDATED"]
-STATUS_MISMATCH = ["2", "MISMATCH"]
-STATUS_OK = ["3", "OK"]
+STATUS_OK = ["1", "OK"]
+STATUS_EOL = ["2", "EOL"]
+STATUS_OUTDATED = ["3", "OUTDATED"]
 STATUS_MISSING = ["4", "MISSING"]
 UPSTREAM_FILTER_LIST = [
     re.compile(r"^puppet[-_][-_\w]+$"),  # puppet-*
@@ -75,6 +75,7 @@ OPENEULER_DEFAULT_REPLACE = re.compile(r"[._]")
 REQUESTS_ARGS = {}
 AARCH64 = 'aarch64'
 NOARCH = 'noarch'
+EOL_PKG_SUFFIX = ('last', 'eom')
 
 
 class FormatInput(dict):
@@ -243,20 +244,27 @@ class UpstreamVersions:
         # get all links, which ends .tar.gz from HTML
         # regular package format: https://releases.openstack.org/
         # {pkg_name}/{pkg_name}-{pkg-version}.tar.gz
+        # for regular package
         # a new format is added at 2022-12: https://releases.openstack.org/
         # {pkg_name}/{pkg_name}-{release-version}-last.tar.gz
+        # for last compatible version
+        # a new format is added at 2024-02: https://releases.openstack.org/
+        # {pkg_name}/{pkg_name}-{release-version}-eom.tar.gz
+        # for unmaintained version
         links = re.findall(r'https://.*\.tar\.gz', self.url_os_content)
         results = dict()
         for pkg_link in links:
             # get name and package information from link
             tmp = pkg_link.split("/")
             pkg_full_name = tmp[4]
-            # can not get pkg version from url, just ignore it
-            if pkg_full_name.endswith('-last.tar.gz'):
-                continue
+            # # can not get pkg version from url, just ignore it
+            # if pkg_full_name.endswith('-last.tar.gz'):
+            #     continue
+            # if pkg_full_name.endswith('-eom.tar.gz'):
+            #     continue
             pkg_name = pkg_full_name[0:pkg_full_name.rfind('-')]
-            pkg_ver = pkg_full_name[
-                      pkg_full_name.rfind('-') + 1:pkg_full_name.rfind('.tar')]
+            pkg_ver = pkg_full_name[pkg_full_name.rfind('-')+1:
+                                    pkg_full_name.rfind('.tar')]
             # check if package with version are in results,
             # and check for higher version
             if pkg_name not in results:
@@ -264,8 +272,8 @@ class UpstreamVersions:
                 results[pkg_name] = pkg_info
             else:
                 # if current versions < new version, then update it
-                if version.parse(results[pkg_name]['version']) \
-                        < version.parse(pkg_ver):
+                if pkg_ver in EOL_PKG_SUFFIX or version.parse(
+                        results[pkg_name]['version']) < version.parse(pkg_ver):
                     results[pkg_name].update(version=pkg_ver)
         return results
 
@@ -324,12 +332,14 @@ class VersionsComparator:
                                                comp_ver_arr[1])
                 else:
                     comp_ver = comp_ver.split('~')[0]
-            if version.parse(base_ver) == version.parse(comp_ver):
+            if base_ver in EOL_PKG_SUFFIX:
+                return STATUS_EOL
+            elif version.parse(base_ver) == version.parse(comp_ver):
                 return STATUS_OK
             elif version.parse(base_ver) > version.parse(comp_ver):
                 return STATUS_OUTDATED
             else:
-                return STATUS_MISMATCH
+                return STATUS_NONE
 
         def filter_upstream(_base_pkg_name):
             for pattern in UPSTREAM_FILTER_LIST:

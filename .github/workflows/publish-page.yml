@@ -25,6 +25,8 @@ jobs:
         wallaby/22.03-LTS-SP1,\
         train/22.03-LTS-SP2,\
         wallaby/22.03-LTS-SP2,\
+        train/22.03-LTS-SP3,\
+        wallaby/22.03-LTS-SP3,\
         yoga/22.09,\
         train/dev-22.03-LTS-Next,\
         wallaby/dev-22.03-LTS-Next,\
