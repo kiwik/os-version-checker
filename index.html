@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Openstack versions info</title>
+<title>OpenStack versions info</title>
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
@@ -50,68 +50,68 @@
 </style>
 <script>
 $(document).ready( function () {
-  $('#table-queens-20-03-LTS-SP3').dataTable();
-  $('#table-rocky-20-03-LTS-SP3').dataTable();
-  $('#table-train-20-03-LTS-SP3').dataTable();
-  $('#table-victoria-21-03').dataTable();
-  $('#table-wallaby-21-09').dataTable();
-  $('#table-train-22-03-LTS-SP1').dataTable();
-  $('#table-wallaby-22-03-LTS-SP1').dataTable();
-  $('#table-train-22-03-LTS-SP2').dataTable();
-  $('#table-wallaby-22-03-LTS-SP2').dataTable();
-  $('#table-train-22-03-LTS-SP3').dataTable();
-  $('#table-wallaby-22-03-LTS-SP3').dataTable();
-  $('#table-yoga-22-09').dataTable();
-  $('#table-train-dev-22-03-LTS-Next').dataTable();
-  $('#table-wallaby-dev-22-03-LTS-Next').dataTable();
+  $('#table-20-03-LTS-SP3-queens').dataTable();
+  $('#table-20-03-LTS-SP3-rocky').dataTable();
+  $('#table-20-03-LTS-SP3-train').dataTable();
+  $('#table-21-03-victoria').dataTable();
+  $('#table-21-09-wallaby').dataTable();
+  $('#table-22-03-LTS-SP1-train').dataTable();
+  $('#table-22-03-LTS-SP1-wallaby').dataTable();
+  $('#table-22-03-LTS-SP2-train').dataTable();
+  $('#table-22-03-LTS-SP2-wallaby').dataTable();
+  $('#table-22-03-LTS-SP3-train').dataTable();
+  $('#table-22-03-LTS-SP3-wallaby').dataTable();
+  $('#table-22-09-yoga').dataTable();
+  $('#table-dev-22-03-LTS-Next-train').dataTable();
+  $('#table-dev-22-03-LTS-Next-wallaby').dataTable();
 } );
 </script>
 <script>
 window.onload = function(){
-  document.getElementById("button-queens/20.03-LTS-SP3").onclick = function () {
-    displayTable('queens/20.03-LTS-SP3')
+  document.getElementById("button-20.03-LTS-SP3/queens").onclick = function () {
+    displayTable('20.03-LTS-SP3/queens')
   }
-  document.getElementById("button-rocky/20.03-LTS-SP3").onclick = function () {
-    displayTable('rocky/20.03-LTS-SP3')
+  document.getElementById("button-20.03-LTS-SP3/rocky").onclick = function () {
+    displayTable('20.03-LTS-SP3/rocky')
   }
-  document.getElementById("button-train/20.03-LTS-SP3").onclick = function () {
-    displayTable('train/20.03-LTS-SP3')
+  document.getElementById("button-20.03-LTS-SP3/train").onclick = function () {
+    displayTable('20.03-LTS-SP3/train')
   }
-  document.getElementById("button-victoria/21.03").onclick = function () {
-    displayTable('victoria/21.03')
+  document.getElementById("button-21.03/victoria").onclick = function () {
+    displayTable('21.03/victoria')
   }
-  document.getElementById("button-wallaby/21.09").onclick = function () {
-    displayTable('wallaby/21.09')
+  document.getElementById("button-21.09/wallaby").onclick = function () {
+    displayTable('21.09/wallaby')
   }
-  document.getElementById("button-train/22.03-LTS-SP1").onclick = function () {
-    displayTable('train/22.03-LTS-SP1')
+  document.getElementById("button-22.03-LTS-SP1/train").onclick = function () {
+    displayTable('22.03-LTS-SP1/train')
   }
-  document.getElementById("button-wallaby/22.03-LTS-SP1").onclick = function () {
-    displayTable('wallaby/22.03-LTS-SP1')
+  document.getElementById("button-22.03-LTS-SP1/wallaby").onclick = function () {
+    displayTable('22.03-LTS-SP1/wallaby')
   }
-  document.getElementById("button-train/22.03-LTS-SP2").onclick = function () {
-    displayTable('train/22.03-LTS-SP2')
+  document.getElementById("button-22.03-LTS-SP2/train").onclick = function () {
+    displayTable('22.03-LTS-SP2/train')
   }
-  document.getElementById("button-wallaby/22.03-LTS-SP2").onclick = function () {
-    displayTable('wallaby/22.03-LTS-SP2')
+  document.getElementById("button-22.03-LTS-SP2/wallaby").onclick = function () {
+    displayTable('22.03-LTS-SP2/wallaby')
   }
-  document.getElementById("button-train/22.03-LTS-SP3").onclick = function () {
-    displayTable('train/22.03-LTS-SP3')
+  document.getElementById("button-22.03-LTS-SP3/train").onclick = function () {
+    displayTable('22.03-LTS-SP3/train')
   }
-  document.getElementById("button-wallaby/22.03-LTS-SP3").onclick = function () {
-    displayTable('wallaby/22.03-LTS-SP3')
+  document.getElementById("button-22.03-LTS-SP3/wallaby").onclick = function () {
+    displayTable('22.03-LTS-SP3/wallaby')
   }
-  document.getElementById("button-yoga/22.09").onclick = function () {
-    displayTable('yoga/22.09')
+  document.getElementById("button-22.09/yoga").onclick = function () {
+    displayTable('22.09/yoga')
   }
-  document.getElementById("button-train/dev-22.03-LTS-Next").onclick = function () {
-    displayTable('train/dev-22.03-LTS-Next')
+  document.getElementById("button-dev-22.03-LTS-Next/train").onclick = function () {
+    displayTable('dev-22.03-LTS-Next/train')
   }
-  document.getElementById("button-wallaby/dev-22.03-LTS-Next").onclick = function () {
-    displayTable('wallaby/dev-22.03-LTS-Next')
+  document.getElementById("button-dev-22.03-LTS-Next/wallaby").onclick = function () {
+    displayTable('dev-22.03-LTS-Next/wallaby')
   }
-  document.getElementById("button-queens/20.03-LTS-SP3").className = 'btn_release_clicked';
-  document.getElementById("div-queens/20.03-LTS-SP3").style.display = "block";
+  document.getElementById("button-20.03-LTS-SP3/queens").className = 'btn_release_clicked';
+  document.getElementById("div-20.03-LTS-SP3/queens").style.display = "block";
 }
 </script>
 <script>
@@ -131,571 +131,571 @@ function displayTable(release){
 <table id="table-switcher" class="switcher">
   <tr>
     <td class="invisible" width="100%">
-      <input type="button" name="button-release" id="button-queens/20.03-LTS-SP3" value="queens/20.03-LTS-SP3" class="btn_release">
-      <input type="button" name="button-release" id="button-rocky/20.03-LTS-SP3" value="rocky/20.03-LTS-SP3" class="btn_release">
-      <input type="button" name="button-release" id="button-train/20.03-LTS-SP3" value="train/20.03-LTS-SP3" class="btn_release">
-      <input type="button" name="button-release" id="button-victoria/21.03" value="victoria/21.03" class="btn_release">
-      <input type="button" name="button-release" id="button-wallaby/21.09" value="wallaby/21.09" class="btn_release">
-      <input type="button" name="button-release" id="button-train/22.03-LTS-SP1" value="train/22.03-LTS-SP1" class="btn_release">
-      <input type="button" name="button-release" id="button-wallaby/22.03-LTS-SP1" value="wallaby/22.03-LTS-SP1" class="btn_release">
-      <input type="button" name="button-release" id="button-train/22.03-LTS-SP2" value="train/22.03-LTS-SP2" class="btn_release">
-      <input type="button" name="button-release" id="button-wallaby/22.03-LTS-SP2" value="wallaby/22.03-LTS-SP2" class="btn_release">
-      <input type="button" name="button-release" id="button-train/22.03-LTS-SP3" value="train/22.03-LTS-SP3" class="btn_release">
-      <input type="button" name="button-release" id="button-wallaby/22.03-LTS-SP3" value="wallaby/22.03-LTS-SP3" class="btn_release">
-      <input type="button" name="button-release" id="button-yoga/22.09" value="yoga/22.09" class="btn_release">
-      <input type="button" name="button-release" id="button-train/dev-22.03-LTS-Next" value="train/dev-22.03-LTS-Next" class="btn_release">
-      <input type="button" name="button-release" id="button-wallaby/dev-22.03-LTS-Next" value="wallaby/dev-22.03-LTS-Next" class="btn_release">
+      <input type="button" name="button-release" id="button-20.03-LTS-SP3/queens" value="20.03-LTS-SP3/queens" class="btn_release">
+      <input type="button" name="button-release" id="button-20.03-LTS-SP3/rocky" value="20.03-LTS-SP3/rocky" class="btn_release">
+      <input type="button" name="button-release" id="button-20.03-LTS-SP3/train" value="20.03-LTS-SP3/train" class="btn_release">
+      <input type="button" name="button-release" id="button-21.03/victoria" value="21.03/victoria" class="btn_release">
+      <input type="button" name="button-release" id="button-21.09/wallaby" value="21.09/wallaby" class="btn_release">
+      <input type="button" name="button-release" id="button-22.03-LTS-SP1/train" value="22.03-LTS-SP1/train" class="btn_release">
+      <input type="button" name="button-release" id="button-22.03-LTS-SP1/wallaby" value="22.03-LTS-SP1/wallaby" class="btn_release">
+      <input type="button" name="button-release" id="button-22.03-LTS-SP2/train" value="22.03-LTS-SP2/train" class="btn_release">
+      <input type="button" name="button-release" id="button-22.03-LTS-SP2/wallaby" value="22.03-LTS-SP2/wallaby" class="btn_release">
+      <input type="button" name="button-release" id="button-22.03-LTS-SP3/train" value="22.03-LTS-SP3/train" class="btn_release">
+      <input type="button" name="button-release" id="button-22.03-LTS-SP3/wallaby" value="22.03-LTS-SP3/wallaby" class="btn_release">
+      <input type="button" name="button-release" id="button-22.09/yoga" value="22.09/yoga" class="btn_release">
+      <input type="button" name="button-release" id="button-dev-22.03-LTS-Next/train" value="dev-22.03-LTS-Next/train" class="btn_release">
+      <input type="button" name="button-release" id="button-dev-22.03-LTS-Next/wallaby" value="dev-22.03-LTS-Next/wallaby" class="btn_release">
     </td>
   </tr>
 </table>
-<pre class="tab1"><b>Generated:</b> 2024.02.05 08:59:20 Asia/Shanghai</pre>
-<div name="div-table" id="div-queens/20.03-LTS-SP3" style="display: none;">
+<pre class="tab1"><b>Generated:</b> 2024.02.05 09:52:38 Asia/Shanghai</pre>
+<div name="div-table" id="div-20.03-LTS-SP3/queens" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/queens" target="view_window">https://releases.openstack.org/queens</a>
      <a href="https://repo.oepkgs.net/openEuler/rpm/openEuler-20.03-LTS-SP3/budding-openeuler/openstack/queens/aarch64/Packages/" target="view_window">https://repo.oepkgs.net/openEuler/rpm/openEuler-20.03-LTS-SP3/budding-openeuler/openstack/queens/aarch64/Packages/</a>
   </pre>
-  <table id="table-queens-20-03-LTS-SP3" class="display" data-page-length='192'>
+  <table id="table-20-03-LTS-SP3-queens" class="display" data-page-length='192'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>queens</th>
-        <th>openEuler<br>20.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>20.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>queens</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td>1.</td>
-      <td>sushy</td>
-      <td>1.3.4</td>
-      <td>1.6.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>2.</td>
-      <td>networking-baremetal</td>
-      <td>1.0.1</td>
-      <td>1.3.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>3.</td>
       <td>cinder</td>
       <td>12.0.10</td>
       <td>12.0.10</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>4.</td>
+      <td>2.</td>
       <td>glance</td>
       <td>16.0.1</td>
       <td>16.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>5.</td>
+      <td>3.</td>
       <td>horizon</td>
       <td>13.0.3</td>
       <td>13.0.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>6.</td>
+      <td>4.</td>
       <td>ironic</td>
       <td>10.1.10</td>
       <td>10.1.10</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>7.</td>
+      <td>5.</td>
       <td>keystone</td>
       <td>13.0.4</td>
       <td>13.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>8.</td>
+      <td>6.</td>
       <td>neutron</td>
       <td>12.1.1</td>
       <td>12.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>9.</td>
+      <td>7.</td>
       <td>nova</td>
       <td>17.0.13</td>
       <td>17.0.13</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>10.</td>
+      <td>8.</td>
       <td>trove</td>
       <td>9.0.0</td>
       <td>9.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>11.</td>
+      <td>9.</td>
       <td>python-cinderclient</td>
       <td>3.5.0</td>
       <td>3.5.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>12.</td>
+      <td>10.</td>
       <td>python-designateclient</td>
       <td>2.9.0</td>
       <td>2.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>13.</td>
+      <td>11.</td>
       <td>python-ironic-inspector-client</td>
       <td>3.1.2</td>
       <td>3.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>14.</td>
+      <td>12.</td>
       <td>python-mistralclient</td>
       <td>3.3.0</td>
       <td>3.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>15.</td>
+      <td>13.</td>
       <td>python-neutronclient</td>
       <td>6.7.0</td>
       <td>6.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>16.</td>
+      <td>14.</td>
       <td>python-troveclient</td>
       <td>2.14.0</td>
       <td>2.14.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>17.</td>
+      <td>15.</td>
       <td>automaton</td>
       <td>1.14.0</td>
       <td>1.14.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>18.</td>
+      <td>16.</td>
       <td>castellan</td>
       <td>0.17.0</td>
       <td>0.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>19.</td>
+      <td>17.</td>
       <td>debtcollector</td>
       <td>1.19.0</td>
       <td>1.19.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>20.</td>
+      <td>18.</td>
       <td>futurist</td>
       <td>1.6.0</td>
       <td>1.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>21.</td>
+      <td>19.</td>
       <td>glance_store</td>
       <td>0.23.0</td>
       <td>0.23.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>22.</td>
+      <td>20.</td>
       <td>ironic-lib</td>
       <td>2.12.4</td>
       <td>2.12.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>23.</td>
+      <td>21.</td>
       <td>mox3</td>
       <td>0.24.0</td>
       <td>0.24.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>24.</td>
+      <td>22.</td>
       <td>neutron-lib</td>
       <td>1.13.0</td>
       <td>1.13.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>25.</td>
+      <td>23.</td>
       <td>os-client-config</td>
       <td>1.29.0</td>
       <td>1.29.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>26.</td>
+      <td>24.</td>
       <td>os-traits</td>
       <td>0.5.0</td>
       <td>0.5.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>27.</td>
+      <td>25.</td>
       <td>osc-lib</td>
       <td>1.9.0</td>
       <td>1.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>28.</td>
+      <td>26.</td>
       <td>osc-placement</td>
       <td>1.0.0</td>
       <td>1.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>29.</td>
+      <td>27.</td>
       <td>oslo.context</td>
       <td>2.20.0</td>
       <td>2.20.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>30.</td>
+      <td>28.</td>
       <td>oslo.i18n</td>
       <td>3.19.0</td>
       <td>3.19.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>31.</td>
+      <td>29.</td>
       <td>oslo.log</td>
       <td>3.36.0</td>
       <td>3.36.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>32.</td>
+      <td>30.</td>
       <td>oslo.middleware</td>
       <td>3.34.0</td>
       <td>3.34.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>33.</td>
+      <td>31.</td>
       <td>oslo.privsep</td>
       <td>1.27.0</td>
       <td>1.27.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>34.</td>
+      <td>32.</td>
       <td>oslo.reports</td>
       <td>1.26.0</td>
       <td>1.26.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>35.</td>
+      <td>33.</td>
       <td>oslo.rootwrap</td>
       <td>5.13.0</td>
       <td>5.13.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>36.</td>
+      <td>34.</td>
       <td>oslo.serialization</td>
       <td>2.24.0</td>
       <td>2.24.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>37.</td>
+      <td>35.</td>
       <td>oslo.vmware</td>
       <td>2.26.0</td>
       <td>2.26.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>38.</td>
+      <td>36.</td>
       <td>oslosphinx</td>
       <td>4.18.0</td>
       <td>4.18.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>39.</td>
+      <td>37.</td>
       <td>oslotest</td>
       <td>3.2.0</td>
       <td>3.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>40.</td>
+      <td>38.</td>
       <td>osprofiler</td>
       <td>1.15.2</td>
       <td>1.15.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>41.</td>
+      <td>39.</td>
       <td>pycadf</td>
       <td>2.7.0</td>
       <td>2.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>42.</td>
+      <td>40.</td>
       <td>requestsexceptions</td>
       <td>1.4.0</td>
       <td>1.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>43.</td>
+      <td>41.</td>
       <td>stevedore</td>
       <td>1.28.0</td>
       <td>1.28.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>44.</td>
+      <td>42.</td>
       <td>taskflow</td>
       <td>3.1.0</td>
       <td>3.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>45.</td>
+      <td>43.</td>
       <td>ironic-inspector</td>
       <td>7.2.4</td>
       <td>7.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>46.</td>
+      <td>44.</td>
       <td>ironic-python-agent</td>
       <td>3.2.4</td>
       <td>3.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>47.</td>
+      <td>45.</td>
       <td>tempest</td>
       <td>18.0.0</td>
       <td>18.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>48.</td>
+      <td>46.</td>
       <td>kolla</td>
       <td>6.2.4</td>
       <td>6.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>49.</td>
+      <td>47.</td>
       <td>kolla-ansible</td>
       <td>6.2.3</td>
       <td>6.2.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>50.</td>
+      <td>48.</td>
       <td>python-barbicanclient</td>
       <td>4.6.1</td>
       <td>4.6.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>51.</td>
+      <td>49.</td>
       <td>python-glanceclient</td>
       <td>2.10.1</td>
       <td>2.10.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>52.</td>
+      <td>50.</td>
       <td>python-heatclient</td>
       <td>1.14.1</td>
       <td>1.14.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>53.</td>
+      <td>51.</td>
       <td>python-ironicclient</td>
       <td>2.2.2</td>
       <td>2.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>54.</td>
+      <td>52.</td>
       <td>python-keystoneclient</td>
       <td>3.15.1</td>
       <td>3.15.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>55.</td>
+      <td>53.</td>
       <td>python-novaclient</td>
       <td>10.1.1</td>
       <td>10.1.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>56.</td>
+      <td>54.</td>
       <td>python-swiftclient</td>
       <td>3.5.1</td>
       <td>3.5.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>57.</td>
+      <td>55.</td>
       <td>cliff</td>
       <td>2.11.1</td>
       <td>2.11.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>58.</td>
+      <td>56.</td>
       <td>keystoneauth1</td>
       <td>3.4.1</td>
       <td>3.4.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>59.</td>
+      <td>57.</td>
       <td>keystonemiddleware</td>
       <td>4.22.0</td>
       <td>4.21.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>60.</td>
+      <td>58.</td>
       <td>ldappool</td>
       <td>2.2.1</td>
       <td>1.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>61.</td>
+      <td>59.</td>
       <td>openstacksdk</td>
       <td>0.11.4</td>
       <td>0.11.3</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>62.</td>
+      <td>60.</td>
       <td>os-brick</td>
       <td>2.3.9</td>
       <td>2.3.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>63.</td>
+      <td>61.</td>
       <td>os_vif</td>
       <td>1.9.2</td>
       <td>1.9.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>64.</td>
+      <td>62.</td>
       <td>oslo.cache</td>
       <td>1.28.1</td>
       <td>1.28.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>65.</td>
+      <td>63.</td>
       <td>oslo.concurrency</td>
       <td>3.25.1</td>
       <td>3.25.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>66.</td>
+      <td>64.</td>
       <td>oslo.config</td>
       <td>5.2.1</td>
       <td>5.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>67.</td>
+      <td>65.</td>
       <td>oslo.db</td>
       <td>4.33.4</td>
       <td>4.33.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>68.</td>
+      <td>66.</td>
       <td>oslo.messaging</td>
       <td>5.35.6</td>
       <td>5.35.5</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>69.</td>
+      <td>67.</td>
       <td>oslo.policy</td>
       <td>1.33.2</td>
       <td>1.33.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>70.</td>
+      <td>68.</td>
       <td>oslo.service</td>
       <td>1.29.1</td>
       <td>1.29.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>71.</td>
+      <td>69.</td>
       <td>oslo.utils</td>
       <td>3.35.1</td>
       <td>3.35.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>72.</td>
+      <td>70.</td>
       <td>oslo.versionedobjects</td>
       <td>1.31.3</td>
       <td>1.31.2</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>73.</td>
+      <td>71.</td>
       <td>ovsdbapp</td>
       <td>0.10.5</td>
       <td>0.10.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>74.</td>
+      <td>72.</td>
       <td>tooz</td>
       <td>1.60.2</td>
       <td>1.60.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>75.</td>
+      <td>73.</td>
       <td>networking-generic-switch</td>
       <td>1.0.1</td>
       <td>1.0.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>76.</td>
+      <td>74.</td>
       <td>python-openstackclient</td>
       <td>3.14.3</td>
       <td>3.14.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
+    </tr>
+    <tr>
+      <td>75.</td>
+      <td>sushy</td>
+      <td>1.3.4</td>
+      <td>1.6.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>76.</td>
+      <td>networking-baremetal</td>
+      <td>1.0.1</td>
+      <td>1.3.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
     </tr>
     <tr>
       <td>77.</td>
@@ -1512,532 +1512,532 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-rocky/20.03-LTS-SP3" style="display: none;">
+<div name="div-table" id="div-20.03-LTS-SP3/rocky" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/rocky" target="view_window">https://releases.openstack.org/rocky</a>
      <a href="https://repo.oepkgs.net/openEuler/rpm/openEuler-20.03-LTS-SP3/budding-openeuler/openstack/rocky/aarch64/Packages/" target="view_window">https://repo.oepkgs.net/openEuler/rpm/openEuler-20.03-LTS-SP3/budding-openeuler/openstack/rocky/aarch64/Packages/</a>
   </pre>
-  <table id="table-rocky-20-03-LTS-SP3" class="display" data-page-length='192'>
+  <table id="table-20-03-LTS-SP3-rocky" class="display" data-page-length='192'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>rocky</th>
-        <th>openEuler<br>20.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>20.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>rocky</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td>1.</td>
-      <td>ovsdbapp</td>
-      <td>0.12.5</td>
-      <td>0.15.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>2.</td>
       <td>cinder</td>
       <td>13.0.9</td>
       <td>13.0.9</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>3.</td>
+      <td>2.</td>
       <td>glance</td>
       <td>17.0.1</td>
       <td>17.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>4.</td>
+      <td>3.</td>
       <td>horizon</td>
       <td>14.1.0</td>
       <td>14.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>5.</td>
+      <td>4.</td>
       <td>ironic</td>
       <td>11.1.4</td>
       <td>11.1.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>6.</td>
+      <td>5.</td>
       <td>keystone</td>
       <td>14.2.0</td>
       <td>14.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>7.</td>
+      <td>6.</td>
       <td>neutron</td>
       <td>13.0.7</td>
       <td>13.0.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>8.</td>
+      <td>7.</td>
       <td>nova</td>
       <td>18.3.0</td>
       <td>18.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>9.</td>
+      <td>8.</td>
       <td>trove</td>
       <td>10.0.0</td>
       <td>10.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>10.</td>
+      <td>9.</td>
       <td>osc-placement</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>11.</td>
+      <td>10.</td>
       <td>python-barbicanclient</td>
       <td>4.7.2</td>
       <td>4.7.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>12.</td>
+      <td>11.</td>
       <td>python-cinderclient</td>
       <td>4.0.3</td>
       <td>4.0.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>13.</td>
+      <td>12.</td>
       <td>python-glanceclient</td>
       <td>2.13.2</td>
       <td>2.13.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>14.</td>
+      <td>13.</td>
       <td>python-heatclient</td>
       <td>1.16.3</td>
       <td>1.16.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>15.</td>
+      <td>14.</td>
       <td>python-ironic-inspector-client</td>
       <td>3.3.0</td>
       <td>3.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>16.</td>
+      <td>15.</td>
       <td>python-ironicclient</td>
       <td>2.5.4</td>
       <td>2.5.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>17.</td>
+      <td>16.</td>
       <td>python-keystoneclient</td>
       <td>3.17.0</td>
       <td>3.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>18.</td>
+      <td>17.</td>
       <td>python-mistralclient</td>
       <td>3.7.0</td>
       <td>3.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>19.</td>
+      <td>18.</td>
       <td>python-neutronclient</td>
       <td>6.9.1</td>
       <td>6.9.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>20.</td>
+      <td>19.</td>
       <td>python-novaclient</td>
       <td>11.0.1</td>
       <td>11.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>21.</td>
+      <td>20.</td>
       <td>python-swiftclient</td>
       <td>3.6.1</td>
       <td>3.6.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>22.</td>
+      <td>21.</td>
       <td>python-troveclient</td>
       <td>2.16.0</td>
       <td>2.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>23.</td>
+      <td>22.</td>
       <td>automaton</td>
       <td>1.15.0</td>
       <td>1.15.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>24.</td>
+      <td>23.</td>
       <td>castellan</td>
       <td>0.19.0</td>
       <td>0.19.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>25.</td>
+      <td>24.</td>
       <td>cliff</td>
       <td>2.13.0</td>
       <td>2.13.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>26.</td>
+      <td>25.</td>
       <td>debtcollector</td>
       <td>1.20.0</td>
       <td>1.20.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>27.</td>
+      <td>26.</td>
       <td>futurist</td>
       <td>1.7.0</td>
       <td>1.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>28.</td>
+      <td>27.</td>
       <td>glance_store</td>
       <td>0.26.2</td>
       <td>0.26.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>29.</td>
+      <td>28.</td>
       <td>keystoneauth1</td>
       <td>3.10.1</td>
       <td>3.10.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>30.</td>
+      <td>29.</td>
       <td>keystonemiddleware</td>
       <td>5.2.2</td>
       <td>5.2.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>31.</td>
+      <td>30.</td>
       <td>mox3</td>
       <td>0.26.0</td>
       <td>0.26.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>32.</td>
+      <td>31.</td>
       <td>neutron-lib</td>
       <td>1.18.0</td>
       <td>1.18.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>33.</td>
+      <td>32.</td>
       <td>openstacksdk</td>
       <td>0.17.3</td>
       <td>0.17.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>34.</td>
+      <td>33.</td>
       <td>os-client-config</td>
       <td>1.31.2</td>
       <td>1.31.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>35.</td>
+      <td>34.</td>
       <td>os-traits</td>
       <td>0.9.0</td>
       <td>0.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>36.</td>
+      <td>35.</td>
       <td>os_vif</td>
       <td>1.11.2</td>
       <td>1.11.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>37.</td>
+      <td>36.</td>
       <td>osc-lib</td>
       <td>1.11.1</td>
       <td>1.11.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>38.</td>
+      <td>37.</td>
       <td>oslo.cache</td>
       <td>1.30.4</td>
       <td>1.30.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>39.</td>
+      <td>38.</td>
       <td>oslo.concurrency</td>
       <td>3.27.0</td>
       <td>3.27.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>40.</td>
+      <td>39.</td>
       <td>oslo.context</td>
       <td>2.21.0</td>
       <td>2.21.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>41.</td>
+      <td>40.</td>
       <td>oslo.db</td>
       <td>4.40.2</td>
       <td>4.40.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>42.</td>
+      <td>41.</td>
       <td>oslo.i18n</td>
       <td>3.21.0</td>
       <td>3.21.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>43.</td>
+      <td>42.</td>
       <td>oslo.log</td>
       <td>3.39.2</td>
       <td>3.39.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>44.</td>
+      <td>43.</td>
       <td>oslo.messaging</td>
       <td>8.1.4</td>
       <td>8.1.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>45.</td>
+      <td>44.</td>
       <td>oslo.middleware</td>
       <td>3.36.0</td>
       <td>3.36.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>46.</td>
+      <td>45.</td>
       <td>oslo.policy</td>
       <td>1.38.1</td>
       <td>1.38.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>47.</td>
+      <td>46.</td>
       <td>oslo.privsep</td>
       <td>1.29.2</td>
       <td>1.29.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>48.</td>
+      <td>47.</td>
       <td>oslo.reports</td>
       <td>1.28.0</td>
       <td>1.28.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>49.</td>
+      <td>48.</td>
       <td>oslo.rootwrap</td>
       <td>5.14.2</td>
       <td>5.14.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>50.</td>
+      <td>49.</td>
       <td>oslo.serialization</td>
       <td>2.27.0</td>
       <td>2.27.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>51.</td>
+      <td>50.</td>
       <td>oslo.service</td>
       <td>1.31.8</td>
       <td>1.31.8</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>52.</td>
+      <td>51.</td>
       <td>oslo.utils</td>
       <td>3.36.5</td>
       <td>3.36.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>53.</td>
+      <td>52.</td>
       <td>oslo.versionedobjects</td>
       <td>1.33.3</td>
       <td>1.33.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>54.</td>
+      <td>53.</td>
       <td>oslo.vmware</td>
       <td>2.31.0</td>
       <td>2.31.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>55.</td>
+      <td>54.</td>
       <td>oslotest</td>
       <td>3.6.0</td>
       <td>3.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>56.</td>
+      <td>55.</td>
       <td>pycadf</td>
       <td>2.8.0</td>
       <td>2.8.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>57.</td>
+      <td>56.</td>
       <td>taskflow</td>
       <td>3.2.0</td>
       <td>3.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>58.</td>
+      <td>57.</td>
       <td>tooz</td>
       <td>1.62.1</td>
       <td>1.62.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>59.</td>
+      <td>58.</td>
       <td>ironic-inspector</td>
       <td>8.0.4</td>
       <td>8.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>60.</td>
+      <td>59.</td>
       <td>ironic-python-agent</td>
       <td>3.3.3</td>
       <td>3.3.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>61.</td>
+      <td>60.</td>
       <td>networking-baremetal</td>
       <td>1.2.1</td>
       <td>1.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>62.</td>
+      <td>61.</td>
       <td>networking-generic-switch</td>
       <td>1.2.0</td>
       <td>1.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>63.</td>
+      <td>62.</td>
       <td>python-openstackclient</td>
       <td>3.16.3</td>
       <td>3.16.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>64.</td>
+      <td>63.</td>
       <td>tempest</td>
       <td>19.0.0</td>
       <td>19.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>65.</td>
+      <td>64.</td>
       <td>kolla</td>
       <td>7.1.1</td>
       <td>7.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>66.</td>
+      <td>65.</td>
       <td>kolla-ansible</td>
       <td>7.2.1</td>
       <td>7.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>67.</td>
+      <td>66.</td>
       <td>python-designateclient</td>
       <td>2.10.0</td>
       <td>2.9.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>68.</td>
+      <td>67.</td>
       <td>ironic-lib</td>
       <td>2.14.3</td>
       <td>2.14.2</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>69.</td>
+      <td>68.</td>
       <td>os-brick</td>
       <td>2.5.10</td>
       <td>2.5.9</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>70.</td>
+      <td>69.</td>
       <td>oslo.config</td>
       <td>6.4.2</td>
       <td>6.4.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>71.</td>
+      <td>70.</td>
       <td>osprofiler</td>
       <td>2.3.1</td>
       <td>2.3.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>72.</td>
+      <td>71.</td>
       <td>stevedore</td>
       <td>1.29.0</td>
       <td>1.28.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>73.</td>
+      <td>72.</td>
       <td>sushy</td>
       <td>1.6.1</td>
       <td>1.6.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
+    </tr>
+    <tr>
+      <td>73.</td>
+      <td>ovsdbapp</td>
+      <td>0.12.5</td>
+      <td>0.15.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
     </tr>
     <tr>
       <td>74.</td>
@@ -2875,714 +2875,714 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-train/20.03-LTS-SP3" style="display: none;">
+<div name="div-table" id="div-20.03-LTS-SP3/train" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/train" target="view_window">https://releases.openstack.org/train</a>
      <a href="https://repo.openeuler.org/openEuler-20.03-LTS-SP3/EPOL/main/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-20.03-LTS-SP3/EPOL/main/aarch64/Packages/</a>
   </pre>
-  <table id="table-train-20-03-LTS-SP3" class="display" data-page-length='244'>
+  <table id="table-20-03-LTS-SP3-train" class="display" data-page-length='244'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>train</th>
-        <th>openEuler<br>20.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>20.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>train</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td>1.</td>
-      <td>cliff</td>
-      <td>2.16.0</td>
-      <td>3.7.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>2.</td>
-      <td>oslotest</td>
-      <td>3.8.1</td>
-      <td>4.4.1</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>3.</td>
-      <td>ovsdbapp</td>
-      <td>0.17.5</td>
-      <td>1.9.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>4.</td>
-      <td>stevedore</td>
-      <td>1.31.0</td>
-      <td>3.3.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>5.</td>
       <td>aodh</td>
       <td>9.0.1</td>
       <td>9.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>6.</td>
+      <td>2.</td>
       <td>ceilometer</td>
       <td>13.1.2</td>
       <td>13.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>7.</td>
+      <td>3.</td>
       <td>cinder</td>
       <td>15.6.0</td>
       <td>15.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>8.</td>
+      <td>4.</td>
       <td>openstack-cyborg</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>9.</td>
+      <td>5.</td>
       <td>glance</td>
       <td>19.0.4</td>
       <td>19.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>10.</td>
+      <td>6.</td>
       <td>openstack-heat</td>
       <td>13.1.0</td>
       <td>13.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>11.</td>
+      <td>7.</td>
       <td>horizon</td>
       <td>16.2.2</td>
       <td>16.2.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>12.</td>
+      <td>8.</td>
       <td>ironic</td>
       <td>13.0.7</td>
       <td>13.0.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>13.</td>
+      <td>9.</td>
       <td>keystone</td>
       <td>16.0.2</td>
       <td>16.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>14.</td>
+      <td>10.</td>
       <td>neutron</td>
       <td>15.3.4</td>
       <td>15.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>15.</td>
+      <td>11.</td>
       <td>nova</td>
       <td>20.6.1</td>
       <td>20.6.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>16.</td>
+      <td>12.</td>
       <td>panko</td>
       <td>7.1.0</td>
       <td>7.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>17.</td>
+      <td>13.</td>
       <td>openstack-placement</td>
       <td>2.0.1</td>
       <td>2.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>18.</td>
+      <td>14.</td>
       <td>swift</td>
       <td>2.23.3</td>
       <td>2.23.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>19.</td>
+      <td>15.</td>
       <td>trove</td>
       <td>12.1.0</td>
       <td>12.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>20.</td>
+      <td>16.</td>
       <td>osc-placement</td>
       <td>1.7.0</td>
       <td>1.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>21.</td>
+      <td>17.</td>
       <td>aodhclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>22.</td>
+      <td>18.</td>
       <td>python-barbicanclient</td>
       <td>4.9.0</td>
       <td>4.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>23.</td>
+      <td>19.</td>
       <td>python-blazarclient</td>
       <td>2.2.1</td>
       <td>2.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>24.</td>
+      <td>20.</td>
       <td>python-cinderclient</td>
       <td>5.0.2</td>
       <td>5.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>25.</td>
+      <td>21.</td>
       <td>python-congressclient</td>
       <td>1.13.0</td>
       <td>1.13.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>26.</td>
+      <td>22.</td>
       <td>python-cyborgclient</td>
       <td>0.4.0</td>
       <td>0.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>27.</td>
+      <td>23.</td>
       <td>python-designateclient</td>
       <td>3.0.0</td>
       <td>3.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>28.</td>
+      <td>24.</td>
       <td>python-glanceclient</td>
       <td>2.17.1</td>
       <td>2.17.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>29.</td>
+      <td>25.</td>
       <td>python-heatclient</td>
       <td>1.18.1</td>
       <td>1.18.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>30.</td>
+      <td>26.</td>
       <td>python-ironic-inspector-client</td>
       <td>3.7.1</td>
       <td>3.7.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>31.</td>
+      <td>27.</td>
       <td>python-ironicclient</td>
       <td>3.1.2</td>
       <td>3.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>32.</td>
+      <td>28.</td>
       <td>python-karborclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>33.</td>
+      <td>29.</td>
       <td>python-keystoneclient</td>
       <td>3.21.0</td>
       <td>3.21.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>34.</td>
+      <td>30.</td>
       <td>python-magnumclient</td>
       <td>2.16.0</td>
       <td>2.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>35.</td>
+      <td>31.</td>
       <td>python-manilaclient</td>
       <td>1.29.0</td>
       <td>1.29.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>36.</td>
+      <td>32.</td>
       <td>python-mistralclient</td>
       <td>3.10.0</td>
       <td>3.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>37.</td>
+      <td>33.</td>
       <td>python-monascaclient</td>
       <td>1.16.0</td>
       <td>1.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>38.</td>
+      <td>34.</td>
       <td>python-muranoclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>39.</td>
+      <td>35.</td>
       <td>python-neutronclient</td>
       <td>6.14.1</td>
       <td>6.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>40.</td>
+      <td>36.</td>
       <td>python-novaclient</td>
       <td>15.1.1</td>
       <td>15.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>41.</td>
+      <td>37.</td>
       <td>python-octaviaclient</td>
       <td>1.10.1</td>
       <td>1.10.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>42.</td>
+      <td>38.</td>
       <td>python-saharaclient</td>
       <td>2.3.0</td>
       <td>2.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>43.</td>
+      <td>39.</td>
       <td>python-searchlightclient</td>
       <td>1.6.0</td>
       <td>1.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>44.</td>
+      <td>40.</td>
       <td>python-senlinclient</td>
       <td>1.11.1</td>
       <td>1.11.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>45.</td>
+      <td>41.</td>
       <td>python-swiftclient</td>
       <td>3.8.1</td>
       <td>3.8.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>46.</td>
+      <td>42.</td>
       <td>python-troveclient</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>47.</td>
+      <td>43.</td>
       <td>python-zaqarclient</td>
       <td>1.12.0</td>
       <td>1.12.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>48.</td>
+      <td>44.</td>
       <td>python-zunclient</td>
       <td>3.5.1</td>
       <td>3.5.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>49.</td>
+      <td>45.</td>
       <td>automaton</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>50.</td>
+      <td>46.</td>
       <td>castellan</td>
       <td>1.3.4</td>
       <td>1.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>51.</td>
+      <td>47.</td>
       <td>ceilometermiddleware</td>
       <td>1.5.0</td>
       <td>1.5.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>52.</td>
+      <td>48.</td>
       <td>debtcollector</td>
       <td>1.22.0</td>
       <td>1.22.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>53.</td>
+      <td>49.</td>
       <td>futurist</td>
       <td>1.9.0</td>
       <td>1.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>54.</td>
+      <td>50.</td>
       <td>glance_store</td>
       <td>1.0.1</td>
       <td>1.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>55.</td>
+      <td>51.</td>
       <td>ironic-lib</td>
       <td>2.21.3</td>
       <td>2.21.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>56.</td>
+      <td>52.</td>
       <td>keystoneauth1</td>
       <td>3.17.4</td>
       <td>3.17.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>57.</td>
+      <td>53.</td>
       <td>keystonemiddleware</td>
       <td>7.0.1</td>
       <td>7.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>58.</td>
+      <td>54.</td>
       <td>mox3</td>
       <td>0.28.0</td>
       <td>0.28.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>59.</td>
+      <td>55.</td>
       <td>neutron-lib</td>
       <td>1.29.2</td>
       <td>1.29.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>60.</td>
+      <td>56.</td>
       <td>openstacksdk</td>
       <td>0.36.5</td>
       <td>0.36.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>61.</td>
+      <td>57.</td>
       <td>os-brick</td>
       <td>2.10.7</td>
       <td>2.10.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>62.</td>
+      <td>58.</td>
       <td>os-client-config</td>
       <td>1.33.0</td>
       <td>1.33.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>63.</td>
+      <td>59.</td>
       <td>os-ken</td>
       <td>0.4.1</td>
       <td>0.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>64.</td>
+      <td>60.</td>
       <td>os_vif</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>65.</td>
+      <td>61.</td>
       <td>os-win</td>
       <td>4.3.3</td>
       <td>4.3.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>66.</td>
+      <td>62.</td>
       <td>osc-lib</td>
       <td>1.14.1</td>
       <td>1.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>67.</td>
+      <td>63.</td>
       <td>oslo.cache</td>
       <td>1.37.1</td>
       <td>1.37.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>68.</td>
+      <td>64.</td>
       <td>oslo.concurrency</td>
       <td>3.30.1</td>
       <td>3.30.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>69.</td>
+      <td>65.</td>
       <td>oslo.config</td>
       <td>6.11.3</td>
       <td>6.11.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>70.</td>
+      <td>66.</td>
       <td>oslo.context</td>
       <td>2.23.1</td>
       <td>2.23.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>71.</td>
+      <td>67.</td>
       <td>oslo.db</td>
       <td>5.0.2</td>
       <td>5.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>72.</td>
+      <td>68.</td>
       <td>oslo.log</td>
       <td>3.44.3</td>
       <td>3.44.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>73.</td>
+      <td>69.</td>
       <td>oslo.messaging</td>
       <td>10.2.4</td>
       <td>10.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>74.</td>
+      <td>70.</td>
       <td>oslo.middleware</td>
       <td>3.38.1</td>
       <td>3.38.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>75.</td>
+      <td>71.</td>
       <td>oslo.policy</td>
       <td>2.3.4</td>
       <td>2.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>76.</td>
+      <td>72.</td>
       <td>oslo.privsep</td>
       <td>1.33.5</td>
       <td>1.33.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>77.</td>
+      <td>73.</td>
       <td>oslo.reports</td>
       <td>1.30.0</td>
       <td>1.30.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>78.</td>
+      <td>74.</td>
       <td>oslo.rootwrap</td>
       <td>5.16.1</td>
       <td>5.16.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>79.</td>
+      <td>75.</td>
       <td>oslo.serialization</td>
       <td>2.29.3</td>
       <td>2.29.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>80.</td>
+      <td>76.</td>
       <td>oslo.service</td>
       <td>1.40.2</td>
       <td>1.40.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>81.</td>
+      <td>77.</td>
       <td>oslo.upgradecheck</td>
       <td>0.3.2</td>
       <td>0.3.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>82.</td>
+      <td>78.</td>
       <td>oslo.utils</td>
       <td>3.41.6</td>
       <td>3.41.6</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>83.</td>
+      <td>79.</td>
       <td>oslo.versionedobjects</td>
       <td>1.36.1</td>
       <td>1.36.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>84.</td>
+      <td>80.</td>
       <td>oslo.vmware</td>
       <td>2.34.1</td>
       <td>2.34.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>85.</td>
+      <td>81.</td>
       <td>osprofiler</td>
       <td>2.8.2</td>
       <td>2.8.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>86.</td>
+      <td>82.</td>
       <td>pycadf</td>
       <td>2.10.0</td>
       <td>2.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>87.</td>
+      <td>83.</td>
       <td>sushy</td>
       <td>2.0.5</td>
       <td>2.0.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>88.</td>
+      <td>84.</td>
       <td>taskflow</td>
       <td>3.7.1</td>
       <td>3.7.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>89.</td>
+      <td>85.</td>
       <td>tooz</td>
       <td>1.66.3</td>
       <td>1.66.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>90.</td>
+      <td>86.</td>
       <td>ironic-inspector</td>
       <td>9.2.4</td>
       <td>9.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>91.</td>
+      <td>87.</td>
       <td>ironic-prometheus-exporter</td>
       <td>1.1.2</td>
       <td>1.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>92.</td>
+      <td>88.</td>
       <td>ironic-python-agent</td>
       <td>5.0.4</td>
       <td>5.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>93.</td>
+      <td>89.</td>
       <td>networking-baremetal</td>
       <td>1.4.0</td>
       <td>1.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>94.</td>
+      <td>90.</td>
       <td>networking-generic-switch</td>
       <td>2.1.0</td>
       <td>2.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>95.</td>
+      <td>91.</td>
       <td>python-openstackclient</td>
       <td>4.0.2</td>
       <td>4.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>96.</td>
+      <td>92.</td>
       <td>tempest</td>
       <td>22.1.0</td>
       <td>22.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>97.</td>
+      <td>93.</td>
       <td>kolla</td>
       <td>9.4.0</td>
       <td>9.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>98.</td>
+      <td>94.</td>
       <td>kolla-ansible</td>
       <td>9.3.2</td>
       <td>9.3.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>99.</td>
+      <td>95.</td>
       <td>oslo.i18n</td>
       <td>3.24.0</td>
       <td>3.23.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
+    </tr>
+    <tr>
+      <td>96.</td>
+      <td>cliff</td>
+      <td>2.16.0</td>
+      <td>3.7.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>97.</td>
+      <td>oslotest</td>
+      <td>3.8.1</td>
+      <td>4.4.1</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>98.</td>
+      <td>ovsdbapp</td>
+      <td>0.17.5</td>
+      <td>1.9.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>99.</td>
+      <td>stevedore</td>
+      <td>1.31.0</td>
+      <td>3.3.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
     </tr>
     <tr>
       <td>100.</td>
@@ -4602,504 +4602,504 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-victoria/21.03" style="display: none;">
+<div name="div-table" id="div-21.03/victoria" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/victoria" target="view_window">https://releases.openstack.org/victoria</a>
      <a href="https://archives.openeuler.openatom.cn/openEuler-21.03/EPOL/aarch64/Packages/" target="view_window">https://archives.openeuler.openatom.cn/openEuler-21.03/EPOL/aarch64/Packages/</a>
   </pre>
-  <table id="table-victoria-21-03" class="display" data-page-length='236'>
+  <table id="table-21-03-victoria" class="display" data-page-length='236'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>victoria</th>
-        <th>openEuler<br>21.03</th>
+        <th>OpenStack Upstream<br>21.03</th>
+        <th>OpenStack Upstream<br>victoria</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td>1.</td>
-      <td>cliff</td>
-      <td>3.4.0</td>
-      <td>3.5.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>2.</td>
-      <td>os_vif</td>
-      <td>2.2.1</td>
-      <td>2.3.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>3.</td>
-      <td>oslo.db</td>
-      <td>8.4.1</td>
-      <td>8.5.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>4.</td>
-      <td>oslo.messaging</td>
-      <td>12.5.2</td>
-      <td>12.6.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>5.</td>
-      <td>oslo.policy</td>
-      <td>3.5.0</td>
-      <td>3.6.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>6.</td>
-      <td>oslo.upgradecheck</td>
-      <td>1.1.1</td>
-      <td>1.3.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>7.</td>
-      <td>oslo.utils</td>
-      <td>4.6.1</td>
-      <td>4.7.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>8.</td>
-      <td>oslo.versionedobjects</td>
-      <td>2.3.0</td>
-      <td>2.4.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>9.</td>
-      <td>ovsdbapp</td>
-      <td>1.6.1</td>
-      <td>1.7.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>10.</td>
-      <td>stevedore</td>
-      <td>3.2.2</td>
-      <td>3.3.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>11.</td>
-      <td>tooz</td>
-      <td>2.7.2</td>
-      <td>2.8.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>12.</td>
-      <td>ironic-inspector</td>
-      <td>10.4.2</td>
-      <td>10.5.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>13.</td>
       <td>openstack-placement</td>
       <td>4.0.0</td>
       <td>4.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>14.</td>
+      <td>2.</td>
       <td>osc-placement</td>
       <td>2.1.0</td>
       <td>2.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>15.</td>
+      <td>3.</td>
       <td>python-barbicanclient</td>
       <td>5.0.1</td>
       <td>5.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>16.</td>
+      <td>4.</td>
       <td>python-designateclient</td>
       <td>4.1.0</td>
       <td>4.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>17.</td>
+      <td>5.</td>
       <td>python-glanceclient</td>
       <td>3.2.2</td>
       <td>3.2.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>18.</td>
+      <td>6.</td>
       <td>python-heatclient</td>
       <td>2.2.1</td>
       <td>2.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>19.</td>
+      <td>7.</td>
       <td>python-ironic-inspector-client</td>
       <td>4.4.0</td>
       <td>4.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>20.</td>
+      <td>8.</td>
       <td>python-keystoneclient</td>
       <td>4.1.1</td>
       <td>4.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>21.</td>
+      <td>9.</td>
       <td>python-neutronclient</td>
       <td>7.2.1</td>
       <td>7.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>22.</td>
+      <td>10.</td>
       <td>python-novaclient</td>
       <td>17.2.1</td>
       <td>17.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>23.</td>
+      <td>11.</td>
       <td>python-swiftclient</td>
       <td>3.10.1</td>
       <td>3.10.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>24.</td>
+      <td>12.</td>
       <td>automaton</td>
       <td>2.2.0</td>
       <td>2.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>25.</td>
+      <td>13.</td>
       <td>debtcollector</td>
       <td>2.2.0</td>
       <td>2.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>26.</td>
+      <td>14.</td>
       <td>futurist</td>
       <td>2.3.0</td>
       <td>2.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>27.</td>
+      <td>15.</td>
       <td>keystoneauth1</td>
       <td>4.2.1</td>
       <td>4.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>28.</td>
+      <td>16.</td>
       <td>keystonemiddleware</td>
       <td>9.1.0</td>
       <td>9.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>29.</td>
+      <td>17.</td>
       <td>openstacksdk</td>
       <td>0.50.0</td>
       <td>0.50.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>30.</td>
+      <td>18.</td>
       <td>os-win</td>
       <td>5.2.0</td>
       <td>5.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>31.</td>
+      <td>19.</td>
       <td>osc-lib</td>
       <td>2.2.1</td>
       <td>2.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>32.</td>
+      <td>20.</td>
       <td>oslo.concurrency</td>
       <td>4.3.1</td>
       <td>4.3.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>33.</td>
+      <td>21.</td>
       <td>oslo.i18n</td>
       <td>5.0.1</td>
       <td>5.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>34.</td>
+      <td>22.</td>
       <td>oslo.log</td>
       <td>4.4.0</td>
       <td>4.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>35.</td>
+      <td>23.</td>
       <td>oslo.middleware</td>
       <td>4.1.1</td>
       <td>4.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>36.</td>
+      <td>24.</td>
       <td>oslo.privsep</td>
       <td>2.4.0</td>
       <td>2.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>37.</td>
+      <td>25.</td>
       <td>oslo.reports</td>
       <td>2.2.0</td>
       <td>2.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>38.</td>
+      <td>26.</td>
       <td>oslo.rootwrap</td>
       <td>6.2.0</td>
       <td>6.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>39.</td>
+      <td>27.</td>
       <td>oslo.vmware</td>
       <td>3.7.0</td>
       <td>3.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>40.</td>
+      <td>28.</td>
       <td>oslotest</td>
       <td>4.4.1</td>
       <td>4.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>41.</td>
+      <td>29.</td>
       <td>osprofiler</td>
       <td>3.4.0</td>
       <td>3.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>42.</td>
+      <td>30.</td>
       <td>pycadf</td>
       <td>3.1.1</td>
       <td>3.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>43.</td>
+      <td>31.</td>
       <td>taskflow</td>
       <td>4.5.0</td>
       <td>4.5.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>44.</td>
+      <td>32.</td>
       <td>ironic-python-agent</td>
       <td>6.4.4</td>
       <td>6.4.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>45.</td>
+      <td>33.</td>
       <td>networking-baremetal</td>
       <td>3.0.0</td>
       <td>3.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>46.</td>
+      <td>34.</td>
       <td>networking-generic-switch</td>
       <td>4.0.1</td>
       <td>4.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>47.</td>
+      <td>35.</td>
       <td>python-openstackclient</td>
       <td>5.4.0</td>
       <td>5.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>48.</td>
+      <td>36.</td>
       <td>tempest</td>
       <td>25.0.1</td>
       <td>25.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>49.</td>
+      <td>37.</td>
       <td>cinder</td>
       <td>17.4.0</td>
       <td>17.0.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>50.</td>
+      <td>38.</td>
       <td>glance</td>
       <td>21.1.0</td>
       <td>21.0.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>51.</td>
+      <td>39.</td>
       <td>horizon</td>
       <td>18.6.4</td>
       <td>18.6.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>52.</td>
+      <td>40.</td>
       <td>ironic</td>
       <td>16.0.5</td>
       <td>16.0.4</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>53.</td>
+      <td>41.</td>
       <td>keystone</td>
       <td>18.1.0</td>
       <td>18.0.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>54.</td>
+      <td>42.</td>
       <td>neutron</td>
       <td>17.4.1</td>
       <td>17.0.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>55.</td>
+      <td>43.</td>
       <td>nova</td>
       <td>22.4.0</td>
       <td>22.0.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>56.</td>
+      <td>44.</td>
       <td>python-cinderclient</td>
       <td>7.2.2</td>
       <td>7.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>57.</td>
+      <td>45.</td>
       <td>python-ironicclient</td>
       <td>4.4.1</td>
       <td>4.4.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>58.</td>
+      <td>46.</td>
       <td>castellan</td>
       <td>3.6.1</td>
       <td>3.6.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>59.</td>
+      <td>47.</td>
       <td>glance_store</td>
       <td>2.3.1</td>
       <td>2.3.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>60.</td>
+      <td>48.</td>
       <td>ironic-lib</td>
       <td>4.4.2</td>
       <td>4.4.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>61.</td>
+      <td>49.</td>
       <td>neutron-lib</td>
       <td>2.6.2</td>
       <td>2.6.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>62.</td>
+      <td>50.</td>
       <td>os-brick</td>
       <td>4.0.5</td>
       <td>4.0.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>63.</td>
+      <td>51.</td>
       <td>os-ken</td>
       <td>1.2.1</td>
       <td>1.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>64.</td>
+      <td>52.</td>
       <td>oslo.cache</td>
       <td>2.6.3</td>
       <td>2.6.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>65.</td>
+      <td>53.</td>
       <td>oslo.config</td>
       <td>8.3.4</td>
       <td>8.3.3</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>66.</td>
+      <td>54.</td>
       <td>oslo.context</td>
       <td>3.1.2</td>
       <td>3.1.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>67.</td>
+      <td>55.</td>
       <td>oslo.serialization</td>
       <td>4.0.2</td>
       <td>4.0.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>68.</td>
+      <td>56.</td>
       <td>oslo.service</td>
       <td>2.4.1</td>
       <td>2.4.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>69.</td>
+      <td>57.</td>
       <td>sushy</td>
       <td>3.4.6</td>
       <td>3.4.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
+    </tr>
+    <tr>
+      <td>58.</td>
+      <td>cliff</td>
+      <td>3.4.0</td>
+      <td>3.5.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>59.</td>
+      <td>os_vif</td>
+      <td>2.2.1</td>
+      <td>2.3.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>60.</td>
+      <td>oslo.db</td>
+      <td>8.4.1</td>
+      <td>8.5.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>61.</td>
+      <td>oslo.messaging</td>
+      <td>12.5.2</td>
+      <td>12.6.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>62.</td>
+      <td>oslo.policy</td>
+      <td>3.5.0</td>
+      <td>3.6.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>63.</td>
+      <td>oslo.upgradecheck</td>
+      <td>1.1.1</td>
+      <td>1.3.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>64.</td>
+      <td>oslo.utils</td>
+      <td>4.6.1</td>
+      <td>4.7.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>65.</td>
+      <td>oslo.versionedobjects</td>
+      <td>2.3.0</td>
+      <td>2.4.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>66.</td>
+      <td>ovsdbapp</td>
+      <td>1.6.1</td>
+      <td>1.7.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>67.</td>
+      <td>stevedore</td>
+      <td>3.2.2</td>
+      <td>3.3.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>68.</td>
+      <td>tooz</td>
+      <td>2.7.2</td>
+      <td>2.8.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>69.</td>
+      <td>ironic-inspector</td>
+      <td>10.4.2</td>
+      <td>10.5.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
     </tr>
     <tr>
       <td>70.</td>
@@ -6273,18 +6273,18 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-wallaby/21.09" style="display: none;">
+<div name="div-table" id="div-21.09/wallaby" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/wallaby" target="view_window">https://releases.openstack.org/wallaby</a>
      <a href="https://archives.openeuler.openatom.cn/openEuler-21.09/EPOL/main/aarch64/Packages/" target="view_window">https://archives.openeuler.openatom.cn/openEuler-21.09/EPOL/main/aarch64/Packages/</a>
   </pre>
-  <table id="table-wallaby-21-09" class="display" data-page-length='213'>
+  <table id="table-21-09-wallaby" class="display" data-page-length='213'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>wallaby</th>
-        <th>openEuler<br>21.09</th>
+        <th>OpenStack Upstream<br>21.09</th>
+        <th>OpenStack Upstream<br>wallaby</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -7783,672 +7783,672 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-train/22.03-LTS-SP1" style="display: none;">
+<div name="div-table" id="div-22.03-LTS-SP1/train" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/train" target="view_window">https://releases.openstack.org/train</a>
      <a href="https://repo.openeuler.org/openEuler-22.03-LTS-SP1/EPOL/multi_version/OpenStack/Train/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-22.03-LTS-SP1/EPOL/multi_version/OpenStack/Train/aarch64/Packages/</a>
   </pre>
-  <table id="table-train-22-03-LTS-SP1" class="display" data-page-length='244'>
+  <table id="table-22-03-LTS-SP1-train" class="display" data-page-length='244'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>train</th>
-        <th>openEuler<br>22.03-LTS-SP1</th>
+        <th>OpenStack Upstream<br>22.03-LTS-SP1</th>
+        <th>OpenStack Upstream<br>train</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td>1.</td>
-      <td>osc-placement</td>
-      <td>1.7.0</td>
-      <td>3.2.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>2.</td>
-      <td>python-swiftclient</td>
-      <td>3.8.1</td>
-      <td>3.13.1</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>3.</td>
-      <td>cliff</td>
-      <td>2.16.0</td>
-      <td>3.7.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>4.</td>
-      <td>oslo.db</td>
-      <td>5.0.2</td>
-      <td>12.2.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>5.</td>
-      <td>oslotest</td>
-      <td>3.8.1</td>
-      <td>4.4.1</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>6.</td>
-      <td>ovsdbapp</td>
-      <td>0.17.5</td>
-      <td>1.15.2</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>7.</td>
-      <td>taskflow</td>
-      <td>3.7.1</td>
-      <td>4.6.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>8.</td>
-      <td>python-openstackclient</td>
-      <td>4.0.2</td>
-      <td>5.8.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>9.</td>
-      <td>kolla</td>
-      <td>9.4.0</td>
-      <td>14.2.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>10.</td>
       <td>aodh</td>
       <td>9.0.1</td>
       <td>9.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>11.</td>
+      <td>2.</td>
       <td>ceilometer</td>
       <td>13.1.2</td>
       <td>13.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>12.</td>
+      <td>3.</td>
       <td>openstack-cyborg</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>13.</td>
+      <td>4.</td>
       <td>glance</td>
       <td>19.0.4</td>
       <td>19.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>14.</td>
+      <td>5.</td>
       <td>openstack-heat</td>
       <td>13.1.0</td>
       <td>13.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>15.</td>
+      <td>6.</td>
       <td>horizon</td>
       <td>16.2.2</td>
       <td>16.2.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>16.</td>
+      <td>7.</td>
       <td>keystone</td>
       <td>16.0.2</td>
       <td>16.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>17.</td>
+      <td>8.</td>
       <td>neutron</td>
       <td>15.3.4</td>
       <td>15.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>18.</td>
+      <td>9.</td>
       <td>nova</td>
       <td>20.6.1</td>
       <td>20.6.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>19.</td>
+      <td>10.</td>
       <td>panko</td>
       <td>7.1.0</td>
       <td>7.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>20.</td>
+      <td>11.</td>
       <td>swift</td>
       <td>2.23.3</td>
       <td>2.23.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>21.</td>
+      <td>12.</td>
       <td>trove</td>
       <td>12.1.0</td>
       <td>12.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>22.</td>
+      <td>13.</td>
       <td>aodhclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>23.</td>
+      <td>14.</td>
       <td>python-barbicanclient</td>
       <td>4.9.0</td>
       <td>4.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>24.</td>
+      <td>15.</td>
       <td>python-blazarclient</td>
       <td>2.2.1</td>
       <td>2.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>25.</td>
+      <td>16.</td>
       <td>python-cinderclient</td>
       <td>5.0.2</td>
       <td>5.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>26.</td>
+      <td>17.</td>
       <td>python-congressclient</td>
       <td>1.13.0</td>
       <td>1.13.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>27.</td>
+      <td>18.</td>
       <td>python-cyborgclient</td>
       <td>0.4.0</td>
       <td>0.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>28.</td>
+      <td>19.</td>
       <td>python-designateclient</td>
       <td>3.0.0</td>
       <td>3.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>29.</td>
+      <td>20.</td>
       <td>python-glanceclient</td>
       <td>2.17.1</td>
       <td>2.17.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>30.</td>
+      <td>21.</td>
       <td>python-heatclient</td>
       <td>1.18.1</td>
       <td>1.18.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>31.</td>
+      <td>22.</td>
       <td>python-ironic-inspector-client</td>
       <td>3.7.1</td>
       <td>3.7.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>32.</td>
+      <td>23.</td>
       <td>python-ironicclient</td>
       <td>3.1.2</td>
       <td>3.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>33.</td>
+      <td>24.</td>
       <td>python-karborclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>34.</td>
+      <td>25.</td>
       <td>python-keystoneclient</td>
       <td>3.21.0</td>
       <td>3.21.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>35.</td>
+      <td>26.</td>
       <td>python-magnumclient</td>
       <td>2.16.0</td>
       <td>2.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>36.</td>
+      <td>27.</td>
       <td>python-manilaclient</td>
       <td>1.29.0</td>
       <td>1.29.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>37.</td>
+      <td>28.</td>
       <td>python-mistralclient</td>
       <td>3.10.0</td>
       <td>3.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>38.</td>
+      <td>29.</td>
       <td>python-monascaclient</td>
       <td>1.16.0</td>
       <td>1.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>39.</td>
+      <td>30.</td>
       <td>python-muranoclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>40.</td>
+      <td>31.</td>
       <td>python-neutronclient</td>
       <td>6.14.1</td>
       <td>6.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>41.</td>
+      <td>32.</td>
       <td>python-novaclient</td>
       <td>15.1.1</td>
       <td>15.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>42.</td>
+      <td>33.</td>
       <td>python-octaviaclient</td>
       <td>1.10.1</td>
       <td>1.10.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>43.</td>
+      <td>34.</td>
       <td>python-saharaclient</td>
       <td>2.3.0</td>
       <td>2.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>44.</td>
+      <td>35.</td>
       <td>python-searchlightclient</td>
       <td>1.6.0</td>
       <td>1.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>45.</td>
+      <td>36.</td>
       <td>python-senlinclient</td>
       <td>1.11.1</td>
       <td>1.11.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>46.</td>
+      <td>37.</td>
       <td>python-troveclient</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>47.</td>
+      <td>38.</td>
       <td>python-zaqarclient</td>
       <td>1.12.0</td>
       <td>1.12.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>48.</td>
+      <td>39.</td>
       <td>python-zunclient</td>
       <td>3.5.1</td>
       <td>3.5.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>49.</td>
+      <td>40.</td>
       <td>automaton</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>50.</td>
+      <td>41.</td>
       <td>castellan</td>
       <td>1.3.4</td>
       <td>1.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>51.</td>
+      <td>42.</td>
       <td>debtcollector</td>
       <td>1.22.0</td>
       <td>1.22.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>52.</td>
+      <td>43.</td>
       <td>futurist</td>
       <td>1.9.0</td>
       <td>1.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>53.</td>
+      <td>44.</td>
       <td>glance_store</td>
       <td>1.0.1</td>
       <td>1.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>54.</td>
+      <td>45.</td>
       <td>ironic-lib</td>
       <td>2.21.3</td>
       <td>2.21.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>55.</td>
+      <td>46.</td>
       <td>keystoneauth1</td>
       <td>3.17.4</td>
       <td>3.17.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>56.</td>
+      <td>47.</td>
       <td>keystonemiddleware</td>
       <td>7.0.1</td>
       <td>7.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>57.</td>
+      <td>48.</td>
       <td>mox3</td>
       <td>0.28.0</td>
       <td>0.28.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>58.</td>
+      <td>49.</td>
       <td>neutron-lib</td>
       <td>1.29.2</td>
       <td>1.29.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>59.</td>
+      <td>50.</td>
       <td>openstacksdk</td>
       <td>0.36.5</td>
       <td>0.36.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>60.</td>
+      <td>51.</td>
       <td>os-brick</td>
       <td>2.10.7</td>
       <td>2.10.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>61.</td>
+      <td>52.</td>
       <td>os-client-config</td>
       <td>1.33.0</td>
       <td>1.33.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>62.</td>
+      <td>53.</td>
       <td>os-ken</td>
       <td>0.4.1</td>
       <td>0.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>63.</td>
+      <td>54.</td>
       <td>os_vif</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>64.</td>
+      <td>55.</td>
       <td>os-win</td>
       <td>4.3.3</td>
       <td>4.3.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>65.</td>
+      <td>56.</td>
       <td>osc-lib</td>
       <td>1.14.1</td>
       <td>1.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>66.</td>
+      <td>57.</td>
       <td>oslo.cache</td>
       <td>1.37.1</td>
       <td>1.37.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>67.</td>
+      <td>58.</td>
       <td>oslo.concurrency</td>
       <td>3.30.1</td>
       <td>3.30.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>68.</td>
+      <td>59.</td>
       <td>oslo.config</td>
       <td>6.11.3</td>
       <td>6.11.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>69.</td>
+      <td>60.</td>
       <td>oslo.context</td>
       <td>2.23.1</td>
       <td>2.23.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>70.</td>
+      <td>61.</td>
       <td>oslo.log</td>
       <td>3.44.3</td>
       <td>3.44.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>71.</td>
+      <td>62.</td>
       <td>oslo.messaging</td>
       <td>10.2.4</td>
       <td>10.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>72.</td>
+      <td>63.</td>
       <td>oslo.middleware</td>
       <td>3.38.1</td>
       <td>3.38.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>73.</td>
+      <td>64.</td>
       <td>oslo.policy</td>
       <td>2.3.4</td>
       <td>2.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>74.</td>
+      <td>65.</td>
       <td>oslo.privsep</td>
       <td>1.33.5</td>
       <td>1.33.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>75.</td>
+      <td>66.</td>
       <td>oslo.reports</td>
       <td>1.30.0</td>
       <td>1.30.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>76.</td>
+      <td>67.</td>
       <td>oslo.rootwrap</td>
       <td>5.16.1</td>
       <td>5.16.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>77.</td>
+      <td>68.</td>
       <td>oslo.serialization</td>
       <td>2.29.3</td>
       <td>2.29.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>78.</td>
+      <td>69.</td>
       <td>oslo.service</td>
       <td>1.40.2</td>
       <td>1.40.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>79.</td>
+      <td>70.</td>
       <td>oslo.upgradecheck</td>
       <td>0.3.2</td>
       <td>0.3.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>80.</td>
+      <td>71.</td>
       <td>oslo.utils</td>
       <td>3.41.6</td>
       <td>3.41.6</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>81.</td>
+      <td>72.</td>
       <td>oslo.versionedobjects</td>
       <td>1.36.1</td>
       <td>1.36.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>82.</td>
+      <td>73.</td>
       <td>oslo.vmware</td>
       <td>2.34.1</td>
       <td>2.34.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>83.</td>
+      <td>74.</td>
       <td>osprofiler</td>
       <td>2.8.2</td>
       <td>2.8.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>84.</td>
+      <td>75.</td>
       <td>pycadf</td>
       <td>2.10.0</td>
       <td>2.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>85.</td>
+      <td>76.</td>
       <td>sushy</td>
       <td>2.0.5</td>
       <td>2.0.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>86.</td>
+      <td>77.</td>
       <td>tooz</td>
       <td>1.66.3</td>
       <td>1.66.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>87.</td>
+      <td>78.</td>
       <td>ironic-inspector</td>
       <td>9.2.4</td>
       <td>9.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>88.</td>
+      <td>79.</td>
       <td>ironic-prometheus-exporter</td>
       <td>1.1.2</td>
       <td>1.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>89.</td>
+      <td>80.</td>
       <td>ironic-python-agent</td>
       <td>5.0.4</td>
       <td>5.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>90.</td>
+      <td>81.</td>
       <td>networking-baremetal</td>
       <td>1.4.0</td>
       <td>1.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>91.</td>
+      <td>82.</td>
       <td>networking-generic-switch</td>
       <td>2.1.0</td>
       <td>2.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>92.</td>
+      <td>83.</td>
       <td>tempest</td>
       <td>22.1.0</td>
       <td>22.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>93.</td>
+      <td>84.</td>
       <td>oslo.i18n</td>
       <td>3.24.0</td>
       <td>3.23.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
+    </tr>
+    <tr>
+      <td>85.</td>
+      <td>osc-placement</td>
+      <td>1.7.0</td>
+      <td>3.2.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>86.</td>
+      <td>python-swiftclient</td>
+      <td>3.8.1</td>
+      <td>3.13.1</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>87.</td>
+      <td>cliff</td>
+      <td>2.16.0</td>
+      <td>3.7.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>88.</td>
+      <td>oslo.db</td>
+      <td>5.0.2</td>
+      <td>12.2.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>89.</td>
+      <td>oslotest</td>
+      <td>3.8.1</td>
+      <td>4.4.1</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>90.</td>
+      <td>ovsdbapp</td>
+      <td>0.17.5</td>
+      <td>1.15.2</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>91.</td>
+      <td>taskflow</td>
+      <td>3.7.1</td>
+      <td>4.6.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>92.</td>
+      <td>python-openstackclient</td>
+      <td>4.0.2</td>
+      <td>5.8.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>93.</td>
+      <td>kolla</td>
+      <td>9.4.0</td>
+      <td>14.2.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
     </tr>
     <tr>
       <td>94.</td>
@@ -9510,548 +9510,548 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-wallaby/22.03-LTS-SP1" style="display: none;">
+<div name="div-table" id="div-22.03-LTS-SP1/wallaby" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/wallaby" target="view_window">https://releases.openstack.org/wallaby</a>
      <a href="https://repo.openeuler.org/openEuler-22.03-LTS-SP1/EPOL/multi_version/OpenStack/Wallaby/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-22.03-LTS-SP1/EPOL/multi_version/OpenStack/Wallaby/aarch64/Packages/</a>
   </pre>
-  <table id="table-wallaby-22-03-LTS-SP1" class="display" data-page-length='213'>
+  <table id="table-22-03-LTS-SP1-wallaby" class="display" data-page-length='213'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>wallaby</th>
-        <th>openEuler<br>22.03-LTS-SP1</th>
+        <th>OpenStack Upstream<br>22.03-LTS-SP1</th>
+        <th>OpenStack Upstream<br>wallaby</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td>1.</td>
-      <td>python-ironicclient</td>
-      <td>4.6.4</td>
-      <td>4.11.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>2.</td>
-      <td>oslo.db</td>
-      <td>8.5.2</td>
-      <td>12.2.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>3.</td>
       <td>aodh</td>
       <td>12.0.0</td>
       <td>12.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>4.</td>
+      <td>2.</td>
       <td>panko</td>
       <td>10.0.0</td>
       <td>10.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>5.</td>
+      <td>3.</td>
       <td>swift</td>
       <td>2.27.0</td>
       <td>2.27.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>6.</td>
+      <td>4.</td>
       <td>trove</td>
       <td>15.0.0</td>
       <td>15.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>7.</td>
+      <td>5.</td>
       <td>osc-placement</td>
       <td>2.2.0</td>
       <td>2.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>8.</td>
+      <td>6.</td>
       <td>python-barbicanclient</td>
       <td>5.1.0</td>
       <td>5.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>9.</td>
+      <td>7.</td>
       <td>python-cinderclient</td>
       <td>7.4.1</td>
       <td>7.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>10.</td>
+      <td>8.</td>
       <td>python-cyborgclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>11.</td>
+      <td>9.</td>
       <td>python-glanceclient</td>
       <td>3.3.0</td>
       <td>3.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>12.</td>
+      <td>10.</td>
       <td>python-keystoneclient</td>
       <td>4.2.0</td>
       <td>4.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>13.</td>
+      <td>11.</td>
       <td>python-magnumclient</td>
       <td>3.4.1</td>
       <td>3.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>14.</td>
+      <td>12.</td>
       <td>python-mistralclient</td>
       <td>4.2.0</td>
       <td>4.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>15.</td>
+      <td>13.</td>
       <td>python-monascaclient</td>
       <td>2.3.0</td>
       <td>2.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>16.</td>
+      <td>14.</td>
       <td>python-muranoclient</td>
       <td>2.2.0</td>
       <td>2.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>17.</td>
+      <td>15.</td>
       <td>python-octaviaclient</td>
       <td>2.3.1</td>
       <td>2.3.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>18.</td>
+      <td>16.</td>
       <td>python-saharaclient</td>
       <td>3.3.0</td>
       <td>3.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>19.</td>
+      <td>17.</td>
       <td>python-senlinclient</td>
       <td>2.2.1</td>
       <td>2.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>20.</td>
+      <td>18.</td>
       <td>python-swiftclient</td>
       <td>3.11.1</td>
       <td>3.11.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>21.</td>
+      <td>19.</td>
       <td>python-troveclient</td>
       <td>7.0.0</td>
       <td>7.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>22.</td>
+      <td>20.</td>
       <td>python-watcherclient</td>
       <td>3.2.0</td>
       <td>3.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>23.</td>
+      <td>21.</td>
       <td>python-zaqarclient</td>
       <td>2.1.0</td>
       <td>2.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>24.</td>
+      <td>22.</td>
       <td>python-zunclient</td>
       <td>4.2.0</td>
       <td>4.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>25.</td>
+      <td>23.</td>
       <td>castellan</td>
       <td>3.7.2</td>
       <td>3.7.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>26.</td>
+      <td>24.</td>
       <td>cliff</td>
       <td>3.7.0</td>
       <td>3.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>27.</td>
+      <td>25.</td>
       <td>keystoneauth1</td>
       <td>4.3.1</td>
       <td>4.3.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>28.</td>
+      <td>26.</td>
       <td>keystonemiddleware</td>
       <td>9.2.0</td>
       <td>9.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>29.</td>
+      <td>27.</td>
       <td>os-win</td>
       <td>5.4.0</td>
       <td>5.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>30.</td>
+      <td>28.</td>
       <td>osc-lib</td>
       <td>2.3.1</td>
       <td>2.3.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>31.</td>
+      <td>29.</td>
       <td>oslo.config</td>
       <td>8.5.1</td>
       <td>8.5.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>32.</td>
+      <td>30.</td>
       <td>oslo.context</td>
       <td>3.2.1</td>
       <td>3.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>33.</td>
+      <td>31.</td>
       <td>oslo.policy</td>
       <td>3.7.1</td>
       <td>3.7.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>34.</td>
+      <td>32.</td>
       <td>ironic-prometheus-exporter</td>
       <td>2.2.0</td>
       <td>2.2.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>35.</td>
+      <td>33.</td>
       <td>networking-baremetal</td>
       <td>4.0.0</td>
       <td>4.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>36.</td>
+      <td>34.</td>
       <td>tempest</td>
       <td>27.0.0</td>
       <td>27.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>37.</td>
+      <td>35.</td>
       <td>ceilometer</td>
       <td>16.0.1</td>
       <td>16.0.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>38.</td>
+      <td>36.</td>
       <td>openstack-cyborg</td>
       <td>6.0.1</td>
       <td>6.0.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>39.</td>
+      <td>37.</td>
       <td>horizon</td>
       <td>19.4.0</td>
       <td>19.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>40.</td>
+      <td>38.</td>
       <td>keystone</td>
       <td>19.0.1</td>
       <td>19.0.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>41.</td>
+      <td>39.</td>
       <td>neutron</td>
       <td>18.6.0</td>
       <td>18.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>42.</td>
+      <td>40.</td>
       <td>nova</td>
       <td>23.2.2</td>
       <td>23.1.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>43.</td>
+      <td>41.</td>
       <td>python-blazarclient</td>
       <td>3.2.1</td>
       <td>3.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>44.</td>
+      <td>42.</td>
       <td>python-designateclient</td>
       <td>4.2.1</td>
       <td>4.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>45.</td>
+      <td>43.</td>
       <td>python-heatclient</td>
       <td>2.3.1</td>
       <td>2.3.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>46.</td>
+      <td>44.</td>
       <td>python-manilaclient</td>
       <td>2.6.4</td>
       <td>2.6.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>47.</td>
+      <td>45.</td>
       <td>python-neutronclient</td>
       <td>7.3.1</td>
       <td>7.3.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>48.</td>
+      <td>46.</td>
       <td>python-novaclient</td>
       <td>17.4.1</td>
       <td>17.4.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>49.</td>
+      <td>47.</td>
       <td>automaton</td>
       <td>2.3.1</td>
       <td>2.3.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>50.</td>
+      <td>48.</td>
       <td>glance_store</td>
       <td>2.5.1</td>
       <td>2.5.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>51.</td>
+      <td>49.</td>
       <td>ironic-lib</td>
       <td>4.6.4</td>
       <td>4.6.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>52.</td>
+      <td>50.</td>
       <td>neutron-lib</td>
       <td>2.10.2</td>
       <td>2.10.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>53.</td>
+      <td>51.</td>
       <td>openstacksdk</td>
       <td>0.55.1</td>
       <td>0.55.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>54.</td>
+      <td>52.</td>
       <td>os-brick</td>
       <td>4.3.4</td>
       <td>4.3.2</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>55.</td>
+      <td>53.</td>
       <td>os-ken</td>
       <td>1.4.1</td>
       <td>1.4.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>56.</td>
+      <td>54.</td>
       <td>os_vif</td>
       <td>2.4.1</td>
       <td>2.4.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>57.</td>
+      <td>55.</td>
       <td>oslo.cache</td>
       <td>2.7.1</td>
       <td>2.7.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>58.</td>
+      <td>56.</td>
       <td>oslo.messaging</td>
       <td>12.7.3</td>
       <td>12.7.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>59.</td>
+      <td>57.</td>
       <td>oslo.middleware</td>
       <td>4.2.1</td>
       <td>4.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>60.</td>
+      <td>58.</td>
       <td>oslo.privsep</td>
       <td>2.5.1</td>
       <td>2.5.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>61.</td>
+      <td>59.</td>
       <td>oslo.serialization</td>
       <td>4.1.1</td>
       <td>4.1.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>62.</td>
+      <td>60.</td>
       <td>oslo.service</td>
       <td>2.5.1</td>
       <td>2.5.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>63.</td>
+      <td>61.</td>
       <td>oslo.upgradecheck</td>
       <td>1.3.1</td>
       <td>1.3.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>64.</td>
+      <td>62.</td>
       <td>oslo.utils</td>
       <td>4.8.2</td>
       <td>4.8.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>65.</td>
+      <td>63.</td>
       <td>oslo.versionedobjects</td>
       <td>2.4.1</td>
       <td>2.4.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>66.</td>
+      <td>64.</td>
       <td>oslo.vmware</td>
       <td>3.8.2</td>
       <td>3.8.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>67.</td>
+      <td>65.</td>
       <td>ovsdbapp</td>
       <td>1.9.4</td>
       <td>1.9.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>68.</td>
+      <td>66.</td>
       <td>stevedore</td>
       <td>3.3.3</td>
       <td>3.3.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>69.</td>
+      <td>67.</td>
       <td>sushy</td>
       <td>3.7.6</td>
       <td>3.7.3</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>70.</td>
+      <td>68.</td>
       <td>tooz</td>
       <td>2.8.3</td>
       <td>2.8.2</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>71.</td>
+      <td>69.</td>
       <td>ironic-python-agent</td>
       <td>7.1.0</td>
       <td>7.0.2</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>72.</td>
+      <td>70.</td>
       <td>ironic-python-agent-builder</td>
       <td>2.8.0</td>
       <td>2.7.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>73.</td>
+      <td>71.</td>
       <td>python-openstackclient</td>
       <td>5.5.1</td>
       <td>5.5.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>74.</td>
+      <td>72.</td>
       <td>kolla</td>
       <td>12.7.0</td>
       <td>12.0.1</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
-      <td>75.</td>
+      <td>73.</td>
       <td>kolla-ansible</td>
       <td>12.8.0</td>
       <td>12.2.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
     </tr>
     <tr>
+      <td>74.</td>
+      <td>python-ironicclient</td>
+      <td>4.6.4</td>
+      <td>4.11.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>75.</td>
+      <td>oslo.db</td>
+      <td>8.5.2</td>
+      <td>12.2.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
       <td>76.</td>
       <td>python-adjutant</td>
       <td>2.0.0</td>
@@ -11020,707 +11020,707 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-train/22.03-LTS-SP2" style="display: none;">
+<div name="div-table" id="div-22.03-LTS-SP2/train" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/train" target="view_window">https://releases.openstack.org/train</a>
      <a href="https://repo.openeuler.org/openEuler-22.03-LTS-SP2/EPOL/multi_version/OpenStack/Train/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-22.03-LTS-SP2/EPOL/multi_version/OpenStack/Train/aarch64/Packages/</a>
   </pre>
-  <table id="table-train-22-03-LTS-SP2" class="display" data-page-length='244'>
+  <table id="table-22-03-LTS-SP2-train" class="display" data-page-length='244'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>train</th>
-        <th>openEuler<br>22.03-LTS-SP2</th>
+        <th>OpenStack Upstream<br>22.03-LTS-SP2</th>
+        <th>OpenStack Upstream<br>train</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td>1.</td>
-      <td>cliff</td>
-      <td>2.16.0</td>
-      <td>3.7.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>2.</td>
-      <td>oslotest</td>
-      <td>3.8.1</td>
-      <td>4.4.1</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>3.</td>
-      <td>ovsdbapp</td>
-      <td>0.17.5</td>
-      <td>1.9.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>4.</td>
-      <td>taskflow</td>
-      <td>3.7.1</td>
-      <td>4.6.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>5.</td>
       <td>aodh</td>
       <td>9.0.1</td>
       <td>9.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>6.</td>
+      <td>2.</td>
       <td>ceilometer</td>
       <td>13.1.2</td>
       <td>13.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>7.</td>
+      <td>3.</td>
       <td>cinder</td>
       <td>15.6.0</td>
       <td>15.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>8.</td>
+      <td>4.</td>
       <td>openstack-cyborg</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>9.</td>
+      <td>5.</td>
       <td>glance</td>
       <td>19.0.4</td>
       <td>19.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>10.</td>
+      <td>6.</td>
       <td>openstack-heat</td>
       <td>13.1.0</td>
       <td>13.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>11.</td>
+      <td>7.</td>
       <td>horizon</td>
       <td>16.2.2</td>
       <td>16.2.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>12.</td>
+      <td>8.</td>
       <td>ironic</td>
       <td>13.0.7</td>
       <td>13.0.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>13.</td>
+      <td>9.</td>
       <td>keystone</td>
       <td>16.0.2</td>
       <td>16.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>14.</td>
+      <td>10.</td>
       <td>neutron</td>
       <td>15.3.4</td>
       <td>15.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>15.</td>
+      <td>11.</td>
       <td>nova</td>
       <td>20.6.1</td>
       <td>20.6.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>16.</td>
+      <td>12.</td>
       <td>panko</td>
       <td>7.1.0</td>
       <td>7.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>17.</td>
+      <td>13.</td>
       <td>openstack-placement</td>
       <td>2.0.1</td>
       <td>2.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>18.</td>
+      <td>14.</td>
       <td>swift</td>
       <td>2.23.3</td>
       <td>2.23.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>19.</td>
+      <td>15.</td>
       <td>trove</td>
       <td>12.1.0</td>
       <td>12.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>20.</td>
+      <td>16.</td>
       <td>osc-placement</td>
       <td>1.7.0</td>
       <td>1.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>21.</td>
+      <td>17.</td>
       <td>aodhclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>22.</td>
+      <td>18.</td>
       <td>python-barbicanclient</td>
       <td>4.9.0</td>
       <td>4.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>23.</td>
+      <td>19.</td>
       <td>python-blazarclient</td>
       <td>2.2.1</td>
       <td>2.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>24.</td>
+      <td>20.</td>
       <td>python-cinderclient</td>
       <td>5.0.2</td>
       <td>5.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>25.</td>
+      <td>21.</td>
       <td>python-congressclient</td>
       <td>1.13.0</td>
       <td>1.13.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>26.</td>
+      <td>22.</td>
       <td>python-cyborgclient</td>
       <td>0.4.0</td>
       <td>0.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>27.</td>
+      <td>23.</td>
       <td>python-designateclient</td>
       <td>3.0.0</td>
       <td>3.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>28.</td>
+      <td>24.</td>
       <td>python-glanceclient</td>
       <td>2.17.1</td>
       <td>2.17.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>29.</td>
+      <td>25.</td>
       <td>python-heatclient</td>
       <td>1.18.1</td>
       <td>1.18.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>30.</td>
+      <td>26.</td>
       <td>python-ironic-inspector-client</td>
       <td>3.7.1</td>
       <td>3.7.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>31.</td>
+      <td>27.</td>
       <td>python-ironicclient</td>
       <td>3.1.2</td>
       <td>3.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>32.</td>
+      <td>28.</td>
       <td>python-karborclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>33.</td>
+      <td>29.</td>
       <td>python-keystoneclient</td>
       <td>3.21.0</td>
       <td>3.21.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>34.</td>
+      <td>30.</td>
       <td>python-magnumclient</td>
       <td>2.16.0</td>
       <td>2.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>35.</td>
+      <td>31.</td>
       <td>python-manilaclient</td>
       <td>1.29.0</td>
       <td>1.29.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>36.</td>
+      <td>32.</td>
       <td>python-mistralclient</td>
       <td>3.10.0</td>
       <td>3.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>37.</td>
+      <td>33.</td>
       <td>python-monascaclient</td>
       <td>1.16.0</td>
       <td>1.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>38.</td>
+      <td>34.</td>
       <td>python-muranoclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>39.</td>
+      <td>35.</td>
       <td>python-neutronclient</td>
       <td>6.14.1</td>
       <td>6.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>40.</td>
+      <td>36.</td>
       <td>python-novaclient</td>
       <td>15.1.1</td>
       <td>15.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>41.</td>
+      <td>37.</td>
       <td>python-octaviaclient</td>
       <td>1.10.1</td>
       <td>1.10.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>42.</td>
+      <td>38.</td>
       <td>python-saharaclient</td>
       <td>2.3.0</td>
       <td>2.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>43.</td>
+      <td>39.</td>
       <td>python-searchlightclient</td>
       <td>1.6.0</td>
       <td>1.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>44.</td>
+      <td>40.</td>
       <td>python-senlinclient</td>
       <td>1.11.1</td>
       <td>1.11.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>45.</td>
+      <td>41.</td>
       <td>python-swiftclient</td>
       <td>3.8.1</td>
       <td>3.8.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>46.</td>
+      <td>42.</td>
       <td>python-troveclient</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>47.</td>
+      <td>43.</td>
       <td>python-zaqarclient</td>
       <td>1.12.0</td>
       <td>1.12.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>48.</td>
+      <td>44.</td>
       <td>python-zunclient</td>
       <td>3.5.1</td>
       <td>3.5.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>49.</td>
+      <td>45.</td>
       <td>automaton</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>50.</td>
+      <td>46.</td>
       <td>castellan</td>
       <td>1.3.4</td>
       <td>1.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>51.</td>
+      <td>47.</td>
       <td>debtcollector</td>
       <td>1.22.0</td>
       <td>1.22.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>52.</td>
+      <td>48.</td>
       <td>futurist</td>
       <td>1.9.0</td>
       <td>1.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>53.</td>
+      <td>49.</td>
       <td>glance_store</td>
       <td>1.0.1</td>
       <td>1.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>54.</td>
+      <td>50.</td>
       <td>ironic-lib</td>
       <td>2.21.3</td>
       <td>2.21.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>55.</td>
+      <td>51.</td>
       <td>keystoneauth1</td>
       <td>3.17.4</td>
       <td>3.17.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>56.</td>
+      <td>52.</td>
       <td>keystonemiddleware</td>
       <td>7.0.1</td>
       <td>7.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>57.</td>
+      <td>53.</td>
       <td>mox3</td>
       <td>0.28.0</td>
       <td>0.28.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>58.</td>
+      <td>54.</td>
       <td>neutron-lib</td>
       <td>1.29.2</td>
       <td>1.29.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>59.</td>
+      <td>55.</td>
       <td>openstacksdk</td>
       <td>0.36.5</td>
       <td>0.36.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>60.</td>
+      <td>56.</td>
       <td>os-brick</td>
       <td>2.10.7</td>
       <td>2.10.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>61.</td>
+      <td>57.</td>
       <td>os-client-config</td>
       <td>1.33.0</td>
       <td>1.33.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>62.</td>
+      <td>58.</td>
       <td>os-ken</td>
       <td>0.4.1</td>
       <td>0.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>63.</td>
+      <td>59.</td>
       <td>os_vif</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>64.</td>
+      <td>60.</td>
       <td>os-win</td>
       <td>4.3.3</td>
       <td>4.3.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>65.</td>
+      <td>61.</td>
       <td>osc-lib</td>
       <td>1.14.1</td>
       <td>1.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>66.</td>
+      <td>62.</td>
       <td>oslo.cache</td>
       <td>1.37.1</td>
       <td>1.37.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>67.</td>
+      <td>63.</td>
       <td>oslo.concurrency</td>
       <td>3.30.1</td>
       <td>3.30.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>68.</td>
+      <td>64.</td>
       <td>oslo.config</td>
       <td>6.11.3</td>
       <td>6.11.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>69.</td>
+      <td>65.</td>
       <td>oslo.context</td>
       <td>2.23.1</td>
       <td>2.23.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>70.</td>
+      <td>66.</td>
       <td>oslo.db</td>
       <td>5.0.2</td>
       <td>5.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>71.</td>
+      <td>67.</td>
       <td>oslo.log</td>
       <td>3.44.3</td>
       <td>3.44.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>72.</td>
+      <td>68.</td>
       <td>oslo.messaging</td>
       <td>10.2.4</td>
       <td>10.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>73.</td>
+      <td>69.</td>
       <td>oslo.middleware</td>
       <td>3.38.1</td>
       <td>3.38.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>74.</td>
+      <td>70.</td>
       <td>oslo.policy</td>
       <td>2.3.4</td>
       <td>2.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>75.</td>
+      <td>71.</td>
       <td>oslo.privsep</td>
       <td>1.33.5</td>
       <td>1.33.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>76.</td>
+      <td>72.</td>
       <td>oslo.reports</td>
       <td>1.30.0</td>
       <td>1.30.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>77.</td>
+      <td>73.</td>
       <td>oslo.rootwrap</td>
       <td>5.16.1</td>
       <td>5.16.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>78.</td>
+      <td>74.</td>
       <td>oslo.serialization</td>
       <td>2.29.3</td>
       <td>2.29.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>79.</td>
+      <td>75.</td>
       <td>oslo.service</td>
       <td>1.40.2</td>
       <td>1.40.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>80.</td>
+      <td>76.</td>
       <td>oslo.upgradecheck</td>
       <td>0.3.2</td>
       <td>0.3.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>81.</td>
+      <td>77.</td>
       <td>oslo.utils</td>
       <td>3.41.6</td>
       <td>3.41.6</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>82.</td>
+      <td>78.</td>
       <td>oslo.versionedobjects</td>
       <td>1.36.1</td>
       <td>1.36.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>83.</td>
+      <td>79.</td>
       <td>oslo.vmware</td>
       <td>2.34.1</td>
       <td>2.34.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>84.</td>
+      <td>80.</td>
       <td>osprofiler</td>
       <td>2.8.2</td>
       <td>2.8.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>85.</td>
+      <td>81.</td>
       <td>pycadf</td>
       <td>2.10.0</td>
       <td>2.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>86.</td>
+      <td>82.</td>
       <td>sushy</td>
       <td>2.0.5</td>
       <td>2.0.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>87.</td>
+      <td>83.</td>
       <td>tooz</td>
       <td>1.66.3</td>
       <td>1.66.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>88.</td>
+      <td>84.</td>
       <td>ironic-inspector</td>
       <td>9.2.4</td>
       <td>9.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>89.</td>
+      <td>85.</td>
       <td>ironic-prometheus-exporter</td>
       <td>1.1.2</td>
       <td>1.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>90.</td>
+      <td>86.</td>
       <td>ironic-python-agent</td>
       <td>5.0.4</td>
       <td>5.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>91.</td>
+      <td>87.</td>
       <td>networking-baremetal</td>
       <td>1.4.0</td>
       <td>1.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>92.</td>
+      <td>88.</td>
       <td>networking-generic-switch</td>
       <td>2.1.0</td>
       <td>2.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>93.</td>
+      <td>89.</td>
       <td>networking-ovn</td>
       <td>7.4.1</td>
       <td>7.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>94.</td>
+      <td>90.</td>
       <td>python-openstackclient</td>
       <td>4.0.2</td>
       <td>4.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>95.</td>
+      <td>91.</td>
       <td>tempest</td>
       <td>22.1.0</td>
       <td>22.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>96.</td>
+      <td>92.</td>
       <td>kolla</td>
       <td>9.4.0</td>
       <td>9.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>97.</td>
+      <td>93.</td>
       <td>kolla-ansible</td>
       <td>9.3.2</td>
       <td>9.3.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>98.</td>
+      <td>94.</td>
       <td>oslo.i18n</td>
       <td>3.24.0</td>
       <td>3.23.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
+    </tr>
+    <tr>
+      <td>95.</td>
+      <td>cliff</td>
+      <td>2.16.0</td>
+      <td>3.7.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>96.</td>
+      <td>oslotest</td>
+      <td>3.8.1</td>
+      <td>4.4.1</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>97.</td>
+      <td>ovsdbapp</td>
+      <td>0.17.5</td>
+      <td>1.9.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>98.</td>
+      <td>taskflow</td>
+      <td>3.7.1</td>
+      <td>4.6.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
     </tr>
     <tr>
       <td>99.</td>
@@ -12747,18 +12747,18 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-wallaby/22.03-LTS-SP2" style="display: none;">
+<div name="div-table" id="div-22.03-LTS-SP2/wallaby" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/wallaby" target="view_window">https://releases.openstack.org/wallaby</a>
      <a href="https://repo.openeuler.org/openEuler-22.03-LTS-SP2/EPOL/multi_version/OpenStack/Wallaby/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-22.03-LTS-SP2/EPOL/multi_version/OpenStack/Wallaby/aarch64/Packages/</a>
   </pre>
-  <table id="table-wallaby-22-03-LTS-SP2" class="display" data-page-length='213'>
+  <table id="table-22-03-LTS-SP2-wallaby" class="display" data-page-length='213'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>wallaby</th>
-        <th>openEuler<br>22.03-LTS-SP2</th>
+        <th>OpenStack Upstream<br>22.03-LTS-SP2</th>
+        <th>OpenStack Upstream<br>wallaby</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -14257,707 +14257,707 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-train/22.03-LTS-SP3" style="display: none;">
+<div name="div-table" id="div-22.03-LTS-SP3/train" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/train" target="view_window">https://releases.openstack.org/train</a>
      <a href="https://repo.openeuler.org/openEuler-22.03-LTS-SP3/EPOL/multi_version/OpenStack/Train/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-22.03-LTS-SP3/EPOL/multi_version/OpenStack/Train/aarch64/Packages/</a>
   </pre>
-  <table id="table-train-22-03-LTS-SP3" class="display" data-page-length='244'>
+  <table id="table-22-03-LTS-SP3-train" class="display" data-page-length='244'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>train</th>
-        <th>openEuler<br>22.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>22.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>train</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td>1.</td>
-      <td>cliff</td>
-      <td>2.16.0</td>
-      <td>3.7.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>2.</td>
-      <td>oslotest</td>
-      <td>3.8.1</td>
-      <td>4.4.1</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>3.</td>
-      <td>ovsdbapp</td>
-      <td>0.17.5</td>
-      <td>1.9.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>4.</td>
-      <td>taskflow</td>
-      <td>3.7.1</td>
-      <td>4.6.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>5.</td>
       <td>aodh</td>
       <td>9.0.1</td>
       <td>9.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>6.</td>
+      <td>2.</td>
       <td>ceilometer</td>
       <td>13.1.2</td>
       <td>13.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>7.</td>
+      <td>3.</td>
       <td>cinder</td>
       <td>15.6.0</td>
       <td>15.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>8.</td>
+      <td>4.</td>
       <td>openstack-cyborg</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>9.</td>
+      <td>5.</td>
       <td>glance</td>
       <td>19.0.4</td>
       <td>19.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>10.</td>
+      <td>6.</td>
       <td>openstack-heat</td>
       <td>13.1.0</td>
       <td>13.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>11.</td>
+      <td>7.</td>
       <td>horizon</td>
       <td>16.2.2</td>
       <td>16.2.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>12.</td>
+      <td>8.</td>
       <td>ironic</td>
       <td>13.0.7</td>
       <td>13.0.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>13.</td>
+      <td>9.</td>
       <td>keystone</td>
       <td>16.0.2</td>
       <td>16.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>14.</td>
+      <td>10.</td>
       <td>neutron</td>
       <td>15.3.4</td>
       <td>15.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>15.</td>
+      <td>11.</td>
       <td>nova</td>
       <td>20.6.1</td>
       <td>20.6.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>16.</td>
+      <td>12.</td>
       <td>panko</td>
       <td>7.1.0</td>
       <td>7.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>17.</td>
+      <td>13.</td>
       <td>openstack-placement</td>
       <td>2.0.1</td>
       <td>2.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>18.</td>
+      <td>14.</td>
       <td>swift</td>
       <td>2.23.3</td>
       <td>2.23.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>19.</td>
+      <td>15.</td>
       <td>trove</td>
       <td>12.1.0</td>
       <td>12.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>20.</td>
+      <td>16.</td>
       <td>osc-placement</td>
       <td>1.7.0</td>
       <td>1.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>21.</td>
+      <td>17.</td>
       <td>aodhclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>22.</td>
+      <td>18.</td>
       <td>python-barbicanclient</td>
       <td>4.9.0</td>
       <td>4.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>23.</td>
+      <td>19.</td>
       <td>python-blazarclient</td>
       <td>2.2.1</td>
       <td>2.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>24.</td>
+      <td>20.</td>
       <td>python-cinderclient</td>
       <td>5.0.2</td>
       <td>5.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>25.</td>
+      <td>21.</td>
       <td>python-congressclient</td>
       <td>1.13.0</td>
       <td>1.13.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>26.</td>
+      <td>22.</td>
       <td>python-cyborgclient</td>
       <td>0.4.0</td>
       <td>0.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>27.</td>
+      <td>23.</td>
       <td>python-designateclient</td>
       <td>3.0.0</td>
       <td>3.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>28.</td>
+      <td>24.</td>
       <td>python-glanceclient</td>
       <td>2.17.1</td>
       <td>2.17.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>29.</td>
+      <td>25.</td>
       <td>python-heatclient</td>
       <td>1.18.1</td>
       <td>1.18.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>30.</td>
+      <td>26.</td>
       <td>python-ironic-inspector-client</td>
       <td>3.7.1</td>
       <td>3.7.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>31.</td>
+      <td>27.</td>
       <td>python-ironicclient</td>
       <td>3.1.2</td>
       <td>3.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>32.</td>
+      <td>28.</td>
       <td>python-karborclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>33.</td>
+      <td>29.</td>
       <td>python-keystoneclient</td>
       <td>3.21.0</td>
       <td>3.21.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>34.</td>
+      <td>30.</td>
       <td>python-magnumclient</td>
       <td>2.16.0</td>
       <td>2.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>35.</td>
+      <td>31.</td>
       <td>python-manilaclient</td>
       <td>1.29.0</td>
       <td>1.29.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>36.</td>
+      <td>32.</td>
       <td>python-mistralclient</td>
       <td>3.10.0</td>
       <td>3.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>37.</td>
+      <td>33.</td>
       <td>python-monascaclient</td>
       <td>1.16.0</td>
       <td>1.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>38.</td>
+      <td>34.</td>
       <td>python-muranoclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>39.</td>
+      <td>35.</td>
       <td>python-neutronclient</td>
       <td>6.14.1</td>
       <td>6.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>40.</td>
+      <td>36.</td>
       <td>python-novaclient</td>
       <td>15.1.1</td>
       <td>15.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>41.</td>
+      <td>37.</td>
       <td>python-octaviaclient</td>
       <td>1.10.1</td>
       <td>1.10.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>42.</td>
+      <td>38.</td>
       <td>python-saharaclient</td>
       <td>2.3.0</td>
       <td>2.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>43.</td>
+      <td>39.</td>
       <td>python-searchlightclient</td>
       <td>1.6.0</td>
       <td>1.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>44.</td>
+      <td>40.</td>
       <td>python-senlinclient</td>
       <td>1.11.1</td>
       <td>1.11.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>45.</td>
+      <td>41.</td>
       <td>python-swiftclient</td>
       <td>3.8.1</td>
       <td>3.8.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>46.</td>
+      <td>42.</td>
       <td>python-troveclient</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>47.</td>
+      <td>43.</td>
       <td>python-zaqarclient</td>
       <td>1.12.0</td>
       <td>1.12.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>48.</td>
+      <td>44.</td>
       <td>python-zunclient</td>
       <td>3.5.1</td>
       <td>3.5.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>49.</td>
+      <td>45.</td>
       <td>automaton</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>50.</td>
+      <td>46.</td>
       <td>castellan</td>
       <td>1.3.4</td>
       <td>1.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>51.</td>
+      <td>47.</td>
       <td>debtcollector</td>
       <td>1.22.0</td>
       <td>1.22.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>52.</td>
+      <td>48.</td>
       <td>futurist</td>
       <td>1.9.0</td>
       <td>1.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>53.</td>
+      <td>49.</td>
       <td>glance_store</td>
       <td>1.0.1</td>
       <td>1.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>54.</td>
+      <td>50.</td>
       <td>ironic-lib</td>
       <td>2.21.3</td>
       <td>2.21.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>55.</td>
+      <td>51.</td>
       <td>keystoneauth1</td>
       <td>3.17.4</td>
       <td>3.17.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>56.</td>
+      <td>52.</td>
       <td>keystonemiddleware</td>
       <td>7.0.1</td>
       <td>7.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>57.</td>
+      <td>53.</td>
       <td>mox3</td>
       <td>0.28.0</td>
       <td>0.28.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>58.</td>
+      <td>54.</td>
       <td>neutron-lib</td>
       <td>1.29.2</td>
       <td>1.29.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>59.</td>
+      <td>55.</td>
       <td>openstacksdk</td>
       <td>0.36.5</td>
       <td>0.36.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>60.</td>
+      <td>56.</td>
       <td>os-brick</td>
       <td>2.10.7</td>
       <td>2.10.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>61.</td>
+      <td>57.</td>
       <td>os-client-config</td>
       <td>1.33.0</td>
       <td>1.33.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>62.</td>
+      <td>58.</td>
       <td>os-ken</td>
       <td>0.4.1</td>
       <td>0.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>63.</td>
+      <td>59.</td>
       <td>os_vif</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>64.</td>
+      <td>60.</td>
       <td>os-win</td>
       <td>4.3.3</td>
       <td>4.3.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>65.</td>
+      <td>61.</td>
       <td>osc-lib</td>
       <td>1.14.1</td>
       <td>1.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>66.</td>
+      <td>62.</td>
       <td>oslo.cache</td>
       <td>1.37.1</td>
       <td>1.37.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>67.</td>
+      <td>63.</td>
       <td>oslo.concurrency</td>
       <td>3.30.1</td>
       <td>3.30.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>68.</td>
+      <td>64.</td>
       <td>oslo.config</td>
       <td>6.11.3</td>
       <td>6.11.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>69.</td>
+      <td>65.</td>
       <td>oslo.context</td>
       <td>2.23.1</td>
       <td>2.23.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>70.</td>
+      <td>66.</td>
       <td>oslo.db</td>
       <td>5.0.2</td>
       <td>5.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>71.</td>
+      <td>67.</td>
       <td>oslo.log</td>
       <td>3.44.3</td>
       <td>3.44.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>72.</td>
+      <td>68.</td>
       <td>oslo.messaging</td>
       <td>10.2.4</td>
       <td>10.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>73.</td>
+      <td>69.</td>
       <td>oslo.middleware</td>
       <td>3.38.1</td>
       <td>3.38.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>74.</td>
+      <td>70.</td>
       <td>oslo.policy</td>
       <td>2.3.4</td>
       <td>2.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>75.</td>
+      <td>71.</td>
       <td>oslo.privsep</td>
       <td>1.33.5</td>
       <td>1.33.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>76.</td>
+      <td>72.</td>
       <td>oslo.reports</td>
       <td>1.30.0</td>
       <td>1.30.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>77.</td>
+      <td>73.</td>
       <td>oslo.rootwrap</td>
       <td>5.16.1</td>
       <td>5.16.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>78.</td>
+      <td>74.</td>
       <td>oslo.serialization</td>
       <td>2.29.3</td>
       <td>2.29.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>79.</td>
+      <td>75.</td>
       <td>oslo.service</td>
       <td>1.40.2</td>
       <td>1.40.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>80.</td>
+      <td>76.</td>
       <td>oslo.upgradecheck</td>
       <td>0.3.2</td>
       <td>0.3.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>81.</td>
+      <td>77.</td>
       <td>oslo.utils</td>
       <td>3.41.6</td>
       <td>3.41.6</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>82.</td>
+      <td>78.</td>
       <td>oslo.versionedobjects</td>
       <td>1.36.1</td>
       <td>1.36.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>83.</td>
+      <td>79.</td>
       <td>oslo.vmware</td>
       <td>2.34.1</td>
       <td>2.34.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>84.</td>
+      <td>80.</td>
       <td>osprofiler</td>
       <td>2.8.2</td>
       <td>2.8.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>85.</td>
+      <td>81.</td>
       <td>pycadf</td>
       <td>2.10.0</td>
       <td>2.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>86.</td>
+      <td>82.</td>
       <td>sushy</td>
       <td>2.0.5</td>
       <td>2.0.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>87.</td>
+      <td>83.</td>
       <td>tooz</td>
       <td>1.66.3</td>
       <td>1.66.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>88.</td>
+      <td>84.</td>
       <td>ironic-inspector</td>
       <td>9.2.4</td>
       <td>9.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>89.</td>
+      <td>85.</td>
       <td>ironic-prometheus-exporter</td>
       <td>1.1.2</td>
       <td>1.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>90.</td>
+      <td>86.</td>
       <td>ironic-python-agent</td>
       <td>5.0.4</td>
       <td>5.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>91.</td>
+      <td>87.</td>
       <td>networking-baremetal</td>
       <td>1.4.0</td>
       <td>1.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>92.</td>
+      <td>88.</td>
       <td>networking-generic-switch</td>
       <td>2.1.0</td>
       <td>2.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>93.</td>
+      <td>89.</td>
       <td>networking-ovn</td>
       <td>7.4.1</td>
       <td>7.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>94.</td>
+      <td>90.</td>
       <td>python-openstackclient</td>
       <td>4.0.2</td>
       <td>4.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>95.</td>
+      <td>91.</td>
       <td>tempest</td>
       <td>22.1.0</td>
       <td>22.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>96.</td>
+      <td>92.</td>
       <td>kolla</td>
       <td>9.4.0</td>
       <td>9.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>97.</td>
+      <td>93.</td>
       <td>kolla-ansible</td>
       <td>9.3.2</td>
       <td>9.3.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>98.</td>
+      <td>94.</td>
       <td>oslo.i18n</td>
       <td>3.24.0</td>
       <td>3.23.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
+    </tr>
+    <tr>
+      <td>95.</td>
+      <td>cliff</td>
+      <td>2.16.0</td>
+      <td>3.7.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>96.</td>
+      <td>oslotest</td>
+      <td>3.8.1</td>
+      <td>4.4.1</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>97.</td>
+      <td>ovsdbapp</td>
+      <td>0.17.5</td>
+      <td>1.9.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>98.</td>
+      <td>taskflow</td>
+      <td>3.7.1</td>
+      <td>4.6.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
     </tr>
     <tr>
       <td>99.</td>
@@ -15984,18 +15984,18 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-wallaby/22.03-LTS-SP3" style="display: none;">
+<div name="div-table" id="div-22.03-LTS-SP3/wallaby" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/wallaby" target="view_window">https://releases.openstack.org/wallaby</a>
      <a href="https://repo.openeuler.org/openEuler-22.03-LTS-SP3/EPOL/multi_version/OpenStack/Wallaby/aarch64/Packages/" target="view_window">https://repo.openeuler.org/openEuler-22.03-LTS-SP3/EPOL/multi_version/OpenStack/Wallaby/aarch64/Packages/</a>
   </pre>
-  <table id="table-wallaby-22-03-LTS-SP3" class="display" data-page-length='213'>
+  <table id="table-22-03-LTS-SP3-wallaby" class="display" data-page-length='213'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>wallaby</th>
-        <th>openEuler<br>22.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>22.03-LTS-SP3</th>
+        <th>OpenStack Upstream<br>wallaby</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -17494,18 +17494,18 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-yoga/22.09" style="display: none;">
+<div name="div-table" id="div-22.09/yoga" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/yoga" target="view_window">https://releases.openstack.org/yoga</a>
      <a href="https://archives.openeuler.openatom.cn/openEuler-22.09/EPOL/main/aarch64/Packages/" target="view_window">https://archives.openeuler.openatom.cn/openEuler-22.09/EPOL/main/aarch64/Packages/</a>
   </pre>
-  <table id="table-yoga-22-09" class="display" data-page-length='187'>
+  <table id="table-22-09-yoga" class="display" data-page-length='187'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>yoga</th>
-        <th>openEuler<br>22.09</th>
+        <th>OpenStack Upstream<br>22.09</th>
+        <th>OpenStack Upstream<br>yoga</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -18822,708 +18822,708 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-train/dev-22.03-LTS-Next" style="display: none;">
+<div name="div-table" id="div-dev-22.03-LTS-Next/train" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/train" target="view_window">https://releases.openstack.org/train</a>
      <a href="http://119.3.219.20:82/openEuler:/22.03:/LTS:/Next:/Epol:/Multi-Version:/OpenStack:/Train/standard_aarch64/aarch64" target="view_window">http://119.3.219.20:82/openEuler:/22.03:/LTS:/Next:/Epol:/Multi-Version:/OpenStack:/Train/standard_aarch64/aarch64</a>
      <a href="http://119.3.219.20:82/openEuler:/22.03:/LTS:/Next:/Epol:/Multi-Version:/OpenStack:/Train/standard_aarch64/noarch" target="view_window">http://119.3.219.20:82/openEuler:/22.03:/LTS:/Next:/Epol:/Multi-Version:/OpenStack:/Train/standard_aarch64/noarch</a>
   </pre>
-  <table id="table-train-dev-22-03-LTS-Next" class="display" data-page-length='244'>
+  <table id="table-dev-22-03-LTS-Next-train" class="display" data-page-length='244'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>train</th>
-        <th>openEuler<br>dev-22.03-LTS-Next</th>
+        <th>OpenStack Upstream<br>dev-22.03-LTS-Next</th>
+        <th>OpenStack Upstream<br>train</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td>1.</td>
-      <td>cliff</td>
-      <td>2.16.0</td>
-      <td>3.7.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>2.</td>
-      <td>oslotest</td>
-      <td>3.8.1</td>
-      <td>4.4.1</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>3.</td>
-      <td>ovsdbapp</td>
-      <td>0.17.5</td>
-      <td>1.9.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>4.</td>
-      <td>stevedore</td>
-      <td>1.31.0</td>
-      <td>3.3.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>5.</td>
-      <td>taskflow</td>
-      <td>3.7.1</td>
-      <td>4.6.0</td>
-      <td class="NONE sorting_1">NONE</td>
-    </tr>
-    <tr>
-      <td>6.</td>
       <td>aodh</td>
       <td>9.0.1</td>
       <td>9.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>7.</td>
+      <td>2.</td>
       <td>ceilometer</td>
       <td>13.1.2</td>
       <td>13.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>8.</td>
+      <td>3.</td>
       <td>cinder</td>
       <td>15.6.0</td>
       <td>15.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>9.</td>
+      <td>4.</td>
       <td>openstack-cyborg</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>10.</td>
+      <td>5.</td>
       <td>glance</td>
       <td>19.0.4</td>
       <td>19.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>11.</td>
+      <td>6.</td>
       <td>openstack-heat</td>
       <td>13.1.0</td>
       <td>13.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>12.</td>
+      <td>7.</td>
       <td>horizon</td>
       <td>16.2.2</td>
       <td>16.2.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>13.</td>
+      <td>8.</td>
       <td>ironic</td>
       <td>13.0.7</td>
       <td>13.0.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>14.</td>
+      <td>9.</td>
       <td>keystone</td>
       <td>16.0.2</td>
       <td>16.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>15.</td>
+      <td>10.</td>
       <td>neutron</td>
       <td>15.3.4</td>
       <td>15.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>16.</td>
+      <td>11.</td>
       <td>nova</td>
       <td>20.6.1</td>
       <td>20.6.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>17.</td>
+      <td>12.</td>
       <td>panko</td>
       <td>7.1.0</td>
       <td>7.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>18.</td>
+      <td>13.</td>
       <td>openstack-placement</td>
       <td>2.0.1</td>
       <td>2.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>19.</td>
+      <td>14.</td>
       <td>swift</td>
       <td>2.23.3</td>
       <td>2.23.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>20.</td>
+      <td>15.</td>
       <td>trove</td>
       <td>12.1.0</td>
       <td>12.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>21.</td>
+      <td>16.</td>
       <td>osc-placement</td>
       <td>1.7.0</td>
       <td>1.7.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>22.</td>
+      <td>17.</td>
       <td>aodhclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>23.</td>
+      <td>18.</td>
       <td>python-barbicanclient</td>
       <td>4.9.0</td>
       <td>4.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>24.</td>
+      <td>19.</td>
       <td>python-blazarclient</td>
       <td>2.2.1</td>
       <td>2.2.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>25.</td>
+      <td>20.</td>
       <td>python-cinderclient</td>
       <td>5.0.2</td>
       <td>5.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>26.</td>
+      <td>21.</td>
       <td>python-congressclient</td>
       <td>1.13.0</td>
       <td>1.13.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>27.</td>
+      <td>22.</td>
       <td>python-cyborgclient</td>
       <td>0.4.0</td>
       <td>0.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>28.</td>
+      <td>23.</td>
       <td>python-designateclient</td>
       <td>3.0.0</td>
       <td>3.0.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>29.</td>
+      <td>24.</td>
       <td>python-glanceclient</td>
       <td>2.17.1</td>
       <td>2.17.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>30.</td>
+      <td>25.</td>
       <td>python-heatclient</td>
       <td>1.18.1</td>
       <td>1.18.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>31.</td>
+      <td>26.</td>
       <td>python-ironic-inspector-client</td>
       <td>3.7.1</td>
       <td>3.7.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>32.</td>
+      <td>27.</td>
       <td>python-ironicclient</td>
       <td>3.1.2</td>
       <td>3.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>33.</td>
+      <td>28.</td>
       <td>python-karborclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>34.</td>
+      <td>29.</td>
       <td>python-keystoneclient</td>
       <td>3.21.0</td>
       <td>3.21.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>35.</td>
+      <td>30.</td>
       <td>python-magnumclient</td>
       <td>2.16.0</td>
       <td>2.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>36.</td>
+      <td>31.</td>
       <td>python-manilaclient</td>
       <td>1.29.0</td>
       <td>1.29.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>37.</td>
+      <td>32.</td>
       <td>python-mistralclient</td>
       <td>3.10.0</td>
       <td>3.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>38.</td>
+      <td>33.</td>
       <td>python-monascaclient</td>
       <td>1.16.0</td>
       <td>1.16.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>39.</td>
+      <td>34.</td>
       <td>python-muranoclient</td>
       <td>1.3.0</td>
       <td>1.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>40.</td>
+      <td>35.</td>
       <td>python-neutronclient</td>
       <td>6.14.1</td>
       <td>6.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>41.</td>
+      <td>36.</td>
       <td>python-novaclient</td>
       <td>15.1.1</td>
       <td>15.1.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>42.</td>
+      <td>37.</td>
       <td>python-octaviaclient</td>
       <td>1.10.1</td>
       <td>1.10.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>43.</td>
+      <td>38.</td>
       <td>python-saharaclient</td>
       <td>2.3.0</td>
       <td>2.3.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>44.</td>
+      <td>39.</td>
       <td>python-searchlightclient</td>
       <td>1.6.0</td>
       <td>1.6.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>45.</td>
+      <td>40.</td>
       <td>python-senlinclient</td>
       <td>1.11.1</td>
       <td>1.11.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>46.</td>
+      <td>41.</td>
       <td>python-swiftclient</td>
       <td>3.8.1</td>
       <td>3.8.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>47.</td>
+      <td>42.</td>
       <td>python-troveclient</td>
       <td>3.0.1</td>
       <td>3.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>48.</td>
+      <td>43.</td>
       <td>python-zaqarclient</td>
       <td>1.12.0</td>
       <td>1.12.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>49.</td>
+      <td>44.</td>
       <td>python-zunclient</td>
       <td>3.5.1</td>
       <td>3.5.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>50.</td>
+      <td>45.</td>
       <td>automaton</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>51.</td>
+      <td>46.</td>
       <td>castellan</td>
       <td>1.3.4</td>
       <td>1.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>52.</td>
+      <td>47.</td>
       <td>debtcollector</td>
       <td>1.22.0</td>
       <td>1.22.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>53.</td>
+      <td>48.</td>
       <td>futurist</td>
       <td>1.9.0</td>
       <td>1.9.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>54.</td>
+      <td>49.</td>
       <td>glance_store</td>
       <td>1.0.1</td>
       <td>1.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>55.</td>
+      <td>50.</td>
       <td>ironic-lib</td>
       <td>2.21.3</td>
       <td>2.21.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>56.</td>
+      <td>51.</td>
       <td>keystoneauth1</td>
       <td>3.17.4</td>
       <td>3.17.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>57.</td>
+      <td>52.</td>
       <td>keystonemiddleware</td>
       <td>7.0.1</td>
       <td>7.0.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>58.</td>
+      <td>53.</td>
       <td>mox3</td>
       <td>0.28.0</td>
       <td>0.28.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>59.</td>
+      <td>54.</td>
       <td>neutron-lib</td>
       <td>1.29.2</td>
       <td>1.29.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>60.</td>
+      <td>55.</td>
       <td>openstacksdk</td>
       <td>0.36.5</td>
       <td>0.36.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>61.</td>
+      <td>56.</td>
       <td>os-brick</td>
       <td>2.10.7</td>
       <td>2.10.7</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>62.</td>
+      <td>57.</td>
       <td>os-client-config</td>
       <td>1.33.0</td>
       <td>1.33.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>63.</td>
+      <td>58.</td>
       <td>os-ken</td>
       <td>0.4.1</td>
       <td>0.4.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>64.</td>
+      <td>59.</td>
       <td>os_vif</td>
       <td>1.17.0</td>
       <td>1.17.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>65.</td>
+      <td>60.</td>
       <td>os-win</td>
       <td>4.3.3</td>
       <td>4.3.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>66.</td>
+      <td>61.</td>
       <td>osc-lib</td>
       <td>1.14.1</td>
       <td>1.14.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>67.</td>
+      <td>62.</td>
       <td>oslo.cache</td>
       <td>1.37.1</td>
       <td>1.37.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>68.</td>
+      <td>63.</td>
       <td>oslo.concurrency</td>
       <td>3.30.1</td>
       <td>3.30.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>69.</td>
+      <td>64.</td>
       <td>oslo.config</td>
       <td>6.11.3</td>
       <td>6.11.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>70.</td>
+      <td>65.</td>
       <td>oslo.context</td>
       <td>2.23.1</td>
       <td>2.23.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>71.</td>
+      <td>66.</td>
       <td>oslo.db</td>
       <td>5.0.2</td>
       <td>5.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>72.</td>
+      <td>67.</td>
       <td>oslo.log</td>
       <td>3.44.3</td>
       <td>3.44.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>73.</td>
+      <td>68.</td>
       <td>oslo.messaging</td>
       <td>10.2.4</td>
       <td>10.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>74.</td>
+      <td>69.</td>
       <td>oslo.middleware</td>
       <td>3.38.1</td>
       <td>3.38.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>75.</td>
+      <td>70.</td>
       <td>oslo.policy</td>
       <td>2.3.4</td>
       <td>2.3.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>76.</td>
+      <td>71.</td>
       <td>oslo.privsep</td>
       <td>1.33.5</td>
       <td>1.33.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>77.</td>
+      <td>72.</td>
       <td>oslo.reports</td>
       <td>1.30.0</td>
       <td>1.30.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>78.</td>
+      <td>73.</td>
       <td>oslo.rootwrap</td>
       <td>5.16.1</td>
       <td>5.16.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>79.</td>
+      <td>74.</td>
       <td>oslo.serialization</td>
       <td>2.29.3</td>
       <td>2.29.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>80.</td>
+      <td>75.</td>
       <td>oslo.service</td>
       <td>1.40.2</td>
       <td>1.40.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>81.</td>
+      <td>76.</td>
       <td>oslo.upgradecheck</td>
       <td>0.3.2</td>
       <td>0.3.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>82.</td>
+      <td>77.</td>
       <td>oslo.utils</td>
       <td>3.41.6</td>
       <td>3.41.6</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>83.</td>
+      <td>78.</td>
       <td>oslo.versionedobjects</td>
       <td>1.36.1</td>
       <td>1.36.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>84.</td>
+      <td>79.</td>
       <td>oslo.vmware</td>
       <td>2.34.1</td>
       <td>2.34.1</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>85.</td>
+      <td>80.</td>
       <td>osprofiler</td>
       <td>2.8.2</td>
       <td>2.8.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>86.</td>
+      <td>81.</td>
       <td>pycadf</td>
       <td>2.10.0</td>
       <td>2.10.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>87.</td>
+      <td>82.</td>
       <td>sushy</td>
       <td>2.0.5</td>
       <td>2.0.5</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>88.</td>
+      <td>83.</td>
       <td>tooz</td>
       <td>1.66.3</td>
       <td>1.66.3</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>89.</td>
+      <td>84.</td>
       <td>ironic-inspector</td>
       <td>9.2.4</td>
       <td>9.2.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>90.</td>
+      <td>85.</td>
       <td>ironic-prometheus-exporter</td>
       <td>1.1.2</td>
       <td>1.1.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>91.</td>
+      <td>86.</td>
       <td>ironic-python-agent</td>
       <td>5.0.4</td>
       <td>5.0.4</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>92.</td>
+      <td>87.</td>
       <td>networking-baremetal</td>
       <td>1.4.0</td>
       <td>1.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>93.</td>
+      <td>88.</td>
       <td>networking-generic-switch</td>
       <td>2.1.0</td>
       <td>2.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>94.</td>
+      <td>89.</td>
       <td>python-openstackclient</td>
       <td>4.0.2</td>
       <td>4.0.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>95.</td>
+      <td>90.</td>
       <td>tempest</td>
       <td>22.1.0</td>
       <td>22.1.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>96.</td>
+      <td>91.</td>
       <td>kolla</td>
       <td>9.4.0</td>
       <td>9.4.0</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>97.</td>
+      <td>92.</td>
       <td>kolla-ansible</td>
       <td>9.3.2</td>
       <td>9.3.2</td>
       <td class="OK sorting_1">OK</td>
     </tr>
     <tr>
-      <td>98.</td>
+      <td>93.</td>
       <td>oslo.i18n</td>
       <td>3.24.0</td>
       <td>3.23.0</td>
       <td class="OUTDATED sorting_1">OUTDATED</td>
+    </tr>
+    <tr>
+      <td>94.</td>
+      <td>cliff</td>
+      <td>2.16.0</td>
+      <td>3.7.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>95.</td>
+      <td>oslotest</td>
+      <td>3.8.1</td>
+      <td>4.4.1</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>96.</td>
+      <td>ovsdbapp</td>
+      <td>0.17.5</td>
+      <td>1.9.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>97.</td>
+      <td>stevedore</td>
+      <td>1.31.0</td>
+      <td>3.3.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
+    </tr>
+    <tr>
+      <td>98.</td>
+      <td>taskflow</td>
+      <td>3.7.1</td>
+      <td>4.6.0</td>
+      <td class="MISMATCH sorting_1">MISMATCH</td>
     </tr>
     <tr>
       <td>99.</td>
@@ -20550,19 +20550,19 @@ function displayTable(release){
     </tbody>
   </table>
 </div>
-<div name="div-table" id="div-wallaby/dev-22.03-LTS-Next" style="display: none;">
+<div name="div-table" id="div-dev-22.03-LTS-Next/wallaby" style="display: none;">
   <pre class="tab1">
 <b>URI:</b> <a href="https://releases.openstack.org/wallaby" target="view_window">https://releases.openstack.org/wallaby</a>
      <a href="http://119.3.219.20:82/openEuler:/22.03:/LTS:/Next:/Epol:/Multi-Version:/OpenStack:/Wallaby/standard_aarch64/aarch64" target="view_window">http://119.3.219.20:82/openEuler:/22.03:/LTS:/Next:/Epol:/Multi-Version:/OpenStack:/Wallaby/standard_aarch64/aarch64</a>
      <a href="http://119.3.219.20:82/openEuler:/22.03:/LTS:/Next:/Epol:/Multi-Version:/OpenStack:/Wallaby/standard_aarch64/noarch" target="view_window">http://119.3.219.20:82/openEuler:/22.03:/LTS:/Next:/Epol:/Multi-Version:/OpenStack:/Wallaby/standard_aarch64/noarch</a>
   </pre>
-  <table id="table-wallaby-dev-22-03-LTS-Next" class="display" data-page-length='213'>
+  <table id="table-dev-22-03-LTS-Next-wallaby" class="display" data-page-length='213'>
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>wallaby</th>
-        <th>openEuler<br>dev-22.03-LTS-Next</th>
+        <th>OpenStack Upstream<br>dev-22.03-LTS-Next</th>
+        <th>OpenStack Upstream<br>wallaby</th>
         <th>Status</th>
       </tr>
     </thead>
