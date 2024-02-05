@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Openstack versions info</title>
+<title>OpenStack versions info</title>
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
@@ -116,11 +116,11 @@ function displayTable(release){
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack<br>{{ ver_from }}</th>
+        <th>OpenStack Upstream<br>{{ ver_from }}</th>
         {%- if '.' in ver_to %}
         <th>openEuler<br>{{ ver_to }}</th>
         {%- else %}
-        <th>OpenStack<br>{{ ver_to }}</th>
+        <th>OpenStack Upstream<br>{{ ver_to }}</th>
         {%- endif %}
         <th>Status</th>
       </tr>

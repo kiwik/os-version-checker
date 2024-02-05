@@ -19,10 +19,10 @@ Command usage:
     Usage: python -m VersionStatus [OPTIONS]
 
     Options:
-      -r, --releases TEXT      Comma separated releases with openstack/openEuler
-                               to check, for example: rocky/20.03-LTS-
-                               SP3,train/20.03-LTS-SP3  [default: train/22.03-LTS-
-                               SP1]
+      -r, --releases TEXT      Comma separated releases with openEuler/OpenStack
+                               to check, for example: 22.03-LTS-SP3/wallaby,
+                               22.03-LTS-SP3/train  [default: 22.03-LTS-SP1/
+                               train]
       -n, --file-name TEXT     Output file name of openstack version checker
                                [default: index.html]
       -p, --proxy TEXT         HTTP proxy url
