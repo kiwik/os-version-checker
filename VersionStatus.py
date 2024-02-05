@@ -70,6 +70,7 @@ STATUS_MISSING = ["5", "MISSING"]
 UPSTREAM_FILTER_LIST = [
     re.compile(r"^puppet[-_][-_\w]+$"),  # puppet-*
     re.compile(r"^[-_\w]+[-_]dashboard$"),  # *-dashboard
+    re.compile(r"^[-_\w]+[-_]ui$"),  # *-ui
     re.compile(r"^[-_\w]+[-_]tempest[-_]plugin$"),  # *-tempest-plugin
 ]
 OPENEULER_DEFAULT_REPLACE = re.compile(r"[._]")
@@ -105,7 +106,9 @@ class ReleasesConfig:
         for release in self.releases:
             openeuler_version, openstack_version = release.split('/', 1)
             self.releases_config[release] = {}
+            self.releases_config[release]['openeuler_ver'] = openeuler_version
             self.releases_config[release]['rpm_os_ver_uri'] = []
+            self.releases_config[release]['openstack_ver'] = openstack_version
             self.releases_config[release]['os_ver_uri'] = [
                 OS_URI.format(openstack_version), ]
             # Get URL template
@@ -206,8 +209,9 @@ class Renderer:
 
 
 class RPMVersions:
-    def __init__(self, _rpm_os_ver_uri_list):
+    def __init__(self, _rpm_os_ver_uri_list, openeuler_ver):
         self.rpm_os_ver_uri_list = _rpm_os_ver_uri_list
+        self.openeuler_ver = openeuler_ver
 
     @property
     def rpm_versions(self):
@@ -215,7 +219,8 @@ class RPMVersions:
         for _rpm_os_ver_uri in self.rpm_os_ver_uri_list:
             r = requests.get(_rpm_os_ver_uri, **REQUESTS_ARGS)
             if r.status_code != requests.codes.ok:
-                raise RuntimeError('CAN NOT GET {}'.format(_rpm_os_ver_uri))
+                raise RuntimeError('CAN NOT GET openEuler {} from {}'.format(
+                        self.openeuler_ver, _rpm_os_ver_uri))
             uri_content = r.content.decode()
             # get all links, which ends .rpm from HTML, work for oepkg and
             # openEuler EPOL page format
@@ -239,9 +244,10 @@ class RPMVersions:
 
 
 class UpstreamVersions:
-    def __init__(self, _os_ver_uri):
+    def __init__(self, _os_ver_uri, openstack_ver):
         self.url_os_content = requests.get(_os_ver_uri,
                                            **REQUESTS_ARGS).content.decode()
+        self.openstack_ver = openstack_ver
 
     @property
     def upstream_versions(self):
@@ -260,13 +266,8 @@ class UpstreamVersions:
         for pkg_link in links:
             # get name and package information from link
             tmp = pkg_link.split("/")
+            pkg_name = tmp[3]
             pkg_full_name = tmp[4]
-            # # can not get pkg version from url, just ignore it
-            # if pkg_full_name.endswith('-last.tar.gz'):
-            #     continue
-            # if pkg_full_name.endswith('-eom.tar.gz'):
-            #     continue
-            pkg_name = pkg_full_name[0:pkg_full_name.rfind('-')]
             pkg_ver = pkg_full_name[pkg_full_name.rfind('-')+1:
                                     pkg_full_name.rfind('.tar')]
             # check if package with version are in results,
@@ -274,11 +275,14 @@ class UpstreamVersions:
             if pkg_name not in results:
                 pkg_info = dict(version=pkg_ver, href=pkg_link)
                 results[pkg_name] = pkg_info
+            elif results[pkg_name]['version'] in EOL_PKG_SUFFIX:
+                continue
             else:
                 # if current versions < new version, then update it
-                if pkg_ver in EOL_PKG_SUFFIX or version.parse(
-                        results[pkg_name]['version']) < version.parse(pkg_ver):
-                    results[pkg_name].update(version=pkg_ver)
+                if (pkg_ver in EOL_PKG_SUFFIX or
+                        version.parse(results[pkg_name]['version']) <
+                        version.parse(pkg_ver)):
+                    results[pkg_name].update(version=pkg_ver, href=pkg_link)
         return results
 
 
@@ -307,8 +311,8 @@ class VersionsComparator:
             return cases[str_to_replace]
 
         def is_in_comp_data(_base_pkg_name, _replacement):
-            if sanitize_base_pkg_name(_base_pkg_name, replacement) \
-                    in from_data:
+            if sanitize_base_pkg_name(_base_pkg_name,
+                                      replacement) in from_data:
                 return sanitize_base_pkg_name(_base_pkg_name, replacement)
             return False
 
@@ -414,14 +418,17 @@ def run(releases, file_name, proxy, bypass_ssl_verify):
         releases_config = ReleasesConfig(releases)
         for release in releases_config.releases:
             _release_config = releases_config.releases_config[release]
+            openstack_ver = _release_config['openstack_ver']
             openstack_ver_uri = _release_config['os_ver_uri'][0]
+            openeuler_ver = _release_config['openeuler_ver']
             openeuler_ver_uri = _release_config['rpm_os_ver_uri']
             openstack_data = UpstreamVersions(
-                openstack_ver_uri).upstream_versions
+                openstack_ver_uri, openstack_ver).upstream_versions
             # openEuler vs OpenStack
             openeuler_data = None
             if openeuler_ver_uri:
-                openeuler_data = RPMVersions(openeuler_ver_uri).rpm_versions
+                openeuler_data = RPMVersions(openeuler_ver_uri,
+                                             openeuler_ver).rpm_versions
             # else:
             #     # OpenStack vs OpenStack
             #     com_openstack_uri = _release_config['os_ver_uri'][-1]
