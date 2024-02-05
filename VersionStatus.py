@@ -65,7 +65,8 @@ STATUS_NONE = ["0", "NONE"]
 STATUS_OK = ["1", "OK"]
 STATUS_EOL = ["2", "EOL"]
 STATUS_OUTDATED = ["3", "OUTDATED"]
-STATUS_MISSING = ["4", "MISSING"]
+STATUS_MISMATCH = ["4", "MISMATCH"]
+STATUS_MISSING = ["5", "MISSING"]
 UPSTREAM_FILTER_LIST = [
     re.compile(r"^puppet[-_][-_\w]+$"),  # puppet-*
     re.compile(r"^[-_\w]+[-_]dashboard$"),  # *-dashboard
@@ -102,39 +103,40 @@ class ReleasesConfig:
         self.releases = [r.strip() for r in content.split(',') if r]
         self.releases_config = {}
         for release in self.releases:
-            from_os_version, to_os_version = release.split('/', 1)
+            openeuler_version, openstack_version = release.split('/', 1)
             self.releases_config[release] = {}
             self.releases_config[release]['rpm_os_ver_uri'] = []
             self.releases_config[release]['os_ver_uri'] = [
-                OS_URI.format(from_os_version), ]
+                OS_URI.format(openstack_version), ]
             # Get URL template
             for _to_version_tuple in RPM_OS_URI_MAPPING.keys():
-                if to_os_version in _to_version_tuple:
+                if openeuler_version in _to_version_tuple:
                     _url = RPM_OS_URI_MAPPING[_to_version_tuple]
                     if isinstance(_url, dict):
-                        _url = _url[from_os_version]
+                        _url = _url[openstack_version]
                     break
             # openstack vs openstack
+            # openeuler_version not in RPM_OS_URI_MAPPING
             else:
-                self.releases_config[release]['os_ver_url'].append(
-                    OS_URI.format(to_os_version))
+                self.releases_config[release]['os_ver_uri'].append(
+                    OS_URI.format(openeuler_version))
                 return
 
             format_input = FormatInput()
-            format_input.oe_version = to_os_version
+            format_input.oe_version = openeuler_version
             # openstack vs 119 openEuler
-            if to_os_version.startswith('dev-'):
-                to_os_version = to_os_version[4:]
-                _parts = to_os_version.split('-')
+            if openeuler_version.startswith('dev-'):
+                openeuler_version = openeuler_version[4:]
+                _parts = openeuler_version.split('-')
                 # pad placeholder in URI
                 (format_input.oe_version_v, format_input.oe_version_lts,
                  format_input.oe_version_sp) = (
                     _parts[i] + ':'
-                    if i < len(_parts) and to_os_version != 'Mainline'
+                    if i < len(_parts) and openeuler_version != 'Mainline'
                     else ''
                     for i in range(3))
                 # aarch64
-                format_input.os_version = from_os_version.capitalize()
+                format_input.os_version = openstack_version.capitalize()
                 self.releases_config[release]['rpm_os_ver_uri'].append(
                     _url.format(**format_input))
                 # noarch
@@ -143,9 +145,9 @@ class ReleasesConfig:
                     _url.format(**format_input))
             # openstack vs openEuler
             else:
-                _from_os_version = from_os_version.capitalize() \
-                    if OPENEULER_REPO_DOMAIN in _url else from_os_version
-                format_input.os_version = _from_os_version
+                _openstack_version = openstack_version.capitalize() \
+                    if OPENEULER_REPO_DOMAIN in _url else openstack_version
+                format_input.os_version = _openstack_version
                 self.releases_config[release]['rpm_os_ver_uri'].append(
                     _url.format(**format_input))
 
@@ -322,6 +324,8 @@ class VersionsComparator:
 
     @property
     def compared_data(self):
+        # base_ver is OpenStack upstream
+        # comp_ver is openEuler
         def set_status(base_ver, comp_ver):
             if "+" in comp_ver:
                 comp_ver = comp_ver.split('+')[0]
@@ -338,6 +342,8 @@ class VersionsComparator:
                 return STATUS_OK
             elif version.parse(base_ver) > version.parse(comp_ver):
                 return STATUS_OUTDATED
+            elif version.parse(base_ver) < version.parse(comp_ver):
+                return STATUS_MISMATCH
             else:
                 return STATUS_NONE
 
@@ -382,11 +388,11 @@ class VersionsComparator:
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option('-r', '--releases', default='train/22.03-LTS-SP2',
+@click.option('-r', '--releases', default='22.03-LTS-SP3/train',
               type=click.STRING, required=False, show_default=True,
-              help='Comma separated releases with openstack/openEuler '
+              help='Comma separated releases with openEuler/OpenStack '
                    'to check, for example: '
-                   'rocky/20.03-LTS-SP3,train/20.03-LTS-SP3')
+                   '22.03-LTS-SP3/wallaby,22.03-LTS-SP3/train')
 @click.option('-n', '--file-name', default='index.html',
               required=False, show_default=True,
               help='Output file name of openstack version checker')
