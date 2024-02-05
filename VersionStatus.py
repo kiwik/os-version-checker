@@ -99,7 +99,7 @@ class FormatInput(dict):
 class ReleasesConfig:
     def __init__(self, content):
         if not isinstance(content, str):
-            raise RuntimeError('Input Error')
+            raise RuntimeError('Input format error')
         self.releases = [r.strip() for r in content.split(',') if r]
         self.releases_config = {}
         for release in self.releases:
@@ -115,16 +115,18 @@ class ReleasesConfig:
                     if isinstance(_url, dict):
                         _url = _url[openstack_version]
                     break
-            # openstack vs openstack
             # openeuler_version not in RPM_OS_URI_MAPPING
             else:
-                self.releases_config[release]['os_ver_uri'].append(
-                    OS_URI.format(openeuler_version))
-                return
+                # openstack vs openstack
+                # self.releases_config[release]['os_ver_uri'].append(
+                #     OS_URI.format(openeuler_version))
+                # return
+                raise RuntimeError(
+                    'openEuler {} not found in list'.format(openeuler_version))
 
             format_input = FormatInput()
             format_input.oe_version = openeuler_version
-            # openstack vs 119 openEuler
+            # 119 openEuler vs openstack
             if openeuler_version.startswith('dev-'):
                 openeuler_version = openeuler_version[4:]
                 _parts = openeuler_version.split('-')
@@ -143,7 +145,7 @@ class ReleasesConfig:
                 format_input.aarch_option = NOARCH
                 self.releases_config[release]['rpm_os_ver_uri'].append(
                     _url.format(**format_input))
-            # openstack vs openEuler
+            # openEuler vs openstack
             else:
                 _openstack_version = openstack_version.capitalize() \
                     if OPENEULER_REPO_DOMAIN in _url else openstack_version
@@ -401,35 +403,38 @@ class VersionsComparator:
               required=False, show_default=True, is_flag=True,
               help='Bypass SSL verify')
 def run(releases, file_name, proxy, bypass_ssl_verify):
+
     if isinstance(proxy, str) and validators.url(proxy):
         REQUESTS_ARGS.update({'proxies': {'http': proxy, 'https': proxy}})
     REQUESTS_ARGS.update({'verify': not bypass_ssl_verify})
-    releases_config = ReleasesConfig(releases)
+
     ver_data = {}
-
-    for release in releases_config.releases:
-        _release_config = releases_config.releases_config[release]
-        from_os_uri = _release_config['os_ver_uri'][0]
-        rpm_os_ver_uri = _release_config['rpm_os_ver_uri']
-        try:
-            from_os_data = UpstreamVersions(from_os_uri).upstream_versions
-            # openstack version check openEuler
-            if rpm_os_ver_uri:
-                to_os_data = RPMVersions(rpm_os_ver_uri).rpm_versions
-            # openstack version check openstack
-            else:
-                to_os_uri = _release_config['os_ver_uri'][-1]
-                to_os_data = UpstreamVersions(to_os_uri).upstream_versions
-        except Exception as e:
-            print('from_os_uri: {}\nrpm_os_ver_uri: {}\n'.format(
-                from_os_uri,
-                rpm_os_ver_uri))
-            raise e
-
-        ver_data[release] = VersionsComparator(from_os_data,
-                                               to_os_data).compared_data
-        ver_data[release]['apt'] = _release_config['os_ver_uri'] + \
-            _release_config['rpm_os_ver_uri']
+    openstack_ver_uri = openeuler_ver_uri = None
+    try:
+        releases_config = ReleasesConfig(releases)
+        for release in releases_config.releases:
+            _release_config = releases_config.releases_config[release]
+            openstack_ver_uri = _release_config['os_ver_uri'][0]
+            openeuler_ver_uri = _release_config['rpm_os_ver_uri']
+            openstack_data = UpstreamVersions(
+                openstack_ver_uri).upstream_versions
+            # openEuler vs OpenStack
+            openeuler_data = None
+            if openeuler_ver_uri:
+                openeuler_data = RPMVersions(openeuler_ver_uri).rpm_versions
+            # else:
+            #     # OpenStack vs OpenStack
+            #     com_openstack_uri = _release_config['os_ver_uri'][-1]
+            #     openeuler_data = UpstreamVersions(
+            #         com_openstack_uri).upstream_versions
+            ver_data[release] = VersionsComparator(
+                openstack_data, openeuler_data).compared_data
+            ver_data[release]['apt'] = _release_config['os_ver_uri'] + \
+                _release_config['rpm_os_ver_uri']
+    except Exception as e:
+        print('openstack_ver_uri: {}\nopeneuler_ver_uri: {}\n'.format(
+            openstack_ver_uri, openeuler_ver_uri))
+        raise e
 
     Renderer(ver_data, "template_os_checker.j2", DEFAULT_FILE_TYPE, file_name
              ).render()

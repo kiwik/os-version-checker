@@ -111,16 +111,16 @@ function displayTable(release){
   </pre>
     {%- endif %}
   <table id="table-{{ release | replace(".", "-") | replace("/", "-") }}" class="display" data-page-length='{{ packages|length }}'>
-  {%- set ver_from, ver_to = release.split('/', 1) %}
+  {%- set openeuler_ver, openstack_ver = release.split('/', 1) %}
     <thead>
       <tr>
         <th>#</th>
         <th>Package</th>
-        <th>OpenStack Upstream<br>{{ ver_from }}</th>
-        {%- if '.' in ver_to %}
-        <th>openEuler<br>{{ ver_to }}</th>
+        <th>OpenStack Upstream<br>{{ openstack_ver }}</th>
+        {%- if '.' in openeuler_ver %}
+        <th>openEuler<br>{{ openeuler_ver }}</th>
         {%- else %}
-        <th>OpenStack Upstream<br>{{ ver_to }}</th>
+        <th>OpenStack Upstream<br>{{ openeuler_ver }}</th>
         {%- endif %}
         <th>Status</th>
       </tr>
