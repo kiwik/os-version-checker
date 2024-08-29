@@ -28,7 +28,7 @@ RPM_OS_URI_MAPPING = {
     ('20.03-LTS-SP2',):
         "https://repo.oepkgs.net/openEuler/rpm/openEuler-{oe_version}/"
         "budding-openeuler/openstack/{os_version}/{aarch}/Packages/",
-    ('20.03-LTS-SP3',):
+    ('20.03-LTS-SP3', '20.03-LTS-SP4'):
         defaultdict(
             lambda: "https://repo.openeuler.org/openEuler-{oe_version}/EPOL/"
                     "main/{aarch}/Packages/",
@@ -43,10 +43,12 @@ RPM_OS_URI_MAPPING = {
     # from openEuler 23.03 because of lacking users that use OpenStack with
     # openEuler innovation release, most users use openEuler LTS release to
     # deploy OpenStack. openEuler LTS supporting will continue forever :)
-    ('22.03-LTS', '22.03-LTS-SP1', '22.03-LTS-SP2', '22.03-LTS-SP3'):
+    ('22.03-LTS',
+     '22.03-LTS-SP1', '22.03-LTS-SP2', '22.03-LTS-SP3', '22.03-LTS-SP4',
+     '24.03-LTS'):
         "https://repo.openeuler.org/openEuler-{oe_version}/EPOL/multi_version"
         "/OpenStack/{os_version}/{aarch}/Packages/",
-    # dev version
+    # Deprecated dev version start
     ('dev-20.03-LTS', 'dev-20.03-LTS-SP1', 'dev-20.03-LTS-SP2',
      'dev-20.03-LTS-SP3', 'dev-20.03-LTS-Next',
      'dev-20.09', 'dev-21.03', 'dev-21.09', 'dev-22.09',
@@ -54,10 +56,23 @@ RPM_OS_URI_MAPPING = {
         "http://119.3.219.20:82/openEuler:/{oe_version_v}/{oe_version_lts}/"
         "{oe_version_sp}/Epol/standard_{aarch}/{aarch_option}/",
     ('dev-22.03-LTS', 'dev-22.03-LTS-SP1', 'dev-22.03-LTS-SP2',
-     'dev-22.03-LTS-Next'):
+     'dev-22.03-LTS-SP3', 'dev-22.03-LTS-SP4', 'dev-22.03-LTS-Next'):
         "http://119.3.219.20:82/openEuler:/{oe_version_v}/{oe_version_lts}/"
         "{oe_version_sp}/Epol:/Multi-Version:/OpenStack:/{os_version}/"
         "standard_{aarch}/{aarch_option}",
+    # Deprecated dev version end
+    ('dev-24.03-LTS', 'dev-24.03-LTS-Next', ):
+        "https://eulermaker.compass-ci.openeuler.openatom.cn/api/ems2/"
+        "repositories/openEuler_{oe_version_v}_{oe_version_lts}_Epol_"
+        "Multi-Version_OpenStack_{os_version}/openEuler%3A{oe_version_v}-"
+        "{oe_version_lts}/{aarch}/Packages/",
+    ('dev-24.03-LTS-SP1', 'dev-24.03-LTS-SP2',
+     'dev-24.03-LTS-SP3', 'dev-24.03-LTS-SP4'):
+        "https://eulermaker.compass-ci.openeuler.openatom.cn/api/ems2/"
+        "repositories/openEuler_{oe_version_v}_{oe_version_lts}_"
+        "{oe_version_sp}_Epol_Multi-Version_OpenStack_{os_version}/"
+        "openEuler%3A{oe_version_v}-{oe_version_lts}-{oe_version_sp}/{aarch}/"
+        "Packages/",
 }
 OPENEULER_REPO_DOMAIN = "repo.openeuler.org"
 DEFAULT_FILE_TYPE = 'html'
@@ -129,25 +144,24 @@ class ReleasesConfig:
 
             format_input = FormatInput()
             format_input.oe_version = openeuler_version
-            # 119 openEuler vs openstack
+            # EulerMaker openEuler vs openstack
             if openeuler_version.startswith('dev-'):
                 openeuler_version = openeuler_version[4:]
                 _parts = openeuler_version.split('-')
                 # pad placeholder in URI
                 (format_input.oe_version_v, format_input.oe_version_lts,
                  format_input.oe_version_sp) = (
-                    _parts[i] + ':'
-                    if i < len(_parts) and openeuler_version != 'Mainline'
-                    else ''
-                    for i in range(3))
-                # aarch64
+                    _parts[i] if i < len(_parts) else None for i in range(3)
+                )
+
                 format_input.os_version = openstack_version.capitalize()
+                # aarch64
                 self.releases_config[release]['rpm_os_ver_uri'].append(
                     _url.format(**format_input))
                 # noarch
-                format_input.aarch_option = NOARCH
-                self.releases_config[release]['rpm_os_ver_uri'].append(
-                    _url.format(**format_input))
+                # format_input.aarch_option = NOARCH
+                # self.releases_config[release]['rpm_os_ver_uri'].append(
+                #     _url.format(**format_input))
             # openEuler vs openstack
             else:
                 _openstack_version = openstack_version.capitalize() \
@@ -394,11 +408,11 @@ class VersionsComparator:
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option('-r', '--releases', default='22.03-LTS-SP3/train',
+@click.option('-r', '--releases', default='22.03-LTS-SP4/train',
               type=click.STRING, required=False, show_default=True,
               help='Comma separated releases with openEuler/OpenStack '
                    'to check, for example: '
-                   '22.03-LTS-SP3/wallaby,22.03-LTS-SP3/train')
+                   '22.03-LTS-SP4/wallaby,22.03-LTS-SP4/train')
 @click.option('-n', '--file-name', default='index.html',
               required=False, show_default=True,
               help='Output file name of openstack version checker')
