@@ -73,7 +73,7 @@ jobs:
       # TODO(ChenRui): run-on-arch-action will support openEuler in 3.0.0
       # refactor this job when it's available.
       # https://github.com/uraimo/run-on-arch-action/pull/89
-      - uses: uraimo/run-on-arch-action@v2.6.0
+      - uses: uraimo/run-on-arch-action@v2
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.os }}
