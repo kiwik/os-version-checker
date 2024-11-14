@@ -1,56 +1,56 @@
-name: Publish Page
-
-on:
-  push:
-    # Runs on any change be merged to main
-    branches: [ main ]
-    # AI directory apply .cirrus.yml to test
-    paths-ignore:
-      - 'ai/**'
-      - '.cirrus.yml'
-  schedule:
-    # Runs at 00:00 UTC (8:00 AM Beijing) every day
-    - cron:  '0 0 * * *'
-
-jobs:
-  publish:
-    env:
-      publish-input: "\
-          20.03-LTS-SP4/queens,\
-          20.03-LTS-SP4/rocky,\
-          20.03-LTS-SP4/train,\
-          21.03/victoria,\
-          21.09/wallaby,\
-          22.03-LTS-SP3/train,\
-          22.03-LTS-SP3/wallaby,\
-          22.03-LTS-SP4/train,\
-          22.03-LTS-SP4/wallaby,\
-          22.09/yoga,\
-          24.03-LTS/wallaby,\
-          24.03-LTS/antelope,\
-          dev-24.03-LTS-Next/wallaby,\
-          dev-24.03-LTS-Next/antelope,\
-          "
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Env
-        run: |
-          uname -a
-          cat /etc/os-release
-      - name: Setup
-        run: |
-          pip3 install -r requirements.txt
-      - name: Generate OS Version Checker Page
-        run: |
-          python3 VersionStatus.py -n docs/index.html -r ${{ env.publish-input }}
-      - name: Publish
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          publish_branch: gh-pages
-          full_commit_message: ${{ github.event.head_commit.message }}
+#name: Publish Page
+#
+#on:
+#  push:
+#    # Runs on any change be merged to main
+#    branches: [ main ]
+#    # AI directory apply .cirrus.yml to test
+#    paths-ignore:
+#      - 'ai/**'
+#      - '.cirrus.yml'
+#  schedule:
+#    # Runs at 00:00 UTC (8:00 AM Beijing) every day
+#    - cron:  '0 0 * * *'
+#
+#jobs:
+#  publish:
+#    env:
+#      publish-input: "\
+#          20.03-LTS-SP4/queens,\
+#          20.03-LTS-SP4/rocky,\
+#          20.03-LTS-SP4/train,\
+#          21.03/victoria,\
+#          21.09/wallaby,\
+#          22.03-LTS-SP3/train,\
+#          22.03-LTS-SP3/wallaby,\
+#          22.03-LTS-SP4/train,\
+#          22.03-LTS-SP4/wallaby,\
+#          22.09/yoga,\
+#          24.03-LTS/wallaby,\
+#          24.03-LTS/antelope,\
+#          dev-24.03-LTS-Next/wallaby,\
+#          dev-24.03-LTS-Next/antelope,\
+#          "
+#    runs-on: ubuntu-24.04
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/setup-python@v5
+#        with:
+#          python-version: '3.12'
+#      - name: Env
+#        run: |
+#          uname -a
+#          cat /etc/os-release
+#      - name: Setup
+#        run: |
+#          pip3 install -r requirements.txt
+#      - name: Generate OS Version Checker Page
+#        run: |
+#          python3 VersionStatus.py -n docs/index.html -r ${{ env.publish-input }}
+#      - name: Publish
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: ./docs
+#          publish_branch: gh-pages
+#          full_commit_message: ${{ github.event.head_commit.message }}
