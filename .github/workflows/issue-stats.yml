@@ -35,12 +35,16 @@ jobs:
         uses: github/issue-metrics@v3
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          SEARCH_QUERY: 'repo:kiwik/os-version-checker is:issue created:${{ env.last_month }}'
+          SEARCH_QUERY: 'repo:pytorch/pytorch is:issue created:${{ env.last_month }}'
 
       - name: Create issue
         uses: peter-evans/create-issue-from-file@v4
         with:
+          repository: kiwik/os-version-checker
           title: Monthly issue metrics report
           token: ${{ secrets.GH_TOKEN }}
           content-filepath: ./issue_metrics.md
           assignees: kiwik
+          issue-number: 65
+          label: |
+            report
