@@ -1,0 +1,33 @@
+name: Manually launch os-version-checker issue metrics
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: issue metrics
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: read
+
+    steps:
+      - name: Check GitHub token permissions
+        run: |
+          curl -H "Authorization: token ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/kiwik/os-version-checker
+
+#      - name: Run issue-metrics tool
+#        uses: github/issue-metrics@v3
+#        env:
+#          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+#          SEARCH_QUERY: 'repo:kiwik/os-version-checker is:issue created:2024-04-01..2024-07-31'
+#
+#      - name: Create issue
+#        uses: peter-evans/create-issue-from-file@v4
+#        with:
+#          title: Monthly issue metrics report
+#          token: ${{ secrets.GH_TOKEN }}
+#          content-filepath: ./issue_metrics.md
+#          assignees: kiwik
