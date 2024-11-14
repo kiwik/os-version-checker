@@ -1,4 +1,4 @@
-name: Manually launch os-version-checker issue metrics
+name: PyTorch monthly issue metrics
 on:
   workflow_dispatch:
 
@@ -37,14 +37,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           SEARCH_QUERY: 'repo:pytorch/pytorch is:issue created:${{ env.last_month }}'
 
-      - name: Create issue
+      - name: Update issue #65
         uses: peter-evans/create-issue-from-file@v4
         with:
           repository: kiwik/os-version-checker
-          title: Monthly issue metrics report
+          title: PyTorch monthly issue metrics report
           token: ${{ secrets.GH_TOKEN }}
           content-filepath: ./issue_metrics.md
           assignees: kiwik
           issue-number: 65
-          label: |
-            report
+          labels: report
