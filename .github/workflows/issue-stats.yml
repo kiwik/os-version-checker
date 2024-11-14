@@ -16,18 +16,31 @@ jobs:
     steps:
       - name: Check GitHub token permissions
         run: |
-          curl -H "Authorization: token ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/kiwik/os-version-checker
+          curl -H "Authorization: token ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/pytorch/pytorch
 
-#      - name: Run issue-metrics tool
-#        uses: github/issue-metrics@v3
-#        env:
-#          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-#          SEARCH_QUERY: 'repo:kiwik/os-version-checker is:issue created:2024-04-01..2024-07-31'
-#
-#      - name: Create issue
-#        uses: peter-evans/create-issue-from-file@v4
-#        with:
-#          title: Monthly issue metrics report
-#          token: ${{ secrets.GH_TOKEN }}
-#          content-filepath: ./issue_metrics.md
-#          assignees: kiwik
+      - name: Get dates for last month
+        shell: bash
+        run: |
+          # Calculate the first day of the previous month
+          first_day=$(date -d "last month" +%Y-%m-01)
+
+          # Calculate the last day of the previous month
+          last_day=$(date -d "$first_day +1 month -1 day" +%Y-%m-%d)
+
+          #Set an environment variable with the date range
+          echo "$first_day..$last_day"
+          echo "last_month=$first_day..$last_day" >> "$GITHUB_ENV"
+
+      - name: Run issue-metrics tool
+        uses: github/issue-metrics@v3
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          SEARCH_QUERY: 'repo:kiwik/os-version-checker is:issue created:${{ env.last_month }}'
+
+      - name: Create issue
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: Monthly issue metrics report
+          token: ${{ secrets.GH_TOKEN }}
+          content-filepath: ./issue_metrics.md
+          assignees: kiwik
