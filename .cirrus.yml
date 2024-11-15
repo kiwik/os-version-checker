@@ -1,6 +1,6 @@
 task:
   name: Run inference on
-  only_if: "changesInclude('ai/**', '.cirrus.yml')"
+  only_if: "changesInclude('ai/inference/**', '.cirrus.yml')"
   matrix:
     arm_container:
       image: quay.io/openeuler/openeuler:22.03-lts-sp3
