@@ -2,8 +2,9 @@
 
 set -ex
 
+conda init bash
 conda create -y -n triton-cpu python=3.12
-git clone https://github.com/triton-lang/triton-cpu.git;
+git clone --recursive https://github.com/triton-lang/triton-cpu.git;
 cd triton-cpu
 
 conda activate triton-cpu
