@@ -11,7 +11,11 @@ cd triton-cpu
 
 conda activate triton-cpu
 
-pip install ninja cmake wheel pybind11
+# deps
+conda install ninja cmake wheel pybind11
+conda install -c conda-forge libstdcxx-ng=12
+
+# build
 pip install -e python
 
 conda deactivate
