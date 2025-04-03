@@ -16,25 +16,25 @@ jobs:
   publish:
     env:
       publish-input: "\
+          25.03/antelope,\
+          24.03-LTS-SP1/wallaby,\
+          24.03-LTS-SP1/antelope,\
+          24.03-LTS/wallaby,\
+          24.03-LTS/antelope,\
+          22.09/yoga,\
+          22.03-LTS-SP4/train,\
+          22.03-LTS-SP4/wallaby,\
+          22.03-LTS-SP3/train,\
+          22.03-LTS-SP3/wallaby,\
+          21.09/wallaby,\
+          21.03/victoria,\
           20.03-LTS-SP4/queens,\
           20.03-LTS-SP4/rocky,\
           20.03-LTS-SP4/train,\
-          21.03/victoria,\
-          21.09/wallaby,\
-          22.03-LTS-SP3/train,\
-          22.03-LTS-SP3/wallaby,\
-          22.03-LTS-SP4/train,\
-          22.03-LTS-SP4/wallaby,\
-          22.09/yoga,\
-          24.03-LTS/wallaby,\
-          24.03-LTS/antelope,\
-          24.03-LTS-SP1/wallaby,\
-          24.03-LTS-SP1/antelope,\
-          25.03/antelope,\
           dev-24.03-LTS-Next/wallaby,\
           dev-24.03-LTS-Next/antelope,\
           "
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
