@@ -27,6 +27,9 @@ jobs:
           22.09/yoga,\
           24.03-LTS/wallaby,\
           24.03-LTS/antelope,\
+          24.03-LTS-SP1/wallaby,\
+          24.03-LTS-SP1/antelope,\
+          25.03/antelope,\
           dev-24.03-LTS-Next/wallaby,\
           dev-24.03-LTS-Next/antelope,\
           "

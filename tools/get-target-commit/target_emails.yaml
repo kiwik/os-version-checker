@@ -1,0 +1,5 @@
+target_emails:
+  suffix:
+    - '@163.com'
+  exact:
+    - 'chenrui_momo@163.com'

@@ -45,7 +45,7 @@ RPM_OS_URI_MAPPING = {
     # deploy OpenStack. openEuler LTS supporting will continue forever :)
     ('22.03-LTS',
      '22.03-LTS-SP1', '22.03-LTS-SP2', '22.03-LTS-SP3', '22.03-LTS-SP4',
-     '24.03-LTS'):
+     '24.03-LTS', '24.03-LTS-SP1', '25.03'):
         "https://repo.openeuler.org/openEuler-{oe_version}/EPOL/multi_version"
         "/OpenStack/{os_version}/{aarch}/Packages/",
     # Deprecated dev version start
