@@ -1,0 +1,4 @@
+# AI model files
+inference/resnet50/resnet50v2/
+inference/yolo/yolov3/
+inference/bert/bert-qa/*.onnx
