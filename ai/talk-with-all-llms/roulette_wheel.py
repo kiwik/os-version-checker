@@ -1,0 +1,41 @@
+import tomllib
+
+from httpx import AsyncClient
+
+from pydantic_ai import Agent, RunContext
+from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.providers.openai import OpenAIProvider
+
+with open('config.toml', 'rb') as f:
+    config_data = tomllib.load(f)
+
+httpx_client = AsyncClient(proxy=config_data['proxy']['url'],
+                           verify=config_data['proxy']['verify'])
+
+_provider = config_data['openrouter']
+_model_name = _provider['model_name']
+_base_url = _provider['base_url']
+_api_key = _provider['api_key']
+
+model = OpenAIModel(_model_name,
+                    provider=OpenAIProvider(base_url=_base_url,
+                                            api_key=_api_key,
+                                            http_client=httpx_client))
+
+_system_prompt = ("Use the `roulette_wheel` funcation to see if the customer "
+                  "has won based on the number they provide.")
+roulette_agent = Agent(model,
+                       deps_type=int, output_type=bool,
+                       system_prompt=_system_prompt)
+
+@roulette_agent.tool
+async def roulette_wheel(ctx: RunContext[int], square: int) -> str:
+    """check if the square is a winner"""
+    return 'winner' if square == ctx.deps else 'loser'
+
+
+success_number = 21
+result = roulette_agent.run_sync('Put my money on square eighteen',
+                                 deps=success_number)
+print(result.output)
+
