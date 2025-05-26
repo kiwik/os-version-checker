@@ -1,3 +1,4 @@
+import asyncio
 import tomllib
 
 from httpx import AsyncClient
@@ -12,12 +13,18 @@ with open('config.toml', 'rb') as f:
 httpx_client = AsyncClient(proxy=config_data['proxy']['url'],
                            verify=config_data['proxy']['verify'])
 
-model = OpenAIModel("deepseek/deepseek-r1:free",
+model = OpenAIModel(config_data['openrouter']['model_name'],
                     provider=OpenAIProvider(
-                        base_url=config_data['llm']['base_url'],
-                        api_key=config_data['llm']['api_key'],
+                        base_url=config_data['openrouter']['base_url'],
+                        api_key=config_data['openrouter']['api_key'],
                         http_client=httpx_client))
 
 agent = Agent(model)
-result = agent.run_sync('生命的意义是什么？')
-print(result)
+# result = agent.run_sync('生命的意义是什么？')
+# print(result)
+async def main():
+    result = await agent.run('生命的意义是什么？')
+    print(result)
+
+asyncio.run(main())
+
