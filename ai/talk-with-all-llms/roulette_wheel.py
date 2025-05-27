@@ -5,7 +5,7 @@ from httpx import AsyncClient
 
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.openai import OpenAIModel
-from pydantic_ai.providers.openai import OpenAIProvider
+from pydantic_ai.providers.openrouter import OpenRouterProvider
 
 with open('config.toml', 'rb') as f:
     config_data = tomllib.load(f)
@@ -15,13 +15,11 @@ httpx_client = AsyncClient(proxy=config_data['proxy']['url'],
 
 _provider = config_data['openrouter']
 _model_name = _provider['model_name']
-_base_url = _provider['base_url']
 _api_key = _provider['api_key']
 
 model = OpenAIModel(_model_name,
-                    provider=OpenAIProvider(base_url=_base_url,
-                                            api_key=_api_key,
-                                            http_client=httpx_client))
+                    provider=OpenRouterProvider(api_key=_api_key,
+                                                http_client=httpx_client))
 
 _system_prompt = ("Use the `roulette_wheel` function to see if the customer "
                   "has won based on the number they provide.")
