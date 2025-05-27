@@ -1,2 +1,2 @@
-pydantic-ai-slim[openai]==0.1.10
-pydantic-ai-slim[duckduckgo]==0.1.10
+pydantic-ai-slim[openai]==0.2.9
+pydantic-ai-slim[duckduckgo]==0.2.9
