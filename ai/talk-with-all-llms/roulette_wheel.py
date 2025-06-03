@@ -1,4 +1,3 @@
-import asyncio
 import tomllib
 
 from httpx import AsyncClient
@@ -21,28 +20,21 @@ model = OpenAIModel(_model_name,
                     provider=OpenRouterProvider(api_key=_api_key,
                                                 http_client=httpx_client))
 
-_system_prompt = ("Use the `roulette_wheel` function to see if the customer "
-                  "has won based on the number they provide.")
+
+_system_prompt = "使用`roulette_wheel`函数，通过用户输入的数字检查他们是否获胜。"
 roulette_agent = Agent(model,
                        deps_type=int, output_type=bool,
-                       system_prompt=_system_prompt,)
+                       system_prompt=_system_prompt, )
 
 
 @roulette_agent.tool
 async def roulette_wheel(ctx: RunContext[int], square: int) -> str:
-    """check if the square is a winner"""
+    """检查输入的点数是否获胜"""
     return 'winner' if square == ctx.deps else 'loser'
 
 
-async def main():
-    # Run the agent
-    nodes = []
-    success_number = 18
-    async with roulette_agent.iter('Put my money on square eighteen',
-                                   deps=success_number) as agent_run:
-        async for node in agent_run:
-            nodes.append(node)
-    print(nodes)
-
-
-asyncio.run(main())
+# 运行Agent
+success_number = 19
+result = roulette_agent.run_sync('在18点下注', deps=success_number)
+print(result.output)
+print(result.all_messages())
