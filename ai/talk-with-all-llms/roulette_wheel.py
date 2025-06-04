@@ -21,7 +21,8 @@ model = OpenAIModel(_model_name,
                                                 http_client=httpx_client))
 
 
-_system_prompt = "使用`roulette_wheel`函数，通过用户输入的数字检查他们是否获胜。"
+_system_prompt = ("使用`roulette_wheel`函数，通过用户输入的数字检查他们是否获胜。"
+                  "使用中文回答。")
 roulette_agent = Agent(model,
                        deps_type=int, output_type=bool,
                        system_prompt=_system_prompt, )
@@ -34,7 +35,7 @@ async def roulette_wheel(ctx: RunContext[int], square: int) -> str:
 
 
 # 运行Agent
-success_number = 19
+success_number = 18
 result = roulette_agent.run_sync('在18点下注', deps=success_number)
 print(result.output)
 print(result.all_messages())
