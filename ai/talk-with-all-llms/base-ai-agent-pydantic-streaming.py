@@ -1,10 +1,8 @@
-import tomllib
-
 import asyncio
+import tomllib
 from dataclasses import dataclass
 from datetime import date
 from httpx import AsyncClient
-
 from pydantic_ai import Agent
 from pydantic_ai.messages import (
     FinalResultEvent,
@@ -15,7 +13,7 @@ from pydantic_ai.messages import (
     TextPartDelta,
     ToolCallPartDelta,
 )
-from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.models.openai import OpenAIModel, OpenAIModelSettings
 from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_ai.tools import RunContext
 
@@ -25,7 +23,7 @@ with open('config.toml', 'rb') as f:
 httpx_client = AsyncClient(proxy=config_data['proxy']['url'],
                            verify=config_data['proxy']['verify'])
 
-_provider = config_data['openrouter']
+_provider = config_data['free-api-qwen']
 _model_name = _provider['model_name']
 _base_url = _provider['base_url']
 _api_key = _provider['api_key']
@@ -52,6 +50,7 @@ class WeatherService:
 
 weather_agent = Agent[WeatherService, str](
     model,
+    model_settings=OpenAIModelSettings(temperature=0.0),
     deps_type=WeatherService,
     output_type=str,  # We'll produce a final answer as plain text
     system_prompt='Providing a weather forecast at the locations the user provides.',
