@@ -10,7 +10,7 @@ from pydantic_ai.providers.openai import OpenAIProvider
 with open('config.toml', 'rb') as f:
     config_data = tomllib.load(f)
 
-_provider = config_data['free-api']
+_provider = config_data['free-api-qwen']
 _model_name = _provider['model_name']
 _base_url = _provider['base_url']
 _api_key = _provider['api_key']
